@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserDetails::class, 'user_id');
     }
+
+    public function userStats()
+    {
+        return $this->hasMany(StatsDashboard::class, 'fk_user_id');
+    }
 }

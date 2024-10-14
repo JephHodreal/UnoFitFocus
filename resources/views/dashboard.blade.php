@@ -31,15 +31,15 @@
                             <!-- Exercise Images -->
                             <div class="flex justify-center space-x-6 mb-6">
                                 <div class="exercise-container mx-2" data-exercise="push-up">
-                                    <img src="{{ asset('assets/images/feature1.png') }}" alt="Push Up" class="cursor-pointer hover:scale-105 transition-transform w-100 h-60 object-cover">
+                                    <img src="{{ asset('assets/images/pu_standard.jpg') }}" alt="Push Up" class="cursor-pointer hover:scale-105 transition-transform w-100 h-60 object-cover">
                                     <p class="text-center mt-2 font-semibold">Push Up</p>
                                 </div>
                                 <div class="exercise-container mx-2" data-exercise="squat">
-                                    <img src="{{ asset('assets/images/feature2.png') }}" alt="Squat" class="cursor-pointer hover:scale-105 transition-transform w-100 h-60 object-cover">
+                                    <img src="{{ asset('assets/images/sq_standard.jpg') }}" alt="Squat" class="cursor-pointer hover:scale-105 transition-transform w-100 h-60 object-cover">
                                     <p class="text-center mt-2 font-semibold">Squat</p>
                                 </div>
                                 <div class="exercise-container mx-2" data-exercise="plank">
-                                    <img src="{{ asset('assets/images/feature3.png') }}" alt="Plank" class="cursor-pointer hover:scale-105 transition-transform w-100 h-60 object-cover">
+                                    <img src="{{ asset('assets/images/pl_standard.jpg') }}" alt="Plank" class="cursor-pointer hover:scale-105 transition-transform w-100 h-60 object-cover">
                                     <p class="text-center mt-2 font-semibold">Plank</p>
                                 </div>
                             </div>
@@ -88,25 +88,25 @@
         const exerciseData = {
             'push-up': {
                 name: 'Push Up',
-                highScore: '95%',
-                numTries: 10,
-                lastExercise: '2024-10-09',
+                highScore: '{{ $puHighScore ?? "N/A" }}',
+                numTries: '{{ $puExerCount ?? 0 }}', 
+                lastExercise: '{{ $puLastDate }}',
                 howToPerform: 'Start in a plank position with your hands shoulder-width apart...',
                 recommendations: 'Focus on keeping your core tight and back straight.'
             },
             'squat': {
                 name: 'Squat',
-                highScore: '80%',
-                numTries: 15,
-                lastExercise: '2024-10-07',
+                highScore: '{{ $sqHighScore ?? "N/A" }}',
+                numTries: '{{ $sqExerCount ?? 0 }}',
+                lastExercise: '{{ $sqLastDate }}',
                 howToPerform: 'Stand with your feet shoulder-width apart...',
                 recommendations: 'Make sure your knees do not go past your toes during the squat.'
             },
             'plank': {
                 name: 'Plank',
-                highScore: '70%',
-                numTries: 8,
-                lastExercise: '2024-10-10',
+                highScore: '{{ $plHighScore ?? "N/A" }}',
+                numTries: '{{ $plExerCount ?? 0 }}',
+                lastExercise: '{{ $plLastDate }}',
                 howToPerform: 'Start in a push-up position with your forearms on the ground...',
                 recommendations: 'Hold the plank position for as long as you can without compromising form.'
             }

@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('workout_sessions', function (Blueprint $table) {
             $table->bigIncrements('session_id');
-            $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id', 'fk_ws_userId')
+            $table->unsignedBigInteger('fk_user_id');
+            $table->foreign('fk_user_id')
                 ->references('id')
                 ->on('users')
-                ->onDelete('cascade')
-                ->index();
+                ->onDelete('cascade');
             $table->string('exercise')->index();
             $table->string('difficulty')->index();
             $table->tinyInteger('score')->index();
@@ -35,9 +34,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('workout_sessions');
-        Schema::table('workout_sessions', function (Blueprint $table) {
-            // Drop the foreign key constraint in the down method
-            $table->dropForeign('fk_ws_uid');
-        });
     }
 };
