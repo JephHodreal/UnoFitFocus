@@ -7,69 +7,80 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | FitFocus</title>
-    <link rel="stylesheet" type="text/css" href="../assets/css/home.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs" defer></script>
 </head>
 <body>
-    <!--header-->
-    @include('partials.navbar')
-    <main class="hero-section">
-        <div class="hero-content">
-            <h2>Welcome to FitFocus!</h2>
-            <p>Your journey towards a healthier, fitter you starts here.</p>
-            <a href="SignUp.php" class="btn">Get Started</a>
-        </div>
+    <main>
+        <x-guest-layout>
+            <x-slot name="header">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ __('FitFocus') }}
+                </h2>
+                <h2 class="text-x2 text-gray-800 leading-tight">
+                    {{ __('Revolutionizing bodyweight workouts through posture correction powered by human pose estimation.') }}
+                </h2>
+            </x-slot>
+
+            <div class="py-6">
+                <div class="hero-section bg-cover bg-fixed bg-center text-white text-center flex justify-center items-center" style="background-image: url({{ asset('../assets/images/homehero.png') }}); height: 75vh;">
+                    <div class="hero-content max-w-3xl mx-auto text-center animate-fadeIn">
+                        <h2 class="text-4xl font-semibold mb-5 tracking-wider font-poppins">Welcome to FitFocus!</h2>
+                        <p class="text-xl font-light mb-7 leading-relaxed font-roboto">Your journey towards a healthier, fitter you starts here.</p>
+                        <a href="{{ route('register') }}" class="text-white bg-gradient-to-r from-pink-500 to-yellow-400 px-8 py-3 rounded-full uppercase font-semibold shadow-lg transition duration-300 ease-in-out hover:bg-gradient-to-l hover:shadow-xl transform hover:-translate-y-1">Get Started</a>
+                    </div>
+                </div>
+                
+                <!--Features section -->
+                <div class="overall-feats py-6">
+                    <div class="section-title text-center mb-8">
+                        <h2 class="text-4xl">{{ __('Features') }}</h2>
+                    </div>
+                    <div class="feats grid grid-cols-1 md:grid-cols-3 gap-8 text-white">
+                        <div class="per-feat relative bg-gray-800 p-6 text-center h-64 overflow-hidden group">
+                            <div class="off absolute inset-0 overflow-hidden">
+                                <img src="../assets/images/feature1.png" alt="FitFocus offers workout variety" class="object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-125">
+                            </div>
+                            <div class="feat-type absolute inset-0 flex flex-col justify-center items-center text-2xl">
+                                <span class="font-bold">{{ __('Workout Variety') }}</span>
+                                <div class="test-row text-base font-normal text-center">{{ __('Different bodyweight exercises to choose from.') }}</div>
+                            </div>
+                        </div>
+                
+                        <div class="per-feat relative bg-gray-800 p-6 text-center h-64 overflow-hidden group">
+                            <div class="off absolute inset-0 overflow-hidden">
+                                <img src="../assets/images/feature2.png" alt="FitFocus provides live feedback." class="object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-125">
+                            </div>
+                            <div class="feat-type absolute inset-0 flex flex-col justify-center items-center text-2xl">
+                                <span class="font-bold">{{ __('Live Feedback') }}</span>
+                                <div class="test-row text-base font-normal text-center">{{ __('Realtime form assessment during workouts.') }}</div>
+                            </div>
+                        </div>
+                
+                        <div class="per-feat relative bg-gray-800 p-6 text-center h-64 overflow-hidden group">
+                            <div class="off absolute inset-0 overflow-hidden">
+                                <img src="../assets/images/feature3.png" alt="FitFocus allows for convenient workouts." class="object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-125">
+                            </div>
+                            <div class="feat-type absolute inset-0 flex flex-col justify-center items-center text-2xl">
+                                <span class="font-bold">{{ __('Convenient Use') }}</span>
+                                <div class="test-row text-base font-normal text-center">{{ __('Use anytime, anywhere.') }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="bg-gray-800 text-white py-6">
+                    <div class="container mx-auto text-center">
+                        <p>&copy; 2024 FitFocus. All Rights Reserved.</p>
+                        <ul class="flex justify-center space-x-6 mt-4">
+                            <li><a href="#terms" class="hover:underline">Terms of Service</a></li>
+                            <li><a href="#privacy" class="hover:underline">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </footer>
+            </div>
+        </x-guest-layout>    
     </main>
-
-    <!--Features section -->
-    <section class="detail-wrapper" id="RoomRates">
-        <div class="overall-room">
-            <div class="section-title">
-                <h2 class="notthis">Features</h2>
-            </div>
-            <div class="feats">
-                <div class="per-feat">
-                    <div class="off">
-						<img src="../assets/images/feature1.png" alt="FitFocus offers workout variety">
-					</div>
-                    <div class="feat-type">
-                        Workout Variety
-                        <div class="test-row">
-                            <span> Different bodyweight exercises to choose from. </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="per-feat">
-                    <div class="off">
-						<img src="../assets/images/feature2.png" alt="FitFocus provides live feedback.">
-					</div>
-                    <div class="feat-type">
-                        Live Feedback
-                        <div class="test-row">
-                            <span> Realtime form assessment during workouts. </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="per-feat">
-                    <div class="off">
-						<img src="../assets/images/feature3.png" alt="FitFocus allows for convenient workouts.">
-					</div>
-                    <div class="feat-type">
-                        Convenient Use
-                        <div class="test-row">
-                            <span> Use anytime, anywhere. </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <p>&copy; 2024 FitFocus. All Rights Reserved.</p>
-        <ul class="footer-links">
-            <li><a href="#terms">Terms of Service</a></li>
-            <li><a href="#privacy">Privacy Policy</a></li>
-        </ul>
-    </footer>
 </body>
 </html>

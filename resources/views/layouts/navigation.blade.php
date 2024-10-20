@@ -20,7 +20,7 @@
                             {{ __('Exercises') }}
                         </x-nav-link>
                         <x-nav-link :href="route('AboutUs')" :active="request()->routeIs('AboutUs')">
-                            {{ __('AboutUs') }}
+                            {{ __('About Us') }}
                         </x-nav-link>
                     </div>
                 </div>
@@ -135,7 +135,7 @@
                     {{ __('Exercises') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('AboutUs')" :active="request()->routeIs('AboutUs')">
-                    {{ __('AboutUs') }}
+                    {{ __('About Us') }}
                 </x-responsive-nav-link>
             </div>
 

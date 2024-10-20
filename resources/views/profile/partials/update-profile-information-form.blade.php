@@ -69,18 +69,11 @@
             <x-input-error :messages="$errors->get('birthdate')" class="mt-2" />
         </div> 
 
-        <!-- Height pero with range -->
+        <!-- Height -->
         <div>
             <x-input-label for="height" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Height (in cm)')" />
             <x-text-input id="height" class="block mt-1 w-full" type="text" name="height" :value="old('height', $userInfo->height)" required autocomplete="Height" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
             <x-input-error :messages="$errors->get('height')" class="mt-2" />
-        </div>
-        <div class="relative">
-            <label for="range-input" class="sr-only">Default range</label>
-            <input id="range-input" type="range" :value="old('height', $userInfo->height)" min="20" max="300" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
-            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">Min (20 cm)</span>
-            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/2 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">160 cm</span>
-            <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">Max (300 cm)</span>
         </div>
 
         <!-- Weight -->
@@ -137,30 +130,5 @@
 
 {{-- <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script> --}}
-<script>
-    // Get the elements
-    var rangeInput = document.getElementById('range-input');
-    var height = document.getElementById('height');
 
-    // Function to update the currency input
-    function updateCurrencyInput() {
-        height.value = rangeInput.value;
-    }
-
-    // Add event listener to the range input
-    rangeInput.addEventListener('input', updateCurrencyInput);
-
-    // Function to update the currency input
-    function updateRangeInput() {
-        rangeInput.value = height.value;
-    }
-
-    // Add event listener to the range input
-    height.addEventListener('input', updateRangeInput);
-    document.getElementById('cancel-edit-btn').addEventListener('click', function() {
-        // Hide the edit form and show the view-only profile information
-        document.getElementById('profile-edit').style.display = 'none';
-        document.getElementById('profile-view').style.display = 'block';
-    });
-</script>
 </body>
