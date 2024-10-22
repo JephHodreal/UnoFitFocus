@@ -51,7 +51,7 @@
                 </div>
             </div>
 
-            <!-- Warm-up and Cooldown Sections -->
+            <!-- Buttons for Warm-Up and Cooldown -->
             <div class="flex justify-between mb-12 space-x-4">
                 <div class="bg-blue-500 text-white shadow-lg rounded-lg p-6 hover:bg-blue-600 transition-all duration-300 cursor-pointer transform hover:scale-105 flex-1"
                     @click="$dispatch('open-modal', 'warmup-modal')">
@@ -109,117 +109,87 @@
             </x-modal>
 
             <!-- Warm-Up Modal -->
-            <x-modal name="warmup-modal" maxWidth="lg" x-show="openModal === 'warmup-modal'" @click.away="openModal = null">
-                <div class="p-6">
-                    <h2 class="text-2xl font-bold mb-4">Warm-Up Exercises</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <h3 class="text-lg font-semibold">1. Arm Circles</h3>
-                            <p class="text-gray-700">Repetitions: 15-20 per arm</p>
+            <x-modal name="warmup-modal" maxWidth="lg" x-show="openModal === 'warmup-modal'">
+                <div x-data="{ currentSlide: 0, exercises: [
+                        { title: 'Jumping Jacks', description: 'A full-body warm-up exercise that increases your heart rate and warms up your muscles.', image: '../assets/images/workout.jpg', repetitions: '30 seconds', steps: ['Stand upright with your feet together and hands at your sides.', 'Jump up while spreading your feet wider than shoulder-width apart and lifting your arms overhead.', 'Return to the starting position by jumping back to the initial stance.', 'Repeat the movement for the duration.'] },
+                        { title: 'Arm Circles', description: 'Loosens up your shoulders and improves range of motion in your arms.', image: '../assets/images/workout.jpg', repetitions: '20 repetitions', steps: ['Stand with your feet shoulder-width apart and arms extended out to your sides.', 'Start making small circular motions with your arms.', 'Gradually increase the size of the circles.', 'After completing half the repetitions, reverse the direction.'] },
+                        { title: 'Leg Swings', description: 'Prepares your legs for dynamic movement and stretches the hip muscles.', image: '../assets/images/workout.jpg', repetitions: '15 repetitions per leg', steps: ['Stand with your feet shoulder-width apart.', 'Hold onto a support, such as a wall or pole, for balance.', 'Swing one leg forward and backward in a controlled manner.', 'Repeat for the designated repetitions, then switch legs.'] },
+                        { title: 'Hip Rotations', description: 'Improves flexibility in your hips and helps avoid injuries.', image: '../assets/images/workout.jpg', repetitions: '10 repetitions per side', steps: ['Stand with your feet shoulder-width apart.', 'Place your hands on your hips and rotate your hips in a circular motion.', 'Complete the designated repetitions in one direction, then switch to the other.'] },
+                        { title: 'High Knees', description: 'A cardio exercise that activates the quads and gets your blood pumping.', image: '../assets/images/workout.jpg', repetitions: '30 seconds', steps: ['Stand upright with your feet hip-width apart.', 'Lift one knee towards your chest, as high as you can.', 'Switch to the other knee quickly, simulating a running motion.', 'Continue alternating knees for the designated time.'] },
+                    ] }">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <button @click="currentSlide = (currentSlide === 0 ? exercises.length - 1 : currentSlide - 1)">
+                                ← Previous
+                            </button>
+                            <h2 class="text-2xl font-bold" x-text="exercises[currentSlide].title"></h2>
+                            <button @click="currentSlide = (currentSlide === exercises.length - 1 ? 0 : currentSlide + 1)">
+                                Next →
+                            </button>
                         </div>
-                        <div>
-                            <h3 class="text-lg font-semibold">2. Leg Swings</h3>
-                            <p class="text-gray-700">Repetitions: 10-15 each leg</p>
-                        </div>
+
+                        <p class="text-gray-700 mb-4" x-text="exercises[currentSlide].description"></p>
+                        <img :src="exercises[currentSlide].image" alt="Warm-up exercise" class="w-full h-48 object-cover mb-4">
+                        <p class="text-gray-700 mb-4">Repetitions: <span x-text="exercises[currentSlide].repetitions"></span></p>
+                        
+                        <!-- Step-by-step process -->
+                        <h3 class="text-lg font-semibold mb-2">How to Perform:</h3>
+                        <ol class="list-decimal pl-5 space-y-2">
+                            <template x-for="(step, index) in exercises[currentSlide].steps" :key="index">
+                                <li x-text="step" class="text-gray-700"></li>
+                            </template>
+                        </ol>
                     </div>
                 </div>
             </x-modal>
 
             <!-- Cooldown Modal -->
-            <x-modal name="cooldown-modal" maxWidth="lg" x-show="openModal === 'cooldown-modal'" @click.away="openModal = null">
-                <div class="p-6">
-                    <h2 class="text-2xl font-bold mb-4">Cooldown Exercises</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <h3 class="text-lg font-semibold">1. Forward Bend</h3>
-                            <p class="text-gray-700">Hold for 15-30 seconds</p>
+            <x-modal name="cooldown-modal" maxWidth="lg" x-show="openModal === 'cooldown-modal'">
+                <div x-data="{ currentSlide: 0, exercises: [
+                        { title: 'Child\'s Pose', description: 'A relaxing stretch for the back, hips, and thighs.', image: '../assets/images/workout.jpg', repetitions: 'Hold for 30 seconds', steps: ['Kneel on the floor with your toes touching and knees spread apart.', 'Sit back on your heels and lower your torso forward between your thighs.', 'Extend your arms forward and relax your head on the floor.', 'Hold the stretch and breathe deeply.'] },
+                        { title: 'Forward Bend', description: 'Stretches the hamstrings and lower back.', image: '../assets/images/workout.jpg', repetitions: 'Hold for 30 seconds', steps: ['Stand with your feet hip-width apart.', 'Hinge at your hips and bend forward, reaching for your toes.', 'Keep your legs straight and feel the stretch in your hamstrings.', 'Hold the position and breathe deeply.'] },
+                        { title: 'Quad Stretch', description: 'Stretches the quadriceps muscles, improving flexibility.', image: '../assets/images/workout.jpg', repetitions: 'Hold for 20 seconds per leg', steps: ['Stand tall and grab your right ankle with your right hand.', 'Pull your heel towards your glutes while keeping your knees together.', 'Hold the stretch and balance yourself.', 'Switch legs and repeat for the designated time.'] },
+                        { title: 'Cat-Cow Stretch', description: 'A gentle flow between two yoga poses to warm up the spine.', image: '../assets/images/workout.jpg', repetitions: '10 repetitions', steps: ['Start on your hands and knees in a tabletop position.', 'Arch your back, dropping your belly towards the floor (cow pose).', 'Exhale and round your back, pulling your belly button toward your spine (cat pose).', 'Alternate between the two positions for the designated repetitions.'] },
+                        { title: 'Seated Hamstring Stretch', description: 'Stretches the hamstrings and improves flexibility.', image: '../assets/images/workout.jpg', repetitions: 'Hold for 30 seconds per leg', steps: ['Sit on the floor with your legs extended in front of you.', 'Reach forward and try to touch your toes while keeping your back straight.', 'Hold the stretch and feel the pull in your hamstrings.', 'Switch legs after holding the stretch for the designated time.'] },
+                    ] }">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <button @click="currentSlide = (currentSlide === 0 ? exercises.length - 1 : currentSlide - 1)">
+                                ← Previous
+                            </button>
+                            <h2 class="text-2xl font-bold" x-text="exercises[currentSlide].title"></h2>
+                            <button @click="currentSlide = (currentSlide === exercises.length - 1 ? 0 : currentSlide + 1)">
+                                Next →
+                            </button>
                         </div>
-                        <div>
-                            <h3 class="text-lg font-semibold">2. Shoulder Stretch</h3>
-                            <p class="text-gray-700">Hold for 20-30 seconds each side</p>
-                        </div>
+
+                        <p class="text-gray-700 mb-4" x-text="exercises[currentSlide].description"></p>
+                        <img :src="exercises[currentSlide].image" alt="Cooldown exercise" class="w-full h-48 object-cover mb-4">
+                        <p class="text-gray-700 mb-4">Repetitions: <span x-text="exercises[currentSlide].repetitions"></span></p>
+                        
+                        <!-- Step-by-step process -->
+                        <h3 class="text-lg font-semibold mb-2">How to Perform:</h3>
+                        <ol class="list-decimal pl-5 space-y-2">
+                            <template x-for="(step, index) in exercises[currentSlide].steps" :key="index">
+                                <li x-text="step" class="text-gray-700"></li>
+                            </template>
+                        </ol>
                     </div>
                 </div>
             </x-modal>
         </div>
-    
-        {{-- <!-- Warm-up Modal (Carousel) -->
-        <x-carousel-modal id="warmupModal" title="Warm-up Exercises">
-            <!-- Ensure the props are passed correctly to avoid undefined variable errors -->
-            <x-carousel-item 
-                title="Jumping Jacks" 
-                description="A full-body warm-up exercise that increases your heart rate and warms up your muscles." 
-                image="../assets/images/workout.jpg" 
-                repetitions="30 seconds"
-            />
-            <x-carousel-item 
-                title="Arm Circles" 
-                description="Loosens up your shoulders and improves range of motion in your arms." 
-                image="../assets/images/workout.jpg" 
-                repetitions="20 repetitions"
-            />
-            <x-carousel-item 
-                title="Leg Swings" 
-                description="Prepares your legs for dynamic movement and stretches the hip muscles." 
-                image="../assets/images/workout.jpg" 
-                repetitions="15 repetitions per leg"
-            />
-            <x-carousel-item 
-                title="Hip Rotations" 
-                description="Improves flexibility in your hips and helps avoid injuries." 
-                image="../assets/images/workout.jpg" 
-                repetitions="10 repetitions per side"
-            />
-            <x-carousel-item 
-                title="High Knees" 
-                description="A cardio exercise that activates the quads and gets your blood pumping." 
-                image="../assets/images/workout.jpg" 
-                repetitions="30 seconds"
-            />
-        </x-carousel-modal>
-    
-        <!-- Cooldown Modal (Carousel) -->
-        <x-carousel-modal id="cooldownModal" title="Cooldown Exercises">
-            <!-- Cooldown exercise 1: Standing Quad Stretch -->
-            <x-carousel-item 
-                title="Standing Quad Stretch" 
-                description="A static stretch that targets the quadriceps and helps reduce muscle tension." 
-                image="../assets/images/workout.jpg" 
-                repetitions="Hold for 30 seconds per leg"
-            />
-            
-            <!-- Cooldown exercise 2: Forward Fold -->
-            <x-carousel-item 
-                title="Forward Fold" 
-                description="Stretches the hamstrings and lower back, improving flexibility." 
-                image="../assets/images/workout.jpg" 
-                repetitions="Hold for 30 seconds"
-            />
-            
-            <!-- Cooldown exercise 3: Child’s Pose -->
-            <x-carousel-item 
-                title="Child’s Pose" 
-                description="A gentle stretch for the spine and relaxation for the back muscles." 
-                image="../assets/images/workout.jpg" 
-                repetitions="Hold for 1 minute"
-            />
-            
-            <!-- Cooldown exercise 4: Seated Hamstring Stretch -->
-            <x-carousel-item 
-                title="Seated Hamstring Stretch" 
-                description="Stretches the hamstrings and relieves tension in the lower back." 
-                image="../assets/images/workout.jpg" 
-                repetitions="Hold for 30 seconds per leg"
-            />
-            
-            <!-- Cooldown exercise 5: Cat-Cow Stretch -->
-            <x-carousel-item 
-                title="Cat-Cow Stretch" 
-                description="A dynamic stretch for the spine that promotes flexibility and relieves tension." 
-                image="../assets/images/workout.jpg" 
-                repetitions="Perform 10 slow repetitions"
-            />
-        </x-carousel-modal> --}}
     </x-guest-layout>  
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('modalHandler', () => ({
+                openModal: null,
+                init() {
+                    this.$el.addEventListener('open-modal', event => {
+                        this.openModal = event.detail;
+                    });
+                }
+            }));
+        });
+    </script>
 </body>
 </html>
