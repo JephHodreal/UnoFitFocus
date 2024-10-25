@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatsController;
+use App\Http\Controllers\HistoryController;
 
 Route::get('/', function () {
     return view('home');
@@ -19,6 +20,12 @@ Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')
 Route::get('/dashboard', [StatsController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::get('/Workout-History', [HomeController::class, 'viewWorkoutHistory'])
+    ->middleware(['auth', 'verified'])
+    ->name('WorkoutHistory');
+
+Route::get('/Workout-History', [HistoryController::class, 'index'])->name('WorkoutHistory');
 
 Route::get('/Setup', function () {
     return view('Setup');

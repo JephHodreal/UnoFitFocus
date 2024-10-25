@@ -26,4 +26,8 @@ class HomeController extends Controller
     {
         return view('TryCamera');
     }
+    public function viewWorkoutHistory()
+    {
+        return view('WorkoutHistory');
+    }
 }
