@@ -58,6 +58,8 @@ Route::middleware('auth')->group(function () {
 
     //Route::get('Setup', [SetupProfileController::class, 'show']);
     Route::post('Setup', [SetupProfileController::class, 'update']);
+    Route::post('/profile/updatePicture', [ProfileController::class, 'updatePicture']);
+    Route::get('/profile/updatePicture', [ProfileController::class, 'updatePicture']);
 
     // Route::patch('update-profile-information-form', [ProfileController::class, 'profile.update']);
 

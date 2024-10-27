@@ -1,6 +1,3 @@
-<head>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-</head>
 <body>
 <section>
     <header>
@@ -65,7 +62,7 @@
 
         <div>
             <x-input-label for="birthdate" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Birthdate')" />
-            <input id="birthdate" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="date" name="birthdate" :value="old('birthdate', $userInfo->birthdate->format('Y-m-d'))" min="1900-01-01" max="{{ date('Y-m-d') }}" required autocomplete="Birthdate" />
+            <input id="birthdate" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="date" name="birthdate" value ="{{ $userInfo->birthdate ?? '' }}" min="1900-01-01" max="{{ date('Y-m-d') }}" required autocomplete="Birthdate" />
             <x-input-error :messages="$errors->get('birthdate')" class="mt-2" />
         </div> 
 
@@ -110,7 +107,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-secondary-button id="cancel-edit-btn" class="px-4 py-2 bg-gray-500 rounded-md hover:bg-gray-600 hover:text-white">
+            <x-secondary-button id="cancel-edit-btn" class="px-4 py-2 rounded-md hover:bg-gray-600 hover:text-white">
                 {{ __('Cancel') }}
             </x-secondary-button>
             <x-primary-button>{{ __('Save') }}</x-primary-button>
@@ -130,5 +127,11 @@
 
 {{-- <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script> --}}
-
+<script>
+    document.getElementById('cancel-edit-btn').addEventListener('click', function() {
+        // Hide the password edit form and show the view-only mode (if applicable)
+        document.getElementById('profile-edit').style.display = 'none';
+        document.getElementById('profile-view').style.display = 'block';
+    });
+</script>
 </body>

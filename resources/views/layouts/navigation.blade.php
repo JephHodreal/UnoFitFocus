@@ -16,6 +16,9 @@
                         <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                             {{ __('Home') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('FAQs')" :active="request()->routeIs('FAQs')">
+                            {{ __('FAQs') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('Exercises')" :active="request()->routeIs('Exercises')">
                             {{ __('Exercises') }}
                         </x-nav-link>
@@ -64,6 +67,9 @@
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                             {{ __('Home') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('FAQs')" :active="request()->routeIs('FAQs')">
+                            {{ __('FAQs') }}
                         </x-nav-link>
                         <x-nav-link :href="route('Exercises')" :active="request()->routeIs('Exercises')">
                             {{ __('Exercises') }}
@@ -141,7 +147,10 @@
         @guest
             <div class="pt-2 pb-3 space-y-1">
                 <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                    {{ __('home') }}
+                    {{ __('Home') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('FAQs')" :active="request()->routeIs('FAQs')">
+                    {{ __('FAQs') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('Exercises')" :active="request()->routeIs('Exercises')">
                     {{ __('Exercises') }}
@@ -166,8 +175,17 @@
 
         @auth
             <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
+                <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                    {{ __('Home') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('FAQs')" :active="request()->routeIs('FAQs')">
+                    {{ __('FAQs') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('Exercises')" :active="request()->routeIs('Exercises')">
+                    {{ __('Exercises') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('AboutUs')" :active="request()->routeIs('AboutUs')">
+                    {{ __('About Us') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('Setup')" :active="request()->routeIs('Setup')">
                     {{ __('Setup') }}

@@ -1,3 +1,6 @@
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -5,10 +8,43 @@
         </h2>
     </x-slot>
 
+    <!-- Conditionally Render Modal -->
+    @if($profileIncomplete)
+        <!-- Pop-up Modal -->
+        <div x-data="{ showModal: true }">
+            <div x-show="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-opacity">
+                <div class="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto relative" 
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 transform scale-90"
+                    x-transition:enter-end="opacity-100 transform scale-100"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-90">
+
+                    <!-- Close Button -->
+                    <button @click="showModal = false" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Almost there!</h3>
+                            <p class="text-gray-600 mb-6">Complete your profile by adding some additional information.</p>
+                    <div class="flex justify-center w-full">
+                        <a href="{{ route('Setup') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150'">
+                            {{ __('Go to Setup') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    <!-- End Modal -->
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <!-- Profile Information (View-Only Mode) -->
-            <div id="profile-view" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            <div id="profile-view" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg" x-data="{ showPictureModal: false, showImageViewer: false }">
                 <div class="max-w-xl">
                     <header>
                         <h2 class="text-lg font-medium text-gray-900">
@@ -19,20 +55,81 @@
                         </p>
                     </header>
 
-                    <div class="mt-4">
-                        <img class="rounded-full w-24 h-24" src="{{ asset('uploads/profile_pics/' . $userInfo->profile_pic) }}" alt="Profile picture">
-                        <strong>First Name:</strong> {{ $userInfo->first_name }}<br>
-                        <strong>Middle Name:</strong> {{ $userInfo->middle_name }}<br>
-                        <strong>Last Name:</strong> {{ $userInfo->last_name }}<br>
-                        <strong>Email:</strong> {{ $user->email }}<br>
-                        <strong>Birthdate:</strong> {{ $userInfo->birthdate }}<br>
-                        <strong>Height:</strong> {{ $userInfo->height }} cm<br>
-                        <strong>Weight:</strong> {{ $userInfo->weight }} kg<br>
-                        <strong>Gender:</strong> {{ $userInfo->gender }}
+                    <!-- Button to enable edit mode -->
+                    <div class="flex items-start mt-4">
+                        <!-- Profile Picture Section -->
+                        <div class="relative">
+                            <img @click="showImageViewer = true" class="rounded-full w-36 h-36 object-cover cursor-pointer" src="{{ asset('uploads/profile_pics/' . $userInfo->profile_pic) }}" alt="Profile picture">
+
+                            <!-- Pencil Icon for Editing Profile Picture -->
+                            <button class="absolute top-2 right-2 bg-gray-200 p-1 rounded-full hover:bg-gray-300"
+                                @click="showPictureModal = true" title="Change profile picture">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L6 11.172V14h2.828l8.586-8.586a2 2 0 000-2.828zM5 13v3h3l8.586-8.586-3-3L5 13z"></path>
+                                </svg>
+                            </button>
+
+                            <!-- Edit Profile Button -->
+                            <x-primary-button id="edit-profile-btn" class="mt-4 w-full"> {{ __('Edit Profile') }} </x-primary-button>
+                        </div>
+                    
+                        <!-- Profile Details Section with more spacing -->
+                        <div class="ml-16 grid grid-cols-2 gap-x-8 gap-y-4">
+                            <strong>First Name:</strong> <span>{{ $userInfo->first_name }}</span>
+                            <strong>Middle Name:</strong> <span>{{ $userInfo->middle_name }}</span>
+                            <strong>Last Name:</strong> <span>{{ $userInfo->last_name }}</span>
+                            <strong>Email:</strong> <span>{{ $user->email }}</span>
+                            <strong>Birthdate:</strong> <span>{{ $userInfo->birthdate }}</span>
+                            <strong>Height:</strong> <span>{{ $userInfo->height }} cm</span>
+                            <strong>Weight:</strong> <span>{{ $userInfo->weight }} kg</span>
+                            <strong>Gender:</strong> <span>{{ $userInfo->gender }}</span>
+                        </div>
                     </div>
 
-                    <!-- Button to enable edit mode -->
-                    <x-primary-button id="edit-profile-btn" class="mt-4"> {{ __('Edit Profile') }} </x-primary-button>
+                    <!-- Conditionally Render Profile Picture Modal -->
+                    <template x-if="showPictureModal">
+                        <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-opacity">
+                            <div class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto relative">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-4">Change Profile Picture</h3>
+
+                                <!-- File Input for Profile Picture -->
+                                <form action="{{ route('profile.updatePicture') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="file" name="profile_pic" accept="image/*" class="border border-gray-300 p-2 w-full">
+
+                                    <div class="mt-4 flex justify-end">
+                                        <x-primary-button>Upload</x-primary-button>
+                                        <button type="button" @click="showPictureModal = false" class="ml-2 text-gray-500">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Conditionally Render Image Viewer Modal -->
+                    <template x-if="showImageViewer">
+                        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 transition-opacity">
+                            <div class="relative">                           
+                                <img 
+                                    src="{{ asset('uploads/profile_pics/' . $userInfo->profile_pic) }}" 
+                                    alt="Profile picture" 
+                                    class="rounded-lg w-auto max-h-screen"
+                                    {{-- @click.outside="showImageViewer = false" --}}
+                                >
+                                <!-- Close Button -->
+                                <button 
+                                    @click="showImageViewer = false" 
+                                    class="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md hover:bg-gray-200"
+                                    title="Close"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
                 </div>
             </div>
 

@@ -12,6 +12,7 @@ Route::get('/', function () {
 
 Route::get('Home', [HomeController::class, 'viewHome'])->name('home');
 Route::get('About-Us', [HomeController::class, 'viewAboutUs'])->name('AboutUs');
+Route::get('Frequently-Asked-Questions', [HomeController::class, 'viewFAQs'])->name('FAQs');
 Route::get('Exercises', [HomeController::class, 'viewExercises'])->name('Exercises');
 Route::get('Profile', [HomeController::class, 'viewSample'])->name('Sample');
 Route::get('Camera', [HomeController::class, 'viewCamera'])->name('TryCamera');
@@ -42,9 +43,22 @@ Route::get('/FitCheck', function () {
 Route::post('/Setup', function () {
     return view('Setup');
 })->middleware(['auth', 'verified'])->name('Setup');
+
 Route::patch('/profile/update', [ProfileController::class, 'update'])
     ->middleware(['auth', 'verified'])
     ->name('profile.update');
+
+Route::get('/profile/update', [ProfileController::class, 'update'])
+    ->middleware(['auth', 'verified'])
+    ->name('profile.update');
+
+Route::post('/profile/update', [ProfileController::class, 'update'])
+    ->middleware(['auth', 'verified'])
+    ->name('profile.update');
+
+Route::patch('/profile/updatePicture', [ProfileController::class, 'updatePicture'])
+    ->middleware(['auth', 'verified'])
+    ->name('profile.updatePicture');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

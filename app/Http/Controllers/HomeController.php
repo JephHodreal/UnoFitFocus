@@ -10,6 +10,10 @@ class HomeController extends Controller
     {
         return view('AboutUs');
     }
+    public function viewFAQs()
+    {
+        return view('FAQs');
+    }
     public function viewExercises()
     {
         return view('Exercises');

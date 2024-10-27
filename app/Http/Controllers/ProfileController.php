@@ -23,10 +23,20 @@ class ProfileController extends Controller
         $user = $request->user(); // Get the authenticated user
         $userDetails = $user->userDetails;
 
+        // Check if the profile is complete
+        $profileIncomplete = UserDetails::where('user_id', $user->id)
+        ->where(function ($query) {
+            $query->whereNull('height')
+                  ->orWhereNull('weight')
+                  ->orWhereNull('birthdate')
+                  ->orWhereNull('gender');
+        })
+        ->exists();
+
         return view('profile.edit', [
-            //'user' => $request->user(),
             'user' => $user,
             'userInfo' => $userDetails,
+            'profileIncomplete' => $profileIncomplete,
         ]);
     }
 
@@ -87,5 +97,42 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function updatePicture(Request $request): RedirectResponse
+    {
+        Log::info('Attempting to update profile picture for user ID: ' . Auth::id());
+
+        // Validate the file input to ensure it's an image
+        $request->validate([
+            'profile_pic' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Limit size to 2MB
+        ]);
+
+        // Get the authenticated user's details
+        $userDetails = UserDetails::where('user_id', Auth::id())->first();
+
+        // Check if userDetails exists
+        if (!$userDetails) {
+            Log::error('UserDetails not found for user ID: ' . Auth::id());
+            return Redirect::route('profile.edit')->with('error', 'User details not found.');
+        }
+
+        // Handle the file upload
+        $image = $request->file('profile_pic');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $image->move(public_path('uploads/profile_pics'), $imageName);
+
+        // Delete old profile picture if exists
+        if ($userDetails->profile_pic && file_exists(public_path('uploads/profile_pics/' . $userDetails->profile_pic))) {
+            unlink(public_path('uploads/profile_pics/' . $userDetails->profile_pic));
+        }
+
+        // Update the profile picture path in the database
+        $userDetails->profile_pic = $imageName;
+        $userDetails->save();
+
+        Log::info('Profile picture updated successfully for user ID: ' . Auth::id());
+
+        return Redirect::route('profile.edit')->with('status', 'Profile picture updated successfully.');
     }
 }
