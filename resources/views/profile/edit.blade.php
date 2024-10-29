@@ -97,10 +97,12 @@
                                     @csrf
                                     @method('PATCH')
                                     <input type="file" name="profile_pic" accept="image/*" class="border border-gray-300 p-2 w-full">
-
-                                    <div class="mt-4 flex justify-end">
-                                        <x-primary-button>Upload</x-primary-button>
-                                        <button type="button" @click="showPictureModal = false" class="ml-2 text-gray-500">Cancel</button>
+                                    
+                                    <div class="mt-4 flex justify-end gap-4">
+                                        <x-secondary-button id="cancel-edit-btn" @click="showPictureModal = false" class="px-4 py-2 rounded-md hover:bg-gray-600 hover:text-white">
+                                            {{ __('Cancel') }}
+                                        </x-secondary-button>
+                                        <x-primary-button>{{ __('Upload') }}</x-primary-button>
                                     </div>
                                 </form>
                             </div>
@@ -109,13 +111,12 @@
 
                     <!-- Conditionally Render Image Viewer Modal -->
                     <template x-if="showImageViewer">
-                        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 transition-opacity">
-                            <div class="relative">                           
+                        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 transition-opacity" >
+                            <div class="relative" @click.stop>                           
                                 <img 
                                     src="{{ asset('uploads/profile_pics/' . $userInfo->profile_pic) }}" 
                                     alt="Profile picture" 
                                     class="rounded-lg w-auto max-h-screen"
-                                    {{-- @click.outside="showImageViewer = false" --}}
                                 >
                                 <!-- Close Button -->
                                 <button 

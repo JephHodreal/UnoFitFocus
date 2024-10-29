@@ -77,9 +77,6 @@
                         <x-nav-link :href="route('AboutUs')" :active="request()->routeIs('AboutUs')">
                             {{ __('About Us') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('Setup')" :active="request()->routeIs('Setup')">
-                            {{ __('Setup') }}
-                        </x-nav-link>
                         <x-nav-link :href="route('Workout')" :active="request()->routeIs('Workout')">
                             {{ __('Workout') }}
                         </x-nav-link>
@@ -186,9 +183,6 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('AboutUs')" :active="request()->routeIs('AboutUs')">
                     {{ __('About Us') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('Setup')" :active="request()->routeIs('Setup')">
-                    {{ __('Setup') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('Workout')" :active="request()->routeIs('Workout')">
                     {{ __('Workout') }}

@@ -12,10 +12,10 @@
     <x-guest-layout>
         <x-slot name="header">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('FitFocus') }}
+                {{ __('Exercises') }}
             </h2>
             <h2 class="text-x2 text-gray-800 leading-tight">
-                {{ __('Revolutionizing bodyweight workouts through posture correction powered by human pose estimation.') }}
+                {{ __('Find out what exercises FitFocus checks!') }}
             </h2>
         </x-slot>
 
@@ -29,7 +29,7 @@
                     <div class="p-4 text-center bg-gray-200">
                         <h3 class="text-xl font-semibold mb-2">Push Up</h3>
                     </div>
-                    <img src="../assets/images/workout.jpg" alt="Push Up" class="w-full h-48 object-cover">
+                    <img src="../assets/images/pu_standard.jpg" alt="Push Up" class="object-contain h-64 w-full">
                 </div>
 
                 <!-- Squat Card -->
@@ -38,7 +38,7 @@
                     <div class="p-4 text-center bg-gray-200">
                         <h3 class="text-xl font-semibold mb-2">Squat</h3>
                     </div>
-                    <img src="../assets/images/workout.jpg" alt="Squat" class="w-full h-48 object-cover">
+                    <img src="../assets/images/sq_standard.jpg" alt="Squat" class="object-contain h-64 w-full">
                 </div>
 
                 <!-- Plank Card -->
@@ -47,7 +47,7 @@
                     <div class="p-4 text-center bg-gray-200">
                         <h3 class="text-xl font-semibold mb-2">Plank</h3>
                     </div>
-                    <img src="../assets/images/workout.jpg" alt="Plank" class="w-full h-48 object-cover">
+                    <img src="../assets/images/pl_standard.jpg" alt="Plank" class="object-contain h-64 w-full">
                 </div>
             </div>
 
@@ -76,7 +76,7 @@
                         <li>Lower your body until your chest nearly touches the floor.</li>
                         <li>Push through your palms to raise your body back to the starting position.</li>
                     </ul>
-                    <img src="../assets/images/workout.jpg" alt="Push Up" class="w-full h-48 object-cover mb-4">
+                    <img src="../assets/images/pu_standard.jpg" alt="Push Up" class="object-contain h-96 w-full mb-4">
                 </div>
             </x-modal>
 
@@ -90,7 +90,7 @@
                         <li>Lower your hips as if sitting back into a chair.</li>
                         <li>Push through your heels to return to the starting position.</li>
                     </ul>
-                    <img src="../assets/images/workout.jpg" alt="Squat" class="w-full h-48 object-cover mb-4">
+                    <img src="../assets/images/sq_standard.jpg" alt="Squat" class="object-contain h-96 w-full mb-4">
                 </div>
             </x-modal>
 
@@ -104,18 +104,18 @@
                         <li>Keep your body in a straight line from head to toes.</li>
                         <li>Hold the position as long as possible without dropping your hips.</li>
                     </ul>
-                    <img src="../assets/images/workout.jpg" alt="Plank" class="w-full h-48 object-cover mb-4">
+                    <img src="../assets/images/pl_standard.jpg" alt="Plank" class="object-contain h-96 w-full mb-4">
                 </div>
             </x-modal>
 
             <!-- Warm-Up Modal -->
             <x-modal name="warmup-modal" maxWidth="lg" x-show="openModal === 'warmup-modal'">
                 <div x-data="{ currentSlide: 0, exercises: [
-                        { title: 'Jumping Jacks', description: 'A full-body warm-up exercise that increases your heart rate and warms up your muscles.', image: '../assets/images/workout.jpg', repetitions: '30 seconds', steps: ['Stand upright with your feet together and hands at your sides.', 'Jump up while spreading your feet wider than shoulder-width apart and lifting your arms overhead.', 'Return to the starting position by jumping back to the initial stance.', 'Repeat the movement for the duration.'] },
-                        { title: 'Arm Circles', description: 'Loosens up your shoulders and improves range of motion in your arms.', image: '../assets/images/workout.jpg', repetitions: '20 repetitions', steps: ['Stand with your feet shoulder-width apart and arms extended out to your sides.', 'Start making small circular motions with your arms.', 'Gradually increase the size of the circles.', 'After completing half the repetitions, reverse the direction.'] },
-                        { title: 'Leg Swings', description: 'Prepares your legs for dynamic movement and stretches the hip muscles.', image: '../assets/images/workout.jpg', repetitions: '15 repetitions per leg', steps: ['Stand with your feet shoulder-width apart.', 'Hold onto a support, such as a wall or pole, for balance.', 'Swing one leg forward and backward in a controlled manner.', 'Repeat for the designated repetitions, then switch legs.'] },
-                        { title: 'Hip Rotations', description: 'Improves flexibility in your hips and helps avoid injuries.', image: '../assets/images/workout.jpg', repetitions: '10 repetitions per side', steps: ['Stand with your feet shoulder-width apart.', 'Place your hands on your hips and rotate your hips in a circular motion.', 'Complete the designated repetitions in one direction, then switch to the other.'] },
-                        { title: 'High Knees', description: 'A cardio exercise that activates the quads and gets your blood pumping.', image: '../assets/images/workout.jpg', repetitions: '30 seconds', steps: ['Stand upright with your feet hip-width apart.', 'Lift one knee towards your chest, as high as you can.', 'Switch to the other knee quickly, simulating a running motion.', 'Continue alternating knees for the designated time.'] },
+                        { title: 'Jumping Jacks', description: 'A full-body warm-up exercise that increases your heart rate and warms up your muscles.', image: '../assets/images/wu_jumpjack.gif', repetitions: '30 seconds', steps: ['Stand upright with your feet together and hands at your sides.', 'Jump up while spreading your feet wider than shoulder-width apart and lifting your arms overhead.', 'Return to the starting position by jumping back to the initial stance.', 'Repeat the movement for the duration.'] },
+                        { title: 'Arm Circles', description: 'Loosens up your shoulders and improves range of motion in your arms.', image: '../assets/images/wu_armcirc.gif', repetitions: '20 repetitions', steps: ['Stand with your feet shoulder-width apart and arms extended out to your sides.', 'Start making small circular motions with your arms.', 'Gradually increase the size of the circles.', 'After completing half the repetitions, reverse the direction.'] },
+                        { title: 'Leg Swings', description: 'Prepares your legs for dynamic movement and stretches the hip muscles.', image: '../assets/images/wu_legswing.gif', repetitions: '15 repetitions per leg', steps: ['Stand with your feet shoulder-width apart.', 'Hold onto a support, such as a wall or pole, for balance.', 'Swing one leg forward and backward in a controlled manner.', 'Repeat for the designated repetitions, then switch legs.'] },
+                        { title: 'Hip Rotations', description: 'Improves flexibility in your hips and helps avoid injuries.', image: '../assets/images/wu_hipcirc.gif', repetitions: '10 repetitions per side', steps: ['Stand with your feet shoulder-width apart.', 'Place your hands on your hips and rotate your hips in a circular motion.', 'Complete the designated repetitions in one direction, then switch to the other.'] },
+                        { title: 'High Knees', description: 'A cardio exercise that activates the quads and gets your blood pumping.', image: '../assets/images/wu_highknee.gif', repetitions: '30 seconds', steps: ['Stand upright with your feet hip-width apart.', 'Lift one knee towards your chest, as high as you can.', 'Switch to the other knee quickly, simulating a running motion.', 'Continue alternating knees for the designated time.'] },
                     ] }">
                     <div class="p-6">
                         <div class="flex justify-between items-center mb-4">
@@ -129,7 +129,7 @@
                         </div>
 
                         <p class="text-gray-700 mb-4" x-text="exercises[currentSlide].description"></p>
-                        <img :src="exercises[currentSlide].image" alt="Warm-up exercise" class="w-full h-48 object-cover mb-4">
+                        <img :src="exercises[currentSlide].image" alt="Warm-up exercise" class="object-contain h-96 w-full mb-4">
                         <p class="text-gray-700 mb-4">Repetitions: <span x-text="exercises[currentSlide].repetitions"></span></p>
                         
                         <!-- Step-by-step process -->
@@ -146,11 +146,11 @@
             <!-- Cooldown Modal -->
             <x-modal name="cooldown-modal" maxWidth="lg" x-show="openModal === 'cooldown-modal'">
                 <div x-data="{ currentSlide: 0, exercises: [
-                        { title: 'Child\'s Pose', description: 'A relaxing stretch for the back, hips, and thighs.', image: '../assets/images/workout.jpg', repetitions: 'Hold for 30 seconds', steps: ['Kneel on the floor with your toes touching and knees spread apart.', 'Sit back on your heels and lower your torso forward between your thighs.', 'Extend your arms forward and relax your head on the floor.', 'Hold the stretch and breathe deeply.'] },
-                        { title: 'Forward Bend', description: 'Stretches the hamstrings and lower back.', image: '../assets/images/workout.jpg', repetitions: 'Hold for 30 seconds', steps: ['Stand with your feet hip-width apart.', 'Hinge at your hips and bend forward, reaching for your toes.', 'Keep your legs straight and feel the stretch in your hamstrings.', 'Hold the position and breathe deeply.'] },
-                        { title: 'Quad Stretch', description: 'Stretches the quadriceps muscles, improving flexibility.', image: '../assets/images/workout.jpg', repetitions: 'Hold for 20 seconds per leg', steps: ['Stand tall and grab your right ankle with your right hand.', 'Pull your heel towards your glutes while keeping your knees together.', 'Hold the stretch and balance yourself.', 'Switch legs and repeat for the designated time.'] },
-                        { title: 'Cat-Cow Stretch', description: 'A gentle flow between two yoga poses to warm up the spine.', image: '../assets/images/workout.jpg', repetitions: '10 repetitions', steps: ['Start on your hands and knees in a tabletop position.', 'Arch your back, dropping your belly towards the floor (cow pose).', 'Exhale and round your back, pulling your belly button toward your spine (cat pose).', 'Alternate between the two positions for the designated repetitions.'] },
-                        { title: 'Seated Hamstring Stretch', description: 'Stretches the hamstrings and improves flexibility.', image: '../assets/images/workout.jpg', repetitions: 'Hold for 30 seconds per leg', steps: ['Sit on the floor with your legs extended in front of you.', 'Reach forward and try to touch your toes while keeping your back straight.', 'Hold the stretch and feel the pull in your hamstrings.', 'Switch legs after holding the stretch for the designated time.'] },
+                        { title: 'Child\'s Pose', description: 'A relaxing stretch for the back, hips, and thighs.', image: '../assets/images/cd_childpose.gif', repetitions: 'Hold for 30 seconds', steps: ['Kneel on the floor with your toes touching and knees spread apart.', 'Sit back on your heels and lower your torso forward between your thighs.', 'Extend your arms forward and relax your head on the floor.', 'Hold the stretch and breathe deeply.'] },
+                        { title: 'Forward Bend', description: 'Stretches the hamstrings and lower back.', image: '../assets/images/cd_forwbend.gif', repetitions: 'Hold for 30 seconds', steps: ['Stand with your feet hip-width apart.', 'Hinge at your hips and bend forward, reaching for your toes.', 'Keep your legs straight and feel the stretch in your hamstrings.', 'Hold the position and breathe deeply.'] },
+                        { title: 'Quad Stretch', description: 'Stretches the quadriceps muscles, improving flexibility.', image: '../assets/images/cd_quadstr.gif', repetitions: 'Hold for 20 seconds per leg', steps: ['Stand tall and grab your right ankle with your right hand.', 'Pull your heel towards your glutes while keeping your knees together.', 'Hold the stretch and balance yourself.', 'Switch legs and repeat for the designated time.'] },
+                        { title: 'Cat-Cow Stretch', description: 'A gentle flow between two yoga poses to warm up the spine.', image: '../assets/images/cd_catcow.gif', repetitions: '10 repetitions', steps: ['Start on your hands and knees in a tabletop position.', 'Arch your back, dropping your belly towards the floor (cow pose).', 'Exhale and round your back, pulling your belly button toward your spine (cat pose).', 'Alternate between the two positions for the designated repetitions.'] },
+                        { title: 'Seated Hamstring Stretch', description: 'Stretches the hamstrings and improves flexibility.', image: '../assets/images/cd_seatham.gif', repetitions: 'Hold for 30 seconds per leg', steps: ['Sit on the floor with your legs extended in front of you.', 'Reach forward and try to touch your toes while keeping your back straight.', 'Hold the stretch and feel the pull in your hamstrings.', 'Switch legs after holding the stretch for the designated time.'] },
                     ] }">
                     <div class="p-6">
                         <div class="flex justify-between items-center mb-4">
@@ -164,7 +164,7 @@
                         </div>
 
                         <p class="text-gray-700 mb-4" x-text="exercises[currentSlide].description"></p>
-                        <img :src="exercises[currentSlide].image" alt="Cooldown exercise" class="w-full h-48 object-cover mb-4">
+                        <img :src="exercises[currentSlide].image" alt="Cooldown exercise" class="object-contain h-96 w-full mb-4">
                         <p class="text-gray-700 mb-4">Repetitions: <span x-text="exercises[currentSlide].repetitions"></span></p>
                         
                         <!-- Step-by-step process -->

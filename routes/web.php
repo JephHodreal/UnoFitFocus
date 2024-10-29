@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\Auth\GoogleController;
 
 Route::get('/', function () {
     return view('home');
@@ -17,6 +18,8 @@ Route::get('Exercises', [HomeController::class, 'viewExercises'])->name('Exercis
 Route::get('Profile', [HomeController::class, 'viewSample'])->name('Sample');
 Route::get('Camera', [HomeController::class, 'viewCamera'])->name('TryCamera');
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//Route::post('/posture-check', [PostureController::class, 'checkPosture']);
+Route::get('/fitcheck', [PostureController::class, 'checkPosture']);
 
 Route::get('/dashboard', [StatsController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -65,5 +68,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 require __DIR__.'/auth.php';
