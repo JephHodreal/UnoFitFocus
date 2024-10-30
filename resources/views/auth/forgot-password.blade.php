@@ -8,7 +8,7 @@
     </head>
     <body>
         <x-guest-layout>
-            <div class="min-h-screen flex flex-col sm:justify-center items-center sm:pt-0 bg-gray-100">
+            <div class="flex flex-col sm:justify-center items-center sm:pt-[10%] bg-gray-100">
                 <!-- Session Status -->
                 <x-auth-session-status :status="session('status')"/>
                 <x-slot name="header">
@@ -19,7 +19,7 @@
                         {{ __('Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
                     </h2>
                 </x-slot>
-                <div class="w-full lg:max-w-4xl sm:max-w-md px-6 py-4 -mt-48 bg-white shadow-md overflow-hidden sm:rounded-lg">
+                <div class="w-1/2 lg:max-w-4xl sm:max-w-md px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                     <main>
                         <form method="POST" action="{{ route('password.email') }}">
                             @csrf
@@ -35,6 +35,16 @@
                                 <x-primary-button>
                                     {{ __('Email Password Reset Link') }}
                                 </x-primary-button>
+                            </div>
+
+                            <!-- Login -->
+                            <div class="text-center mt-4 italic w-3/4 mx-auto text-sm text-gray-600">
+                                <p>
+                                    {{ __('Remembered your details? ') }}
+                                    <a href="{{ route('login') }}" class="text-blue-600 hover:underline">
+                                        {{ __('Log in here.') }}
+                                    </a>
+                                </p>
                             </div>
                         </form>
                     </main>

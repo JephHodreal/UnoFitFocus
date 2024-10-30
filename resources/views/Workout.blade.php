@@ -26,7 +26,6 @@
                     
                     <form id="workoutForm" action="{{ route('FitCheck') }}" method="POST">
                         @csrf
-                        <!-- Hidden inputs to store workout and difficulty -->
                         <input type="hidden" name="workout" id="workoutInput">
                         <input type="hidden" name="difficulty" id="difficultyInput">
 
@@ -45,18 +44,21 @@
                             </div>
                         </div>
                         
-                        <!-- Difficulty modal -->
                         <div class="modal fixed inset-0 hidden bg-black bg-opacity-60 justify-center items-center" id="modal">
                             <div class="bg-white p-8 rounded-lg text-center max-w-md w-full">
                                 <h2 class="text-xl font-bold mb-6" id="workout-title">Select Difficulty</h2>
                                 <div class="flex justify-around my-4">
-                                    <button type="button" class="difficulty-btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg" data-difficulty="Beginner">Beginner</button>
-                                    <button type="button" class="difficulty-btn bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg" data-difficulty="Intermediate">Intermediate</button>
-                                    <button type="button" class="difficulty-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg" data-difficulty="Expert">Expert</button>
+                                    <button type="button" class="difficulty-btn border-green-500 border-2 text-green-500 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" data-difficulty="Beginner">Beginner</button>
+                                    <button type="button" class="difficulty-btn border-yellow-500 border-2 text-yellow-500 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" data-difficulty="Intermediate">Intermediate</button>
+                                    <button type="button" class="difficulty-btn border-red-500 border-2 text-red-500 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" data-difficulty="Expert">Expert</button>
                                 </div>
+
+                                <!-- Task Description Section -->
+                                <div id="taskDescription" class="my-4 text-gray-700"></div>
+
                                 <div class="modal-buttons flex justify-around mt-4">
-                                    <button type="button" class="close-btn bg-red-600 text-white py-2 px-4 rounded-lg" id="closeBtn">Close</button>
-                                    <button type="submit" class="go-btn bg-green-600 text-white py-2 px-4 rounded-lg" id="goBtn" disabled>Go</button>
+                                    <button type="button" class="close-btn border-red-600 border-2 text-red-600 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" id="closeBtn">Cancel</button>
+                                    <button type="submit" class="go-btn bg-gray-400 text-gray-700 py-2 px-4 rounded-lg cursor-not-allowed" id="goBtn" disabled>Continue</button>
                                 </div>
                             </div>
                         </div>
@@ -75,9 +77,27 @@
         const modal = document.getElementById('modal');
         const workoutInput = document.getElementById('workoutInput');
         const difficultyInput = document.getElementById('difficultyInput');
+        const taskDescription = document.getElementById('taskDescription');
         const goBtn = document.getElementById('goBtn');
 
-        // Handle workout selection click
+        const tasks = {
+            "Push-Up": {
+                "Beginner": "Knees on floor push-up, 15 reps",
+                "Intermediate": "Standard push-up, 20 reps",
+                "Expert": "Standard push-up, 30 reps"
+            },
+            "Squat": {
+                "Beginner": "Partial squat reaching 45 degrees from standing position, 15 reps",
+                "Intermediate": "Standard squat reaching 90 degrees from standing position, 20 reps",
+                "Expert": "Standard squat reaching 90 degrees from standing position, 30 reps"
+            },
+            "Plank": {
+                "Beginner": "Hold plank position for 15 seconds",
+                "Intermediate": "Hold plank position for 30 seconds",
+                "Expert": "Hold plank position for 60 seconds"
+            }
+        };
+
         workoutOptions.forEach(option => {
             option.addEventListener('click', function () {
                 selectedWorkout = option.querySelector('p').innerText;
@@ -88,16 +108,34 @@
             });
         });
 
-        // Handle difficulty selection
         difficultyBtns.forEach(btn => {
             btn.addEventListener('click', function () {
+                difficultyBtns.forEach(b => b.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white'));
+                btn.classList.add('text-white');
+
+                if (btn.classList.contains('text-green-500')) {
+                    btn.classList.add('bg-green-500');
+                } else if (btn.classList.contains('text-yellow-500')) {
+                    btn.classList.add('bg-yellow-500');
+                } else if (btn.classList.contains('text-red-500')) {
+                    btn.classList.add('bg-red-500');
+                }
+
                 selectedDifficulty = btn.dataset.difficulty;
                 difficultyInput.value = selectedDifficulty;
-                goBtn.disabled = false; // Enable "Go" button
+
+                // Update the task description based on the selected workout and difficulty
+                if (selectedWorkout && selectedDifficulty) {
+                    taskDescription.innerText = `Task: ${tasks[selectedWorkout][selectedDifficulty]}`;
+                }
+
+                // Enable and style the Continue button
+                goBtn.classList.remove('bg-gray-400', 'text-gray-700', 'cursor-not-allowed');
+                goBtn.classList.add('bg-green-600', 'text-white');
+                goBtn.disabled = false;
             });
         });
 
-        // Close modal
         document.getElementById('closeBtn').addEventListener('click', function () {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
@@ -105,7 +143,11 @@
             selectedDifficulty = null;
             workoutInput.value = '';
             difficultyInput.value = '';
+            taskDescription.innerText = '';
             goBtn.disabled = true;
+            goBtn.classList.add('bg-gray-400', 'text-gray-700', 'cursor-not-allowed');
+            goBtn.classList.remove('bg-green-600', 'text-white');
+            difficultyBtns.forEach(btn => btn.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white'));
         });
     </script>
 </body>
