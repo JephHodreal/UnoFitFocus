@@ -22,16 +22,12 @@ class HomeController extends Controller
     {
         return view('home');
     }
-    public function viewSample()
-    {
-        return view('Sample');
-    }
-    public function viewCamera()
-    {
-        return view('TryCamera');
-    }
     public function viewWorkoutHistory()
     {
         return view('WorkoutHistory');
+    }
+    public function viewPrivacyPolicy()
+    {
+        return view('PrivacyPolicy');
     }
 }

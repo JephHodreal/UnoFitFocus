@@ -79,8 +79,8 @@ session_start();
                     <div class="container mx-auto text-center">
                         <p>&copy; 2024 FitFocus. All Rights Reserved.</p>
                         <ul class="flex justify-center space-x-6 mt-4">
-                            <li><a href="#terms" class="hover:underline">Terms of Service</a></li>
-                            <li><a href="#privacy" class="hover:underline">Privacy Policy</a></li>
+                            <li><a href="#terms" class="hover:underline">{{ __('Terms of Service') }}</a></li>
+                            <li><a href="{{ route('PrivacyPolicy') }}" target="_blank" rel="noopener noreferrer" class="hover:underline">{{ __('Privacy Policy') }}</a></li>
                         </ul>
                     </div>
                 </footer>

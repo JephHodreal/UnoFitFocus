@@ -35,35 +35,35 @@
             </x-slot>
 
             <div class="py-12">
-                <div id="camera-container">
+                {{-- <div id="camera-container">
                     <img src="{{ asset('../frames/live_frame.jpg') }}" alt="Live Posture Check" id="video-stream">
+                </div> --}}
+                <div class="container mx-auto text-center">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                        Selected Workout: {{ $workout }}
+                    </h2>
+                    <h2 class="text-xl text-gray-600">
+                        Difficulty Level: {{ $difficulty }}
+                    </h2>
+                </div>
+                <div id="camera-container">
+                    <video id="video" autoplay alt="Live Posture Check" id="video-stream"></video>
                 </div>
             </div>
         </x-app-layout>    
     </main>
 
     <script>
-        async function checkPosture(landmarks) {
-            try {
-                const response = await fetch('/api/check-posture', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({ landmarks })
-                });
-    
-                const data = await response.json();
-                console.log('Posture prediction:', data.prediction);
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-    
-        // Example: call the function with landmarks when ready
-        // let landmarks = getLandmarksFromMediaPipe(); // This would be where you grab landmarks from MediaPipe.
-        // checkPosture(landmarks);
+        const video = document.getElementById('video');
+
+        // Request access to the camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.error("Error accessing the camera: ", err);
+            });
     </script>
 </body>
 </html>

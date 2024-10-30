@@ -15,7 +15,7 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     {{ __('FitCheck') }}
                 </h2>
-                <h2 class="text-x2 text-gray-800 leading-tight">
+                <h2 class="text-xl text-gray-800 leading-tight">
                     {{ __('Select a workout, choose a difficulty level, and start working out!') }}
                 </h2>
             </x-slot>
@@ -23,53 +23,66 @@
             <div class="py-12">
                 <div class="container mx-auto text-center">
                     <h1 class="text-4xl font-bold mb-4 text-gray-800">Select Your Workout</h1>
-                    <div class="flex justify-around mt-8">
-                        <div class="workout-item w-72 cursor-pointer transform transition-transform duration-300 hover:scale-105" id="pushup">
-                            <img src="../assets/images/pu_standard.jpg" alt="Push-Up" class="w-full rounded-lg transition-shadow duration-300 hover:shadow-lg">
-                            <p class="mt-2">{{ __('Push-Up') }}</p>
+                    
+                    <form id="workoutForm" action="{{ route('FitCheck') }}" method="POST">
+                        @csrf
+                        <!-- Hidden inputs to store workout and difficulty -->
+                        <input type="hidden" name="workout" id="workoutInput">
+                        <input type="hidden" name="difficulty" id="difficultyInput">
+
+                        <div class="flex justify-around mt-8">
+                            <div class="workout-item w-72 cursor-pointer transform transition-transform duration-300 hover:scale-105" id="pushup">
+                                <img src="../assets/images/pu_standard.jpg" alt="Push-Up" class="w-full rounded-lg transition-shadow duration-300 hover:shadow-lg">
+                                <p class="mt-2">Push-Up</p>
+                            </div>
+                            <div class="workout-item w-72 cursor-pointer transform transition-transform duration-300 hover:scale-105" id="squat">
+                                <img src="../assets/images/sq_standard.jpg" alt="Squat" class="w-full rounded-lg transition-shadow duration-300 hover:shadow-lg">
+                                <p class="mt-2">Squat</p>
+                            </div>
+                            <div class="workout-item w-72 cursor-pointer transform transition-transform duration-300 hover:scale-105" id="plank">
+                                <img src="../assets/images/pl_standard.jpg" alt="Plank" class="w-full rounded-lg transition-shadow duration-300 hover:shadow-lg">
+                                <p class="mt-2">Plank</p>
+                            </div>
                         </div>
-                        <div class="workout-item w-72 cursor-pointer transform transition-transform duration-300 hover:scale-105" id="squat">
-                            <img src="../assets/images/sq_standard.jpg" alt="Squat" class="w-full rounded-lg transition-shadow duration-300 hover:shadow-lg">
-                            <p class="mt-2">{{ __('Squat') }}</p>
+                        
+                        <!-- Difficulty modal -->
+                        <div class="modal fixed inset-0 hidden bg-black bg-opacity-60 justify-center items-center" id="modal">
+                            <div class="bg-white p-8 rounded-lg text-center max-w-md w-full">
+                                <h2 class="text-xl font-bold mb-6" id="workout-title">Select Difficulty</h2>
+                                <div class="flex justify-around my-4">
+                                    <button type="button" class="difficulty-btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg" data-difficulty="Beginner">Beginner</button>
+                                    <button type="button" class="difficulty-btn bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg" data-difficulty="Intermediate">Intermediate</button>
+                                    <button type="button" class="difficulty-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg" data-difficulty="Expert">Expert</button>
+                                </div>
+                                <div class="modal-buttons flex justify-around mt-4">
+                                    <button type="button" class="close-btn bg-red-600 text-white py-2 px-4 rounded-lg" id="closeBtn">Close</button>
+                                    <button type="submit" class="go-btn bg-green-600 text-white py-2 px-4 rounded-lg" id="goBtn" disabled>Go</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="workout-item w-72 cursor-pointer transform transition-transform duration-300 hover:scale-105" id="plank">
-                            <img src="../assets/images/pl_standard.jpg" alt="Plank" class="w-full rounded-lg transition-shadow duration-300 hover:shadow-lg">
-                            <p class="mt-2">{{ __('Plank') }}</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Modal -->
-                <div class="modal fixed inset-0 hidden bg-black bg-opacity-60 justify-center items-center" id="modal">
-                    <div class="bg-white p-8 rounded-lg text-center max-w-md w-full transform transition-transform duration-300 animate-slideIn">
-                        <h2 class="text-xl font-bold mb-6" id="workout-title">Select Difficulty</h2>
-                        <div class="flex justify-around my-4">
-                            <button class="difficulty-btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg" data-difficulty="Beginner">Beginner</button>
-                            <button class="difficulty-btn bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg" data-difficulty="Intermediate">Intermediate</button>
-                            <button class="difficulty-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg" data-difficulty="Expert">Expert</button>
-                        </div>
-                        <div class="modal-buttons flex justify-around mt-4">
-                            <a href="{{ route('FitCheck') }}" class="go-btn bg-green-600 text-white py-2 px-4 rounded-lg opacity-50 cursor-not-allowed" id="goBtn">Go</a>
-                            <button class="close-btn bg-red-600 text-white py-2 px-4 rounded-lg" id="closeBtn">Close</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </x-app-layout>    
     </main>
+
     <script>
+        let selectedWorkout = null;
         let selectedDifficulty = null;
+
         const workoutOptions = document.querySelectorAll('.workout-item');
-        const modal = document.getElementById('modal');
-        const goBtn = document.getElementById('goBtn');
         const difficultyBtns = document.querySelectorAll('.difficulty-btn');
-        const workoutTitle = document.getElementById('workout-title');
+        const modal = document.getElementById('modal');
+        const workoutInput = document.getElementById('workoutInput');
+        const difficultyInput = document.getElementById('difficultyInput');
+        const goBtn = document.getElementById('goBtn');
 
         // Handle workout selection click
         workoutOptions.forEach(option => {
             option.addEventListener('click', function () {
-                const workout = option.querySelector('p').innerText;
-                workoutTitle.innerText = `${workout}: Select Difficulty`;
+                selectedWorkout = option.querySelector('p').innerText;
+                document.getElementById('workout-title').innerText = `${selectedWorkout}: Select Difficulty`;
+                workoutInput.value = selectedWorkout;
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
             });
@@ -78,10 +91,9 @@
         // Handle difficulty selection
         difficultyBtns.forEach(btn => {
             btn.addEventListener('click', function () {
-                difficultyBtns.forEach(b => b.classList.remove('border-4', 'border-gray-800', 'bg-gray-700', 'text-white'));
-                btn.classList.add('border-4', 'border-gray-800', 'bg-gray-700', 'text-white');
                 selectedDifficulty = btn.dataset.difficulty;
-                goBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                difficultyInput.value = selectedDifficulty;
+                goBtn.disabled = false; // Enable "Go" button
             });
         });
 
@@ -89,9 +101,11 @@
         document.getElementById('closeBtn').addEventListener('click', function () {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            difficultyBtns.forEach(btn => btn.classList.remove('border-4', 'border-gray-800', 'bg-gray-700', 'text-white'));
-            goBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            selectedWorkout = null;
             selectedDifficulty = null;
+            workoutInput.value = '';
+            difficultyInput.value = '';
+            goBtn.disabled = true;
         });
     </script>
 </body>

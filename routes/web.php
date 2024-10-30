@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\FitCheckController;
 use App\Http\Controllers\Auth\GoogleController;
 
 Route::get('/', function () {
@@ -15,11 +16,15 @@ Route::get('Home', [HomeController::class, 'viewHome'])->name('home');
 Route::get('About-Us', [HomeController::class, 'viewAboutUs'])->name('AboutUs');
 Route::get('Frequently-Asked-Questions', [HomeController::class, 'viewFAQs'])->name('FAQs');
 Route::get('Exercises', [HomeController::class, 'viewExercises'])->name('Exercises');
-Route::get('Profile', [HomeController::class, 'viewSample'])->name('Sample');
-Route::get('Camera', [HomeController::class, 'viewCamera'])->name('TryCamera');
+Route::get('Privacy-Policy', [HomeController::class, 'viewPrivacyPolicy'])->name('PrivacyPolicy');
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 //Route::post('/posture-check', [PostureController::class, 'checkPosture']);
-Route::get('/fitcheck', [PostureController::class, 'checkPosture']);
+
+//Route::post('/posture-check', [FitCheckController::class, 'checkPosture']);
+//Route::get('/fitcheck', [FitCheckController::class, 'show']);
+Route::post('/Fitcheck', [FitCheckController::class, 'show'])
+    ->middleware(['auth', 'verified'])
+    ->name('FitCheck');
 
 Route::get('/dashboard', [StatsController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -38,10 +43,6 @@ Route::get('/Setup', function () {
 Route::get('/Workout', function () {
     return view('Workout');
 })->middleware(['auth', 'verified'])->name('Workout');
-
-Route::get('/FitCheck', function () {
-    return view('FitCheck');
-})->middleware(['auth', 'verified'])->name('FitCheck');
 
 Route::post('/Setup', function () {
     return view('Setup');
