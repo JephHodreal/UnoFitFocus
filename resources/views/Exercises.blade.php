@@ -20,46 +20,68 @@
         </x-slot>
 
         <!-- Workout Section -->
-        <div class="container mx-auto py-10 px-6">
-            <h2 class="text-4xl font-bold text-center mb-10">Workouts</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                <!-- Push-Up Card -->
-                <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
-                    @click="$dispatch('open-modal', 'push-up-modal')">
-                    <div class="p-4 text-center bg-gray-200">
-                        <h3 class="text-xl font-semibold mb-2">Push Up</h3>
-                    </div>
-                    <img src="../assets/images/pu_standard.jpg" alt="Push Up" class="object-contain h-64 w-full">
-                </div>
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="container mx-auto py-2 px-6">
+                        <h2 class="text-4xl font-bold text-center pt-8 mb-10">{{ __('Bodyweight Exercises') }}</h2>
+                        <p class="text-center text-gray-600 mb-10">
+                            {{ __('Click each exercise to learn more about its description, targeted muscles, and procedure.') }}
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                            <!-- Push-Up Card -->
+                            <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
+                                @click="$dispatch('open-modal', 'push-up-modal')">
+                                <div class="p-4 text-center bg-gray-200">
+                                    <h3 class="text-xl font-semibold mb-2">Push Up</h3>
+                                </div>
+                                <img src="../assets/images/pu_standard.jpg" alt="Push Up" class="object-contain h-64 w-full">
+                            </div>
 
-                <!-- Squat Card -->
-                <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
-                    @click="$dispatch('open-modal', 'squat-modal')">
-                    <div class="p-4 text-center bg-gray-200">
-                        <h3 class="text-xl font-semibold mb-2">Squat</h3>
-                    </div>
-                    <img src="../assets/images/sq_standard.jpg" alt="Squat" class="object-contain h-64 w-full">
-                </div>
+                            <!-- Squat Card -->
+                            <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
+                                @click="$dispatch('open-modal', 'squat-modal')">
+                                <div class="p-4 text-center bg-gray-200">
+                                    <h3 class="text-xl font-semibold mb-2">Squat</h3>
+                                </div>
+                                <img src="../assets/images/sq_standard.jpg" alt="Squat" class="object-contain h-64 w-full">
+                            </div>
 
-                <!-- Plank Card -->
-                <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
-                    @click="$dispatch('open-modal', 'plank-modal')">
-                    <div class="p-4 text-center bg-gray-200">
-                        <h3 class="text-xl font-semibold mb-2">Plank</h3>
+                            <!-- Plank Card -->
+                            <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
+                                @click="$dispatch('open-modal', 'plank-modal')">
+                                <div class="p-4 text-center bg-gray-200">
+                                    <h3 class="text-xl font-semibold mb-2">Plank</h3>
+                                </div>
+                                <img src="../assets/images/pl_standard.jpg" alt="Plank" class="object-contain h-64 w-full">
+                            </div>
+                        </div>
                     </div>
-                    <img src="../assets/images/pl_standard.jpg" alt="Plank" class="object-contain h-64 w-full">
                 </div>
             </div>
+        </div>
 
-            <!-- Buttons for Warm-Up and Cooldown -->
-            <div class="flex justify-between mb-12 space-x-4">
-                <div class="bg-blue-500 text-white shadow-lg rounded-lg p-6 hover:bg-blue-600 transition-all duration-300 cursor-pointer transform hover:scale-105 flex-1"
-                    @click="$dispatch('open-modal', 'warmup-modal')">
-                    <h3 class="text-2xl font-semibold text-center">Warm-Up</h3>
-                </div>
-                <div class="bg-green-500 text-white shadow-lg rounded-lg p-6 hover:bg-green-600 transition-all duration-300 cursor-pointer transform hover:scale-105 flex-1"
-                    @click="$dispatch('open-modal', 'cooldown-modal')">
-                    <h3 class="text-2xl font-semibold text-center">Cooldown</h3>
+        <!-- Warmup and Cooldown Section -->
+        <div class="py-5">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="container mx-auto py-2 px-6">
+                        <h2 class="text-4xl font-bold text-center pt-8 mb-10">{{ __('Warm-Up and Cooldown Exercises') }}</h2>
+                        <p class="text-center text-gray-600 mb-10">
+                            {{ __('It is important to conduct warm-up and cooldown exercises before and after a workout session, respectively. Here are some sample exercises you can do.') }}
+                        </p>
+                        <!-- Buttons for Warm-Up and Cooldown -->
+                        <div class="flex justify-between mb-12 space-x-4">
+                            <div class="bg-blue-500 text-white shadow-lg rounded-lg p-6 hover:bg-blue-600 transition-all duration-300 cursor-pointer transform hover:scale-105 flex-1"
+                                @click="$dispatch('open-modal', 'warmup-modal')">
+                                <h3 class="text-2xl font-semibold text-center">Warm-Up</h3>
+                            </div>
+                            <div class="bg-green-500 text-white shadow-lg rounded-lg p-6 hover:bg-green-600 transition-all duration-300 cursor-pointer transform hover:scale-105 flex-1"
+                                @click="$dispatch('open-modal', 'cooldown-modal')">
+                                <h3 class="text-2xl font-semibold text-center">Cooldown</h3>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
