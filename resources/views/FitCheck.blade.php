@@ -76,6 +76,9 @@
                 <h2 class="text-xl text-gray-600">
                     Difficulty Level: {{ $difficulty }}
                 </h2>
+                <h2 class="text-xl text-gray-600">
+                    Task: {{ $task }}
+                </h2>
                 <pre id="script-output"></pre>
             </div>
             
@@ -85,10 +88,46 @@
                     <img id="video" alt="Live Posture Check"></img>
                 </div>
             </div>
+
+            <!-- New button to open results modal -->
+            <div class="text-center mt-6">
+                <button id="show-results-button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Show Workout Results
+                </button>
+            </div>
+
+            <!-- Workout Results Modal -->
+            <div id="results-modal" class="modal fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+                <div class="modal-content bg-white rounded-lg p-6 relative max-w-md mx-auto text-center">
+                    <h2 class="text-2xl font-bold mb-4">Workout Results</h2>
+                    <p><strong>Workout:</strong> {{ $workout }}</p>
+                    <p><strong>Difficulty:</strong> {{ $difficulty }}</p>
+                    <p><strong>Task:</strong> {{ $task }}</p>
+                    <p><strong>Score:</strong> 70</p> <!-- Example static score; replace with dynamic score when ready -->
+                    
+                    <!-- Score Progress Bar -->
+                    <div class="w-full bg-gray-200 rounded-full h-4 mt-2 mb-4">
+                        <div class="bg-green-500 h-4 rounded-full" style="width: 70%;"></div>
+                    </div>
+
+                    <!-- Buttons for Retry and Back to Workout Selection -->
+                    <div class="flex justify-between mt-6">
+                        <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100">
+                            Retry
+                        </button>
+                        <a href="{{ route('Workout') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                            Back to Workout Selection
+                        </a>
+                    </div>
+
+                    <!-- Close Button for Results Modal -->
+                    <button id="close-results-modal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-2xl">&times;</button>
+                </div>
+            </div>
         </x-app-layout>
     </main>
 
-    <!-- Modal -->
+    <!-- Help Modal -->
     <div id="modal" class="modal fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
         <div class="modal-content bg-white rounded-lg p-6 relative max-w-md mx-auto">
             <button id="close-modal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-2xl">&times;</button>
@@ -108,13 +147,19 @@
                 <h2 class="text-xl font-bold">Reminder:</h2>
                 <p>Don't forget to do warm-up and cooldown exercises before and after your workout.</p>
             </div>
+
+            <!-- Navigation buttons for slides -->
             <div class="flex justify-between mt-4">
                 <button id="prev-slide" class="hidden text-gray-700 hover:text-gray-900">❮ Previous</button>
-                <button id="next-slide" class="text-gray-700 hover:text-gray-900">Next ❯</button>
+                <button id="next-slide" class="text-gray-700 hover:text-gray-900 ml-auto">Next ❯</button> <!-- Moved to the right side -->
             </div>
-            <button id="get-started" class="hidden mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Get started!</button>
+            
+            <!-- Centered Get Started button on the last slide -->
+            <button id="get-started" class="hidden mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mx-auto block">Get started!</button>
+
+            <!-- Slide indicator dots -->
             <div class="flex justify-center mt-4">
-                <span class="dot active w-3 h-3 rounded-full bg-blue-500 mx-1"></span>
+                <span class="dot w-3 h-3 rounded-full bg-blue-500 mx-1"></span>
                 <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
                 <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
                 <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
@@ -152,7 +197,8 @@
                 slide.classList.toggle('hidden', index !== currentSlide);
             });
             document.querySelectorAll('.dot').forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentSlide);
+                dot.classList.toggle('bg-blue-500', index === currentSlide);
+                dot.classList.toggle('bg-gray-300', index !== currentSlide);
             });
             prevSlideButton.classList.toggle('hidden', currentSlide === 0);
             nextSlideButton.classList.toggle('hidden', currentSlide === slides.length - 1);
@@ -194,6 +240,25 @@
         });
 
         getStartedButton.addEventListener('click', hideModal);
+
+        // Results Modal JS
+        const resultsModal = document.getElementById('results-modal');
+        const showResultsButton = document.getElementById('show-results-button');
+        const closeResultsModalButton = document.getElementById('close-results-modal');
+
+        showResultsButton.addEventListener('click', () => {
+            resultsModal.classList.remove('hidden');
+        });
+
+        closeResultsModalButton.addEventListener('click', () => {
+            resultsModal.classList.add('hidden');
+        });
+
+        resultsModal.addEventListener('click', (event) => {
+            if (event.target === resultsModal) {
+                resultsModal.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>

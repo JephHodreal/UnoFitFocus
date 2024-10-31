@@ -77,50 +77,6 @@ class StatsController extends Controller
         ]);
     }
 
-    // public function index(Request $request)
-    // {
-    //     $user = $request->user();
-
-    //     // Fetch stats for each difficulty level for Push-Up, Squat, and Plank
-    //     $exercises = ['Push-Up', 'Squat', 'Plank'];
-    //     $difficulties = ['Beginner', 'Intermediate', 'Advanced'];
-
-    //     $stats = [];
-    //     foreach ($exercises as $exercise) {
-    //         foreach ($difficulties as $difficulty) {
-    //             $highScore = StatsDashboard::where('fk_user_id', $user->id)
-    //                                 ->where('exercise', $exercise)
-    //                                 ->where('difficulty', $difficulty)
-    //                                 ->max('score') ?? 'N/A';
-
-    //             $lastAttempt = StatsDashboard::where('fk_user_id', $user->id)
-    //                                 ->where('exercise', $exercise)
-    //                                 ->where('difficulty', $difficulty)
-    //                                 ->latest()
-    //                                 ->first();
-
-    //             $status = $this->getStatus($lastAttempt);
-                
-    //             $stats[$exercise][$difficulty] = [
-    //                 'highScore' => $highScore,
-    //                 'numTries' => StatsDashboard::where('fk_user_id', $user->id)
-    //                                 ->where('exercise', $exercise)
-    //                                 ->where('difficulty', $difficulty)
-    //                                 ->count(),
-    //                 'lastAttempt' => $lastAttempt ? $lastAttempt->created_at->format('Y-m-d') : 'N/A',
-    //                 'status' => $status
-    //             ];
-    //         }
-    //     }
-
-    //     // Improvement data for graphs
-    //     $pushUpGraph = $this->getImprovementData($user->id, 'Push-Up');
-    //     $squatGraph = $this->getImprovementData($user->id, 'Squat');
-    //     $plankGraph = $this->getImprovementData($user->id, 'Plank');
-
-    //     return view('dashboard', compact('stats', 'pushUpGraph', 'squatGraph', 'plankGraph'));
-    // }
-
     private function getStatus($lastAttempt)
     {
         if (!$lastAttempt) {
@@ -159,3 +115,4 @@ class StatsController extends Controller
         ];
     }
 }
+

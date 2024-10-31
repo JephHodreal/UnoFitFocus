@@ -60,7 +60,7 @@
                             <div class="developer-card text-center hover:scale-105 transition-transform duration-300 border-2 shadow-lg hover:shadow-xl rounded-lg p-6 bg-white">
                                 <img src="../assets/images/placeholder.png" alt="Developer 3" class="w-32 h-32 rounded-full mx-auto mb-4">
                                 <h3 class="text-xl font-semibold">Princess Martinez</h3>
-                                <p class="text-gray-600">Frontend Developer & Machine Learning Researcher</p>
+                                <p class="text-gray-600">Dataset Collector & Researcher</p>
                             </div>
                             <div class="developer-card text-center hover:scale-105 transition-transform duration-300 border-2 shadow-lg hover:shadow-xl rounded-lg p-6 bg-white">
                                 <img src="../assets/images/placeholder.png" alt="Developer 4" class="w-32 h-32 rounded-full mx-auto mb-4">

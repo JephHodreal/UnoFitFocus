@@ -17,7 +17,29 @@ class FitCheckController extends Controller
         $workout = $request->input('workout');
         $difficulty = $request->input('difficulty');
     
-        // Pass the data to the view
-        return view('FitCheck', compact('workout', 'difficulty'));
+        // Define tasks for each workout and difficulty level
+        $tasks = [
+            "Push-Up" => [
+                "Beginner" => "Knees on floor push-up, 15 reps",
+                "Intermediate" => "Standard push-up, 20 reps",
+                "Expert" => "Standard push-up, 30 reps"
+            ],
+            "Squat" => [
+                "Beginner" => "Partial squat reaching 45 degrees from standing position, 15 reps",
+                "Intermediate" => "Standard squat reaching 90 degrees from standing position, 20 reps",
+                "Expert" => "Standard squat reaching 90 degrees from standing position, 30 reps"
+            ],
+            "Plank" => [
+                "Beginner" => "Hold plank position for 15 seconds",
+                "Intermediate" => "Hold plank position for 30 seconds",
+                "Expert" => "Hold plank position for 60 seconds"
+            ]
+        ];
+
+        // Get the specific task for the selected workout and difficulty
+        $task = $tasks[$workout][$difficulty] ?? 'Task not found';
+
+        // Pass the workout, difficulty, and task data to the view
+        return view('FitCheck', compact('workout', 'difficulty', 'task'));
     }
 }

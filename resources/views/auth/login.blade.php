@@ -44,7 +44,7 @@
                     <!-- Login Button -->
                     <div class="flex justify-center mt-4">
                         <x-primary-button class="w-1/2 max-w-sm mx-auto py-3 text-center items-center justify-center">
-                            {{ __('Log in') }}
+                            {{ __('Log In') }}
                         </x-primary-button>
                     </div>
 
