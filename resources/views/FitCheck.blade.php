@@ -36,6 +36,13 @@
             cursor: pointer;
             z-index: 10; /* Above the camera feed */
         }
+        #script-output {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -69,12 +76,13 @@
                 <h2 class="text-xl text-gray-600">
                     Difficulty Level: {{ $difficulty }}
                 </h2>
+                <pre id="script-output"></pre>
             </div>
-
+            
             <div class="py-12 flex justify-center">
                 <div id="camera-container">
                     <button id="start-camera">Start Camera</button>
-                    <video id="video" autoplay alt="Live Posture Check"></video>
+                    <img id="video" alt="Live Posture Check"></img>
                 </div>
             </div>
         </x-app-layout>
@@ -113,7 +121,6 @@
             </div>
         </div>
     </div>
-
     <script>
         const video = document.getElementById('video');
         const startCameraButton = document.getElementById('start-camera');
@@ -125,6 +132,7 @@
         const prevSlideButton = document.getElementById('prev-slide');
         const getStartedButton = document.getElementById('get-started');
         let currentSlide = 0;
+        const scriptOutput =document.getElementById('script-output')
 
         // Function to show modal
         function showModal() {
@@ -153,15 +161,11 @@
 
         // Request access to the camera
         startCameraButton.addEventListener('click', () => {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(stream => {
-                    video.srcObject = stream;
-                    video.style.display = 'block'; // Show video once camera starts
-                    startCameraButton.style.display = 'none'; // Hide button after starting camera
-                })
-                .catch(err => {
-                    console.error("Error accessing the camera: ", err);
-                });
+            if (video.src === "") {
+                video.src = "http://127.0.0.1:5000/video_feed"; // Set the src when the button is clicked
+                video.style.display = 'block'; // Show video once camera starts
+                startCameraButton.style.display = 'none'; // Hide button after starting camera
+            }
         });
 
         // Show the modal automatically on page load
