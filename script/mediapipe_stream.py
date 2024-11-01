@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 from flask import Flask, Response
+import pickle
 
 app = Flask(__name__)
 
@@ -12,6 +13,10 @@ cap = cv2.VideoCapture(0)
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
+
+# Load model
+with open('script/model.pkl', 'rb') as model_file:
+    model = pickle.load(model_file)
 
 def generate_frames():
     while cap.isOpened():
@@ -32,11 +37,11 @@ def generate_frames():
                 mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
                 
                 # Convert landmarks to a flat list
-                #landmarks_flat = np.array([[lm.x, lm.y, lm.z, lm.visibility] for lm in landmarks]).flatten()
+                landmarks_flat = np.array([[lm.x, lm.y, lm.z, lm.visibility] for lm in landmarks]).flatten()
                 # Make prediction
-                #prediction = clf_plank.predict([landmarks_flat])
+                prediction = model.predict([landmarks_flat])
                 # Display prediction on the frame
-                #cv2.putText(frame, f'Prediction: {prediction[0]}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+                cv2.putText(frame, f'Prediction: {prediction[0]}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
             # Encode the frame in JPEG format
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
