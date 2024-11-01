@@ -93,7 +93,11 @@
                                     <span class="mr-2">Hello, {{ Auth::User()->userDetails->first_name }}!</span>
 
                                     <!-- Profile Picture -->
-                                    <img src="{{ Auth::User()->userDetails->profile_pic ?? asset('../assets/images/placeholder.png') }}" class="h-8 w-8 rounded-full mr-2" alt="{{ __('Profile Picture') }}" />
+                                    @php
+                                        $profilePicPath = 'uploads/profile_pics/' . Auth::User()->userDetails->profile_pic;
+                                        $imageSrc = file_exists(public_path($profilePicPath)) ? asset($profilePicPath) : asset('assets/images/placeholder.png');
+                                    @endphp
+                                    <img src="{{ $imageSrc }}" class="h-8 w-8 rounded-full mr-2" alt="{{ __('Profile Picture') }}" />
 
                                     <!-- Dropdown Arrow -->
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">

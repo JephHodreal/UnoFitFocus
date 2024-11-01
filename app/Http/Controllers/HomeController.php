@@ -30,4 +30,8 @@ class HomeController extends Controller
     {
         return view('PrivacyPolicy');
     }
+    public function viewToC()
+    {
+        return view('TermsAndConditions');
+    }
 }

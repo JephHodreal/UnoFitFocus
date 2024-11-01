@@ -85,18 +85,18 @@
 
                     <!-- Sign Up with Google Button -->
                     <div class="flex justify-center mt-4">
-                        <a href="{{ route('google.login') }}" class="w-1/2 max-w-sm mx-auto px-4 py-2 border flex gap-2 items-center justify-center bg-white border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 text-center">
+                        <a href="{{ route('google.login') }}" target="_blank" rel="noopener noreferrer" class="w-1/2 max-w-sm mx-auto px-4 py-2 border flex gap-2 items-center justify-center bg-white border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 text-center">
                             <img class="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
                             <span>{{ __('Sign Up with Google') }}</span>
                         </a>
                     </div>
 
-                    <!-- Terms of Service and Privacy Policy -->
+                    <!-- Terms and Conditions and Privacy Policy -->
                     <div class="text-center mt-4 italic w-3/4 mx-auto text-sm text-gray-600">
                         <p>
                             {{ __('By creating an account, you agree to our') }}
-                            <a href="{{ route('home') }}" class="text-blue-600 hover:underline">
-                                {{ __('Terms of Service') }}
+                            <a href="{{ route('TermsAndConditions') }}" class="text-blue-600 hover:underline">
+                                {{ __('Terms and Conditions') }}
                             </a>
                             {{ __('and have read and acknowledged our') }}
                             <a href="{{ route('PrivacyPolicy') }}" class="text-blue-600 hover:underline">

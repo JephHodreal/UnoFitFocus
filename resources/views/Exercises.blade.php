@@ -98,7 +98,7 @@
                         <li>Lower your body until your chest nearly touches the floor.</li>
                         <li>Push through your palms to raise your body back to the starting position.</li>
                     </ul>
-                    <img src="../assets/images/pu_standard.jpg" alt="Push Up" class="object-contain h-96 w-full mb-4">
+                    <img src="../assets/images/pu_standard.gif" alt="Push Up" class="object-contain h-96 w-full mb-4">
                 </div>
             </x-modal>
 
@@ -112,7 +112,7 @@
                         <li>Lower your hips as if sitting back into a chair.</li>
                         <li>Push through your heels to return to the starting position.</li>
                     </ul>
-                    <img src="../assets/images/sq_standard.jpg" alt="Squat" class="object-contain h-96 w-full mb-4">
+                    <img src="../assets/images/sq_standard.gif" alt="Squat" class="object-contain h-96 w-full mb-4">
                 </div>
             </x-modal>
 
@@ -126,18 +126,18 @@
                         <li>Keep your body in a straight line from head to toes.</li>
                         <li>Hold the position as long as possible without dropping your hips.</li>
                     </ul>
-                    <img src="../assets/images/pl_standard.jpg" alt="Plank" class="object-contain h-96 w-full mb-4">
+                    <img src="../assets/images/pl_standard.gif" alt="Plank" class="object-contain h-96 w-full mb-4">
                 </div>
             </x-modal>
 
             <!-- Warm-Up Modal -->
             <x-modal name="warmup-modal" maxWidth="lg" x-show="openModal === 'warmup-modal'">
                 <div x-data="{ currentSlide: 0, exercises: [
-                        { title: 'Jumping Jacks', description: 'A full-body warm-up exercise that increases your heart rate and warms up your muscles.', image: '../assets/images/wu_jumpjack.gif', repetitions: '30 seconds', steps: ['Stand upright with your feet together and hands at your sides.', 'Jump up while spreading your feet wider than shoulder-width apart and lifting your arms overhead.', 'Return to the starting position by jumping back to the initial stance.', 'Repeat the movement for the duration.'] },
-                        { title: 'Arm Circles', description: 'Loosens up your shoulders and improves range of motion in your arms.', image: '../assets/images/wu_armcirc.gif', repetitions: '20 repetitions', steps: ['Stand with your feet shoulder-width apart and arms extended out to your sides.', 'Start making small circular motions with your arms.', 'Gradually increase the size of the circles.', 'After completing half the repetitions, reverse the direction.'] },
-                        { title: 'Leg Swings', description: 'Prepares your legs for dynamic movement and stretches the hip muscles.', image: '../assets/images/wu_legswing.gif', repetitions: '15 repetitions per leg', steps: ['Stand with your feet shoulder-width apart.', 'Hold onto a support, such as a wall or pole, for balance.', 'Swing one leg forward and backward in a controlled manner.', 'Repeat for the designated repetitions, then switch legs.'] },
-                        { title: 'Hip Rotations', description: 'Improves flexibility in your hips and helps avoid injuries.', image: '../assets/images/wu_hipcirc.gif', repetitions: '10 repetitions per side', steps: ['Stand with your feet shoulder-width apart.', 'Place your hands on your hips and rotate your hips in a circular motion.', 'Complete the designated repetitions in one direction, then switch to the other.'] },
-                        { title: 'High Knees', description: 'A cardio exercise that activates the quads and gets your blood pumping.', image: '../assets/images/wu_highknee.gif', repetitions: '30 seconds', steps: ['Stand upright with your feet hip-width apart.', 'Lift one knee towards your chest, as high as you can.', 'Switch to the other knee quickly, simulating a running motion.', 'Continue alternating knees for the designated time.'] },
+                        { title: 'Jumping Jacks', image: '../assets/images/wu_jumpjack.gif', description: 'A full-body warm-up exercise that increases your heart rate and warms up your muscles.', repetitions: '20 repetitions', steps: ['Stand upright with your feet together and hands at your sides.', 'Jump up while spreading your feet wider than shoulder-width apart and lifting your arms overhead.', 'Return to the starting position by jumping back to the initial stance.', 'Repeat the movement for the duration.'] },
+                        { title: 'Arm Circles', image: '../assets/images/wu_armcirc.gif', description: 'Loosens up your shoulders and improves range of motion in your arms.', repetitions: '20 repetitions', steps: ['Stand with your feet shoulder-width apart and arms extended out to your sides.', 'Start making small circular motions with your arms.', 'Gradually increase the size of the circles.', 'After completing half the repetitions, reverse the direction.'] },
+                        { title: 'Leg Swings', image: '../assets/images/wu_legswing.gif', description: 'Prepares your legs for dynamic movement and stretches the hip muscles.', repetitions: '15 repetitions per leg', steps: ['Stand with your feet shoulder-width apart.', 'Hold onto a support, such as a wall or pole, for balance.', 'Swing one leg forward and backward in a controlled manner.', 'Repeat for the designated repetitions, then switch legs.'] },
+                        { title: 'Hip Rotations', image: '../assets/images/wu_hipcirc.gif', description: 'Improves flexibility in your hips and helps avoid injuries.', repetitions: '10 repetitions per side', steps: ['Stand with your feet shoulder-width apart.', 'Place your hands on your hips and rotate your hips in a circular motion.', 'Complete the designated repetitions in one direction, then switch to the other.'] },
+                        { title: 'High Knees', image: '../assets/images/wu_highknee.gif', description: 'A cardio exercise that activates the quads and gets your blood pumping.', repetitions: '30 seconds', steps: ['Stand upright with your feet hip-width apart.', 'Lift one knee towards your chest, as high as you can.', 'Switch to the other knee quickly, simulating a running motion.', 'Continue alternating knees for the designated time.'] },
                     ] }">
                     <div class="p-6">
                         <div class="flex justify-between items-center mb-4">
@@ -150,15 +150,15 @@
                             </button>
                         </div>
 
-                        <p class="text-gray-700 mb-4" x-text="exercises[currentSlide].description"></p>
                         <img :src="exercises[currentSlide].image" alt="Warm-up exercise" class="object-contain h-96 w-full mb-4">
+                        <p class="text-gray-700 mb-4" x-text="exercises[currentSlide].description"></p>
                         <p class="text-gray-700 mb-4">Repetitions: <span x-text="exercises[currentSlide].repetitions"></span></p>
                         
                         <!-- Step-by-step process -->
                         <h3 class="text-lg font-semibold mb-2">How to Perform:</h3>
                         <ol class="list-decimal pl-5 space-y-2">
                             <template x-for="(step, index) in exercises[currentSlide].steps" :key="index">
-                                <li x-text="step" class="text-gray-700"></li>
+                                <li class="text-gray-700" x-text="`${step}`"></li>
                             </template>
                         </ol>
                     </div>
@@ -185,8 +185,8 @@
                             </button>
                         </div>
 
-                        <p class="text-gray-700 mb-4" x-text="exercises[currentSlide].description"></p>
                         <img :src="exercises[currentSlide].image" alt="Cooldown exercise" class="object-contain h-96 w-full mb-4">
+                        <p class="text-gray-700 mb-4" x-text="exercises[currentSlide].description"></p>
                         <p class="text-gray-700 mb-4">Repetitions: <span x-text="exercises[currentSlide].repetitions"></span></p>
                         
                         <!-- Step-by-step process -->
@@ -200,6 +200,9 @@
                 </div>
             </x-modal>
         </div>
+
+        <!-- Footer -->
+        @include('partials.footer')
     </x-guest-layout>  
     <script>
         document.addEventListener('alpine:init', () => {

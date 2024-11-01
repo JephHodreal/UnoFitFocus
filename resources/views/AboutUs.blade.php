@@ -13,10 +13,10 @@
         <x-guest-layout>
             <x-slot name="header">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ __('FitFocus') }}
+                    {{ __('About Us') }}
                 </h2>
                 <h2 class="text-x2 text-gray-800 leading-tight">
-                    {{ __('Revolutionizing bodyweight workouts through posture correction powered by human pose estimation.') }}
+                    {{ __('Learn more about FitFocus here!') }}
                 </h2>
             </x-slot>
 
@@ -45,7 +45,7 @@
             </div>
 
             <!-- How to use FitFocus section -->
-            <div class="py-12">
+            <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white p-4 overflow-hidden shadow-sm sm:rounded-lg">
                         <h2 class="text-4xl font-bold text-center pt-8 mb-10">{{ __('How to use FitFocus') }}</h2>
@@ -104,19 +104,8 @@
                 </div>
             </div>
 
-
-            <div class="py-12">
-                <!-- Footer -->
-                <footer class="bg-gray-800 text-white py-6">
-                    <div class="container mx-auto text-center">
-                        <p>&copy; 2024 FitFocus. All Rights Reserved.</p>
-                        <ul class="flex justify-center space-x-6 mt-4">
-                            <li><a href="#terms" class="hover:underline">Terms of Service</a></li>
-                            <li><a href="#privacy" class="hover:underline">Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                </footer>
-            </div>
+            <!-- Footer -->
+            @include('partials.footer')
         </x-guest-layout>    
     </main>
 </body>

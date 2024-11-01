@@ -39,7 +39,7 @@
                                 </svg>
                             </h2>
                             <div x-show="selected == 1" x-transition x-cloak class="p-4 text-gray-600">
-                                To create a profile, click on the ‘Profile’ section in your dashboard and fill in the required information like weight, height, and gender. You can update this information at any time.
+                                To create a profile, click on the 'Profile' section in your dashboard and fill in the required information like weight, height, and gender. You can update this information at any time.
                             </div>
                         </div>
 
@@ -78,7 +78,7 @@
                                 </svg>
                             </h2>
                             <div x-show="selected == 4" x-transition x-cloak class="p-4 text-gray-600">
-                                Yes, you can reset your workout progress by visiting your profile settings and choosing the ‘Reset Progress’ option. This will clear your current scores, but your workout history will remain intact.
+                                Yes, you can reset your workout progress by visiting your profile settings and choosing the 'Reset Progress' option. This will clear your current scores, but your workout history will remain intact.
                             </div>
                         </div>
                     </div>
@@ -86,15 +86,7 @@
             </div>
 
             <!-- Footer -->
-            <footer class="bg-gray-800 text-white py-6">
-                <div class="container mx-auto text-center">
-                    <p>&copy; 2024 FitFocus. All Rights Reserved.</p>
-                    <ul class="flex justify-center space-x-6 mt-4">
-                        <li><a href="#terms" class="hover:underline">Terms of Service</a></li>
-                        <li><a href="#privacy" class="hover:underline">Privacy Policy</a></li>
-                    </ul>
-                </div>
-            </footer>
+            @include('partials.footer')
         </x-guest-layout>
     </main>
 </body>
