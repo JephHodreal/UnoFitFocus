@@ -16,7 +16,7 @@
                     {{ __('Workout History') }}
                 </h2>
             </x-slot>
-            <div class="py-12">
+            <div class="py-3">
                 <div class="container mx-auto py-10">
                     <!-- Filter Section -->
                     <form method="GET" action="{{ route('WorkoutHistory') }}">
@@ -63,15 +63,21 @@
                                 </tr>
                             </thead>
                             <tbody id="workoutHistory" class="bg-white divide-y divide-gray-200">
-                                @foreach ($workouts as $index => $workout)
-                                <tr data-workout="{{ $workout->exercise }}" data-difficulty="{{ $workout->difficulty }}" class="workout-row transition duration-300 ease-in-out transform hover:bg-gray-100 hover:scale-105">
-                                    <td class="px-6 py-4">{{ $index + 1 + ($workouts->currentPage() - 1) * $workouts->perPage() }}</td>
-                                    <td class="px-6 py-4">{{ $workout->exercise }}</td>
-                                    <td class="px-6 py-4">{{ $workout->difficulty }}</td>
-                                    <td class="px-6 py-4">{{ \Carbon\Carbon::parse($workout->date_performed)->format('Y-m-d') }}</td>
-                                    <td class="px-6 py-4">{{ $workout->score }}%</td>
-                                </tr>
-                                @endforeach
+                                @forelse ($workouts as $index => $workout)
+                                    <tr data-workout="{{ $workout->exercise }}" data-difficulty="{{ $workout->difficulty }}" class="workout-row transition duration-300 ease-in-out transform hover:bg-gray-100">
+                                        <td class="px-6 py-4">{{ $index + 1 + ($workouts->currentPage() - 1) * $workouts->perPage() }}</td>
+                                        <td class="px-6 py-4">{{ $workout->exercise }}</td>
+                                        <td class="px-6 py-4">{{ $workout->difficulty }}</td>
+                                        <td class="px-6 py-4">{{ \Carbon\Carbon::parse($workout->date_performed)->format('Y-m-d') }}</td>
+                                        <td class="px-6 py-4">{{ $workout->score }}%</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                            No workout history found.
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

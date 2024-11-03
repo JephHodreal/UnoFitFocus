@@ -20,7 +20,8 @@ class HistoryController extends Controller
         $difficultyFilter = $request->input('difficulty', 'all'); // 'all' is the default value
 
         // Fetch workout history, ordered by date (most recent first)
-        $query = StatsDashboard::query();
+        //$query = StatsDashboard::query();
+        $query = StatsDashboard::where('fk_user_id', Auth::id());
 
         // Apply exercise filter if it is not 'all'
         if ($exerciseFilter !== 'all') {

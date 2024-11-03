@@ -22,6 +22,10 @@ class HomeController extends Controller
     {
         return view('home');
     }
+    public function viewSetup()
+    {
+        return view('Setup');
+    }
     public function viewWorkoutHistory()
     {
         return view('WorkoutHistory');

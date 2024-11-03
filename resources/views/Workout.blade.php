@@ -50,7 +50,7 @@
                                 <div class="flex justify-around my-4">
                                     <button type="button" class="difficulty-btn border-green-500 border-2 text-green-500 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" data-difficulty="Beginner">Beginner</button>
                                     <button type="button" class="difficulty-btn border-yellow-500 border-2 text-yellow-500 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" data-difficulty="Intermediate">Intermediate</button>
-                                    <button type="button" class="difficulty-btn border-red-500 border-2 text-red-500 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" data-difficulty="Expert">Expert</button>
+                                    <button type="button" class="difficulty-btn border-red-500 border-2 text-red-500 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" data-difficulty="Advanced">Advanced</button>
                                 </div>
 
                                 <!-- Task Description Section -->
@@ -84,17 +84,17 @@
             "Push-Up": {
                 "Beginner": "Knees on floor push-up, 15 reps",
                 "Intermediate": "Standard push-up, 20 reps",
-                "Expert": "Standard push-up, 30 reps"
+                "Advanced": "Standard push-up, 30 reps"
             },
             "Squat": {
                 "Beginner": "Partial squat reaching 45 degrees from standing position, 15 reps",
                 "Intermediate": "Standard squat reaching 90 degrees from standing position, 20 reps",
-                "Expert": "Standard squat reaching 90 degrees from standing position, 30 reps"
+                "Advanced": "Standard squat reaching 90 degrees from standing position, 30 reps"
             },
             "Plank": {
                 "Beginner": "Hold plank position for 15 seconds",
                 "Intermediate": "Hold plank position for 30 seconds",
-                "Expert": "Hold plank position for 60 seconds"
+                "Advanced": "Hold plank position for 60 seconds"
             }
         };
 
