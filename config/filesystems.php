@@ -57,6 +57,15 @@ return [
             'throw' => false,
         ],
 
+        'gcs' => [
+            'driver' => 'gcs',
+            'project_id' => env('GCP_PROJECT_ID'),
+            'bucket' => env('GCP_BUCKET'),
+            'key_file' => env('GCP_KEY_FILE'), // Path to your JSON key file
+            'path_prefix' => null, // Optional: Specify a directory within the bucket
+            'storage_api_uri' => null, // Optional: Specify the storage API URI
+        ],
+
     ],
 
     /*
