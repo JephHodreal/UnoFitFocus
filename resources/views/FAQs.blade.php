@@ -52,61 +52,75 @@
                                 </svg>
                             </h2>
                             <div x-show="selected == 2" x-transition x-cloak class="p-4 text-gray-600">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                {{ __('FitFocus uses human pose estimation to check your posture and record a score based on your accuracy. Each workout session is saved in your workout history and your statistics are displayed on the dashboard to show your progress.') }}
                             </div>
                         </div>
 
                         <!-- FAQ Item 3 -->
                         <div class="border-b border-gray-200">
                             <h2 @click="selected !== 3 ? selected = 3 : selected = null" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
-                                <span class="text-lg font-semibold text-gray-900">Question 3</span>
+                                <span class="text-lg font-semibold text-gray-900"> {{ __('What do I gain from using FitFocus?') }} </span>
                                 <svg :class="selected == 3 ? 'rotate-180' : ''" class="h-5 w-5 text-gray-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </h2>
                             <div x-show="selected == 3" x-transition x-cloak class="p-4 text-gray-600">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                {{ __('FitFocus ensures you can exercise anytime, anywhere without compromising safety by allowing you to maintain proper posture during your workouts. This reduces the risk of muscle strain, fatigue, or injury caused by improper form. Furthermore, FitFocus enables you to work out without another person\'s supervision, thus providing you the luxury of privacy and comfort.') }}
                             </div>
                         </div>
 
                         <!-- FAQ Item 4 -->
                         <div class="border-b border-gray-200">
                             <h2 @click="selected !== 4 ? selected = 4 : selected = null" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
-                                <span class="text-lg font-semibold text-gray-900">Question 4</span>
+                                <span class="text-lg font-semibold text-gray-900">{{ __('Will a recording of my workout session be saved?') }}</span>
                                 <svg :class="selected == 4 ? 'rotate-180' : ''" class="h-5 w-5 text-gray-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </h2>
                             <div x-show="selected == 4" x-transition x-cloak class="p-4 text-gray-600">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                {{ __('No, your workout session will not be recorded. FitFocus only records the context and outcomes of your workout such as your score, workout performed, difficulty leve, and date and time of workout.') }}
                             </div>
                         </div>
 
                         <!-- FAQ Item 5 -->
                         <div class="border-b border-gray-200">
                             <h2 @click="selected !== 5 ? selected = 5 : selected = null" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
-                                <span class="text-lg font-semibold text-gray-900">Question 5</span>
+                                <span class="text-lg font-semibold text-gray-900">{{ __('') }}</span>
                                 <svg :class="selected == 5 ? 'rotate-180' : ''" class="h-5 w-5 text-gray-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </h2>
                             <div x-show="selected == 5" x-transition x-cloak class="p-4 text-gray-600">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                {{ __('') }}
                             </div>
                         </div>
 
                         <!-- FAQ Item 6 -->
                         <div class="border-b border-gray-200">
                             <h2 @click="selected !== 6 ? selected = 6 : selected = null" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
-                                <span class="text-lg font-semibold text-gray-900">Question 6</span>
+                                <span class="text-lg font-semibold text-gray-900">{{ __('') }}</span>
                                 <svg :class="selected == 6 ? 'rotate-180' : ''" class="h-5 w-5 text-gray-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </h2>
                             <div x-show="selected == 6" x-transition x-cloak class="p-4 text-gray-600">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                {{ __('') }}
                             </div>
                         </div>
+
+                        <!-- FAQ Item 7 -->
+                        <div class="border-b border-gray-200">
+                            <h2 @click="selected !== 7 ? selected = 7 : selected = null" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
+                                <span class="text-lg font-semibold text-gray-900">{{ __('') }}</span>
+                                <svg :class="selected == 7 ? 'rotate-180' : ''" class="h-5 w-5 text-gray-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </h2>
+                            <div x-show="selected == 7" x-transition x-cloak class="p-4 text-gray-600">
+                                {{ __('') }}
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

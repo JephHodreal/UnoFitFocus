@@ -108,7 +108,7 @@
                 </div>
             </div>
 
-            <div class="py-12">
+            {{-- <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 text-gray-900">
@@ -190,16 +190,136 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 text-gray-900">
-                            <!-- Improvement Graphs -->
-                            <h3 class="text-xl font-bold mb-6">Improvement Over Time</h3>
-                            
-                            <!-- Dropdown for selecting the graph -->
+                            <!-- Graphs -->
+                            <h3 class="text-xl font-bold mb-6">{{ __('Workout Distribution') }}</h3>
+            
+                            <div class="mb-6">
+                                @if(empty(array_sum(array_column($stats['Push-Up'], 'numTries'))) && 
+                                    empty(array_sum(array_column($stats['Squat'], 'numTries'))) && 
+                                    empty(array_sum(array_column($stats['Plank'], 'numTries'))))
+                                    <p class="text-center text-gray-600">{{ __('No data found for workout distributio') }}</p>
+                                @else
+                                    <canvas id="nestedPieChart" width="300" height="150"></canvas>
+                                    <p class="text-center text-gray-600 mt-2">{{ __('Distribution of workouts and tries per difficulty') }}</p>
+                                @endif
+                            </div>
+            
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    const ctx = document.getElementById('nestedPieChart')?.getContext('2d');
+                                    if (ctx) {
+                                        new Chart(ctx, {
+                                            type: 'doughnut',
+                                            data: {
+                                                // No global labels here
+                                                datasets: [
+                                                    // Outer Pie Chart (Workouts)
+                                                    {
+                                                        label: 'Workouts',
+                                                        data: [
+                                                            {{ array_sum(array_column($stats['Push-Up'], 'numTries')) }},
+                                                            {{ array_sum(array_column($stats['Squat'], 'numTries')) }},
+                                                            {{ array_sum(array_column($stats['Plank'], 'numTries')) }}
+                                                        ],
+                                                        backgroundColor: ['#ff6f61', '#6b8e23', '#4682b4'],
+                                                        hoverOffset: 4,
+                                                        labels: ['Push-Up', 'Squat', 'Plank'] // Labels for outer pie
+                                                    },
+                                                    // Inner Pie Chart (Tries Per Difficulty)
+                                                    {
+                                                        label: 'Difficulty Breakdown',
+                                                        data: [
+                                                            {{ $stats['Push-Up']['Beginner']['numTries'] ?? 0 }},
+                                                            {{ $stats['Push-Up']['Intermediate']['numTries'] ?? 0 }},
+                                                            {{ $stats['Push-Up']['Advanced']['numTries'] ?? 0 }},
+                                                            {{ $stats['Squat']['Beginner']['numTries'] ?? 0 }},
+                                                            {{ $stats['Squat']['Intermediate']['numTries'] ?? 0 }},
+                                                            {{ $stats['Squat']['Advanced']['numTries'] ?? 0 }},
+                                                            {{ $stats['Plank']['Beginner']['numTries'] ?? 0 }},
+                                                            {{ $stats['Plank']['Intermediate']['numTries'] ?? 0 }},
+                                                            {{ $stats['Plank']['Advanced']['numTries'] ?? 0 }}
+                                                        ],
+                                                        backgroundColor: [
+                                                            '#ff8c00', '#ff4500', '#ff1493', // Push-Up Difficulty Colors
+                                                            '#98fb98', '#32cd32', '#228b22', // Squat Difficulty Colors
+                                                            '#87cefa', '#4682b4', '#000080'  // Plank Difficulty Colors
+                                                        ],
+                                                        hoverOffset: 4,
+                                                        labels: [
+                                                            'Push-Up (Beginner)', 'Push-Up (Intermediate)', 'Push-Up (Advanced)',
+                                                            'Squat (Beginner)', 'Squat (Intermediate)', 'Squat (Advanced)',
+                                                            'Plank (Beginner)', 'Plank (Intermediate)', 'Plank (Advanced)'
+                                                        ] // Labels for inner pie
+                                                    }
+                                                ]
+                                            },
+                                            options: {
+                                                aspectRatio: 2.5,
+                                                plugins: {
+                                                    legend: {
+                                                        position: 'right',
+                                                        labels: {
+                                                            color: '#4b5563', // Gray text color for readability
+                                                            generateLabels: function (chart) {
+                                                                // Generate custom labels based on the dataset-specific labels
+                                                                return chart.data.datasets.flatMap((dataset, datasetIndex) => {
+                                                                    return dataset.labels.map((label, index) => ({
+                                                                        text: label,
+                                                                        fillStyle: dataset.backgroundColor[index],
+                                                                        hidden: !chart.isDatasetVisible(datasetIndex),
+                                                                        datasetIndex,
+                                                                        index
+                                                                    }));
+                                                                });
+                                                            },
+                                                            onClick: function (e, legendItem) {
+                                                                const datasetIndex = legendItem.datasetIndex;
+                                                                const index = legendItem.index;
+                                                                const chartDataset = chart.data.datasets[datasetIndex];
+                                                                
+                                                                // Toggle visibility for the specific segment in the relevant dataset
+                                                                chartDataset._meta[Object.keys(chartDataset._meta)[0]].data[index].hidden =
+                                                                    !chartDataset._meta[Object.keys(chartDataset._meta)[0]].data[index].hidden;
+
+                                                                // Update chart to reflect changes
+                                                                chart.update();
+                                                            }
+                                                        }
+                                                    },
+                                                    tooltip: {
+                                                        callbacks: {
+                                                            label: function (context) {
+                                                                const dataset = context.dataset;
+                                                                const index = context.dataIndex;
+                                                                const label = dataset.labels[index];
+                                                                const value = dataset.data[index];
+                                                                return `${label}: ${value}`;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="py-12">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6 text-gray-900">
+                            <h3 class="text-xl font-bold mb-6">{{ __('Improvement Over Time (Last 30 days)')}} </h3>
+            
                             <div class="mb-4">
                                 <label for="graphSelect" class="block text-gray-700 font-medium mb-2">Select Exercise:</label>
                                 <select id="graphSelect" class="form-select border-gray-300 rounded-md shadow-sm">
@@ -209,27 +329,26 @@
                                 </select>
                             </div>
             
-                            <!-- Graph container -->
                             <div id="pushUpContainer" class="graph-container">
-                                @if(count($pushUpGraph['dates']) === 0)
+                                @if(count($pushUpGraph['Beginner']['dates']) === 0 && count($pushUpGraph['Intermediate']['dates']) === 0 && count($pushUpGraph['Advanced']['dates']) === 0)
                                     <p class="text-center text-gray-600">No data found for Push-Up. Improvement graph cannot be displayed.</p>
                                 @else
                                     <canvas id="pushUpChart" width="400" height="200"></canvas>
                                     <p class="text-center text-gray-600 mt-2">Push-Up Improvement</p>
                                 @endif
                             </div>
-            
-                            <div id="squatContainer" class="graph-container hidden">
-                                @if(count($squatGraph['dates']) === 0)
+
+                            <div id="squatContainer" class="graph-container">
+                                @if(count($squatGraph['Beginner']['dates']) === 0 && count($squatGraph['Intermediate']['dates']) === 0 && count($squatGraph['Advanced']['dates']) === 0)
                                     <p class="text-center text-gray-600">No data found for Squat. Improvement graph cannot be displayed.</p>
                                 @else
                                     <canvas id="squatChart" width="400" height="200"></canvas>
                                     <p class="text-center text-gray-600 mt-2">Squat Improvement</p>
                                 @endif
                             </div>
-            
-                            <div id="plankContainer" class="graph-container hidden">
-                                @if(count($plankGraph['dates']) === 0)
+
+                            <div id="plankContainer" class="graph-container">
+                                @if(count($plankGraph['Beginner']['dates']) === 0 && count($plankGraph['Intermediate']['dates']) === 0 && count($plankGraph['Advanced']['dates']) === 0)
                                     <p class="text-center text-gray-600">No data found for Plank. Improvement graph cannot be displayed.</p>
                                 @else
                                     <canvas id="plankChart" width="400" height="200"></canvas>
@@ -245,69 +364,97 @@
                                         squat: document.getElementById('squatContainer'),
                                         plank: document.getElementById('plankContainer')
                                     };
-            
-                                    // Function to toggle visible graph based on selection
+
                                     function toggleGraph() {
                                         const selectedGraph = graphSelect.value;
                                         Object.keys(containers).forEach(key => {
                                             containers[key].classList.toggle('hidden', key !== selectedGraph);
                                         });
                                     }
-            
-                                    // Initial toggle
+
                                     toggleGraph();
                                     graphSelect.addEventListener('change', toggleGraph);
-            
-                                    // Chart setup function
-                                    const chartConfig = (ctx, dates, scores, label, color) => {
+                            
+                                    const chartConfig = (ctx, data, labelColors) => {
                                         if (ctx) {
                                             new Chart(ctx, {
                                                 type: 'line',
                                                 data: {
-                                                    labels: dates,
-                                                    datasets: [{
-                                                        label: label,
-                                                        data: scores,
-                                                        borderColor: color,
-                                                        borderWidth: 2,
-                                                        fill: false
-                                                    }]
+                                                    labels: data.Beginner.dates, // Use the dates array directly from the data
+                                                    datasets: [
+                                                        {
+                                                            label: 'Beginner',
+                                                            data: data.Beginner.scores,
+                                                            borderColor: labelColors.Beginner,
+                                                            borderWidth: 2,
+                                                            fill: false,
+                                                            spanGaps: true // Connect points, leaving gaps for missing data
+                                                        },
+                                                        {
+                                                            label: 'Intermediate',
+                                                            data: data.Intermediate.scores,
+                                                            borderColor: labelColors.Intermediate,
+                                                            borderWidth: 2,
+                                                            fill: false,
+                                                            spanGaps: true
+                                                        },
+                                                        {
+                                                            label: 'Advanced',
+                                                            data: data.Advanced.scores,
+                                                            borderColor: labelColors.Advanced,
+                                                            borderWidth: 2,
+                                                            fill: false,
+                                                            spanGaps: true
+                                                        }
+                                                    ]
                                                 },
                                                 options: {
                                                     scales: {
-                                                        y: { beginAtZero: true },
-                                                        x: { display: true }
+                                                        y: {
+                                                            beginAtZero: true,
+                                                            min: 0,
+                                                            max: 100,
+                                                            ticks: {
+                                                                stepSize: 10
+                                                            }
+                                                        },
+                                                        x: {
+                                                            type: 'category',
+                                                            title: {
+                                                                display: true
+                                                            },
+                                                        }
                                                     }
                                                 }
                                             });
                                         }
                                     };
-            
-                                    // Initializing the charts if data exists
+                            
+                                    const pushUpData = {!! json_encode($pushUpGraph) !!};
+                                    const squatData = {!! json_encode($squatGraph) !!};
+                                    const plankData = {!! json_encode($plankGraph) !!};
+                            
                                     chartConfig(
                                         document.getElementById('pushUpChart')?.getContext('2d'),
-                                        {!! json_encode($pushUpGraph['dates'] ?? []) !!},
-                                        {!! json_encode($pushUpGraph['scores'] ?? []) !!},
-                                        'Push-Up Scores', '#ff6384'
+                                        pushUpData,
+                                        { Beginner: '#ff6384', Intermediate: '#36a2eb', Advanced: '#ffce56' }
                                     );
                                     chartConfig(
                                         document.getElementById('squatChart')?.getContext('2d'),
-                                        {!! json_encode($squatGraph['dates'] ?? []) !!},
-                                        {!! json_encode($squatGraph['scores'] ?? []) !!},
-                                        'Squat Scores', '#36a2eb'
+                                        squatData,
+                                        { Beginner: '#ff6384', Intermediate: '#36a2eb', Advanced: '#ffce56' }
                                     );
                                     chartConfig(
                                         document.getElementById('plankChart')?.getContext('2d'),
-                                        {!! json_encode($plankGraph['dates'] ?? []) !!},
-                                        {!! json_encode($plankGraph['scores'] ?? []) !!},
-                                        'Plank Scores', '#ffce56'
+                                        plankData,
+                                        { Beginner: '#ff6384', Intermediate: '#36a2eb', Advanced: '#ffce56' }
                                     );
                                 });
                             </script>
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>
 
         </x-app-layout>
     </main>
