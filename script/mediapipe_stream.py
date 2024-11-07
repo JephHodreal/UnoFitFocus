@@ -20,12 +20,13 @@ mp_drawing = mp.solutions.drawing_utils
 latest_prediction = {"prediction": "No data"}
 
 reps = 0
-sets = 3
+sets = "0/3"
 stage = None
 total_time = ""
 start_time = None
 elapsed_time = 0
 score = 0
+set_counter = 0
 
 # Add a global variable to store the workout type
 workout = ""  # Initial value; replace with an actual workout type when received
@@ -58,7 +59,7 @@ def generate_frames():
         if not success:
             prediction = {"workout": "No data"}
             reps = 0
-            sets = 3
+            sets = "0/3"
             stage = None
             total_time = ""
             score = 0
@@ -123,8 +124,15 @@ def calculate_angle(a, b, c):
 
 def workout_tracker(workout, workout_angles):
     # Variables to track workout
-    global reps, sets, stage, total_time, score, start_time, elapsed_time
+    global reps, sets, stage, total_time, score, start_time, elapsed_time, set_counter
+
+    if stage == "completed":
+        return reps, sets, stage, total_time, score
     
+    target_reps = 12
+    target_sets = 3
+    target_time = 0
+
     # Track for Plank
     if workout in ["Plank"]:
         if 55 < workout_angles["right_elbow_angle"] < 125:
@@ -145,6 +153,17 @@ def workout_tracker(workout, workout_angles):
 
     # Track for Push-Up
     elif workout in ["Push-Up"]:
+        # Check if target reps reached
+        if reps == target_reps:
+            set_counter += 1
+            sets = f"{set_counter}/{target_sets}"
+            reps = 0  # Reset reps for next set
+
+        # Final check to maintain total sets
+        if set_counter >= target_sets:
+            sets = f"{target_sets}/{target_sets}"
+            stage = "completed"
+
         if stage == None:
             stage = "up"
 
@@ -161,6 +180,17 @@ def workout_tracker(workout, workout_angles):
 
     # Track for Squat
     elif workout in ["Squat"]:
+        # Check if target reps reached
+        if reps == target_reps:
+            set_counter += 1
+            sets = f"{set_counter}/{target_sets}"
+            reps = 0  # Reset reps for next set
+
+        # Final check to maintain total sets
+        if set_counter >= target_sets:
+            sets = f"{target_sets}/{target_sets}"
+            stage = "completed"
+
         if stage == None:
             stage = "up"
 
@@ -219,7 +249,7 @@ def draw_workout_angles(frame, workout, workout_landmarks, workout_angles):
     # Helper function to draw text on frame
     def draw_angle_text(angle_name, landmark):
         coord = tuple(np.multiply(landmark, [frame.shape[1], frame.shape[0]]).astype(int))
-        cv2.putText(frame, f"{workout_angles[angle_name]:.2f}", coord, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
+        cv2.putText(frame, f"{workout_angles[angle_name]:.2f}", coord, cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
     if workout in ["Plank", "Push-Up"]:
         # Draw each angle on the frame for plank/pushup
@@ -249,12 +279,12 @@ def get_prediction():
         "total_time": total_time,
         "score": score
     }
-    
     return jsonify(result)
 
 @app.route('/set_workout', methods=['POST'])
 def set_workout():
-    global workout, model
+    global workout, model, reps
+    reps = 0
     data = request.get_json()
     new_workout = data.get("workout", "")
     if new_workout != workout:
