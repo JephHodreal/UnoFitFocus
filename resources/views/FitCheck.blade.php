@@ -79,7 +79,20 @@
                 <h2 class="text-xl text-gray-600">
                     Task: {{ $task }}
                 </h2>
-                <pre id="script-output"></pre>
+                <pre id="script-output">
+                    Waiting for Camera:
+                </pre>
+                <!-- Table structure for Reps, Set, Stage, and Score -->
+                <table class="mx-auto mt-4 text-xl text-gray-600">
+                    <tr>
+                        <td class="text-left" style="width: 300px;"><pre id="script-output1">Reps:</pre></td>
+                        <td class="text-left" style="width: 300px;"><pre id="script-output2">Sets:</pre></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" style="width: 300px;"><pre id="script-output3">Stage:</pre></td>
+                        <td class="text-left" style="width: 300px;"><pre id="script-output4">Score:</pre></td>
+                    </tr>
+                </table>
             </div>
             
             <div class="py-12 flex justify-center">
@@ -177,7 +190,13 @@
         const prevSlideButton = document.getElementById('prev-slide');
         const getStartedButton = document.getElementById('get-started');
         let currentSlide = 0;
-        const scriptOutput =document.getElementById('script-output')
+        const scriptOutput = document.getElementById('script-output');
+        const scriptOutput1 = document.getElementById('script-output1');
+        const scriptOutput2 = document.getElementById('script-output2');
+        const scriptOutput3 = document.getElementById('script-output3');
+        const scriptOutput4 = document.getElementById('script-output4');
+        let isCameraActive = false;
+        const workout = "{{ $workout }}";
 
         // Function to show modal
         function showModal() {
@@ -204,15 +223,74 @@
             nextSlideButton.classList.toggle('hidden', currentSlide === slides.length - 1);
             getStartedButton.classList.toggle('hidden', currentSlide !== slides.length - 1);
         }
-
+        
         // Request access to the camera
         startCameraButton.addEventListener('click', () => {
             if (video.src === "") {
                 video.src = "http://127.0.0.1:5000/video_feed"; // Set the src when the button is clicked
                 video.style.display = 'block'; // Show video once camera starts
                 startCameraButton.style.display = 'none'; // Hide button after starting camera
+                isCameraActive = true; //flag to check if camera is active
             }
         });
+
+        function fetchPrediction() {
+            if (!isCameraActive) { // Only fetch prediction if camera is active
+                scriptOutput.textContent = "Waiting for Camera"; // Keep showing "No data" if camera is not active
+                
+                if (workout === "Plank"){
+                    scriptOutput1.style.display = 'none';
+                    scriptOutput2.style.display = 'none';
+                    scriptOutput3.textContent = "Time: ";
+                    scriptOutput4.textContent = "Score: ";
+                }else if (workout === "Push-Up" || workout === "Squat"){
+                    scriptOutput1.textContent = "Reps: ";
+                    scriptOutput2.textContent = "Sets: ";
+                    scriptOutput3.textContent = "Stage: ";
+                    scriptOutput4.textContent = "Score: ";
+                }
+                return;
+            }
+            
+            fetch("http://127.0.0.1:5000/get_prediction")                
+                .then(response => response.json())
+                .then(data => {
+                    scriptOutput.textContent = `Prediction: ${data.latest_prediction.prediction}`;
+                    if (workout === "Plank"){
+                        scriptOutput3.textContent = `Time:  ${data.total_time} sec`;
+                        scriptOutput4.textContent = `Score:  ${data.score}`;
+                    }else if (workout === "Push-Up" || workout === "Squat"){
+                        scriptOutput1.textContent = `Reps:  ${data.repetitions}`;
+                        scriptOutput2.textContent = `Sets:  ${data.sets}`;
+                        scriptOutput3.textContent = `Stage:  ${data.stage}`;
+                        scriptOutput4.textContent = `Score:  ${data.score}`;
+                    }
+                })
+                .catch(error => console.error('Error fetching prediction:', error));
+        }
+
+        setInterval(fetchPrediction, 250);
+
+        // Function to send workout type to Flask backend
+        function setWorkout(workoutType) {
+            fetch('http://127.0.0.1:5000/set_workout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ workout: workoutType }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Workout set:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Call the function to send the workout to Flask when the page is loaded
+        setWorkout(workout);
 
         // Show the modal automatically on page load
         window.onload = showModal;
