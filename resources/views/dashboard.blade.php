@@ -227,7 +227,7 @@
                                                             {{ array_sum(array_column($stats['Squat'], 'numTries')) }},
                                                             {{ array_sum(array_column($stats['Plank'], 'numTries')) }}
                                                         ],
-                                                        backgroundColor: ['#ff6f61', '#6b8e23', '#4682b4'],
+                                                        backgroundColor: ['#ff2929', '#6b8e23', '#4682b4'],
                                                         hoverOffset: 4,
                                                         labels: ['Push-Up', 'Squat', 'Plank'] // Labels for outer pie
                                                     },
@@ -244,9 +244,9 @@
                                                             {{ $stats['Plank']['Beginner']['numTries'] ?? 0 }},
                                                             {{ $stats['Plank']['Intermediate']['numTries'] ?? 0 }},
                                                             {{ $stats['Plank']['Advanced']['numTries'] ?? 0 }}
-                                                        ],
+                                                        ], 
                                                         backgroundColor: [
-                                                            '#ff8c00', '#ff4500', '#ff1493', // Push-Up Difficulty Colors
+                                                            '#ffafaf', '#ff4b4b', '#de0000', // Push-Up Difficulty Colors
                                                             '#98fb98', '#32cd32', '#228b22', // Squat Difficulty Colors
                                                             '#87cefa', '#4682b4', '#000080'  // Plank Difficulty Colors
                                                         ],

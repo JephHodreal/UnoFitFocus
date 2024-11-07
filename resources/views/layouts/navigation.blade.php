@@ -19,8 +19,8 @@
                         <x-nav-link :href="route('FAQs')" :active="request()->routeIs('FAQs')">
                             {{ __('FAQs') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('Exercises')" :active="request()->routeIs('Exercises')">
-                            {{ __('Exercises') }}
+                        <x-nav-link :href="route('WorkoutLibrary')" :active="request()->routeIs('WorkoutLibrary')">
+                            {{ __('Workout Library') }}
                         </x-nav-link>
                         <x-nav-link :href="route('AboutUs')" :active="request()->routeIs('AboutUs')">
                             {{ __('About Us') }}
@@ -71,8 +71,8 @@
                         <x-nav-link :href="route('FAQs')" :active="request()->routeIs('FAQs')">
                             {{ __('FAQs') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('Exercises')" :active="request()->routeIs('Exercises')">
-                            {{ __('Exercises') }}
+                        <x-nav-link :href="route('WorkoutLibrary')" :active="request()->routeIs('WorkoutLibrary')">
+                            {{ __('Workout Library') }}
                         </x-nav-link>
                         <x-nav-link :href="route('AboutUs')" :active="request()->routeIs('AboutUs')">
                             {{ __('About Us') }}
@@ -155,8 +155,8 @@
                 <x-responsive-nav-link :href="route('FAQs')" :active="request()->routeIs('FAQs')">
                     {{ __('FAQs') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('Exercises')" :active="request()->routeIs('Exercises')">
-                    {{ __('Exercises') }}
+                <x-responsive-nav-link :href="route('WorkoutLibrary')" :active="request()->routeIs('WorkoutLibrary')">
+                    {{ __('Workout Library') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('AboutUs')" :active="request()->routeIs('AboutUs')">
                     {{ __('About Us') }}
@@ -184,8 +184,8 @@
                 <x-responsive-nav-link :href="route('FAQs')" :active="request()->routeIs('FAQs')">
                     {{ __('FAQs') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('Exercises')" :active="request()->routeIs('Exercises')">
-                    {{ __('Exercises') }}
+                <x-responsive-nav-link :href="route('WorkoutLibrary')" :active="request()->routeIs('WorkoutLibrary')">
+                    {{ __('Workout Library') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('AboutUs')" :active="request()->routeIs('AboutUs')">
                     {{ __('About Us') }}

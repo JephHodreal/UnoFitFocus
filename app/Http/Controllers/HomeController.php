@@ -14,9 +14,9 @@ class HomeController extends Controller
     {
         return view('FAQs');
     }
-    public function viewExercises()
+    public function viewWorkoutLibrary()
     {
-        return view('Exercises');
+        return view('WorkoutLibrary');
     }
     public function viewHome()
     {

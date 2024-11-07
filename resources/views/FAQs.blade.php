@@ -85,38 +85,64 @@
                         <!-- FAQ Item 5 -->
                         <div class="border-b border-gray-200">
                             <h2 @click="selected !== 5 ? selected = 5 : selected = null" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
-                                <span class="text-lg font-semibold text-gray-900">{{ __('') }}</span>
+                                <span class="text-lg font-semibold text-gray-900">{{ __('How far away do I need to be from the camera?') }}</span>
                                 <svg :class="selected == 5 ? 'rotate-180' : ''" class="h-5 w-5 text-gray-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </h2>
                             <div x-show="selected == 5" x-transition x-cloak class="p-4 text-gray-600">
-                                {{ __('') }}
+                                {{ __('Please make sure your full body is captured by being at least four feet away from the camera. Move closer/further if needed.') }}
                             </div>
                         </div>
 
                         <!-- FAQ Item 6 -->
                         <div class="border-b border-gray-200">
                             <h2 @click="selected !== 6 ? selected = 6 : selected = null" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
-                                <span class="text-lg font-semibold text-gray-900">{{ __('') }}</span>
+                                <span class="text-lg font-semibold text-gray-900">{{ __('How accurate is FitFocus?') }}</span>
                                 <svg :class="selected == 6 ? 'rotate-180' : ''" class="h-5 w-5 text-gray-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </h2>
                             <div x-show="selected == 6" x-transition x-cloak class="p-4 text-gray-600">
-                                {{ __('') }}
+                                {{ __('FitFocus\'s human pose estimation has been trained to detect and analyze your posture up to 92% accuracy.') }}
                             </div>
                         </div>
 
                         <!-- FAQ Item 7 -->
                         <div class="border-b border-gray-200">
                             <h2 @click="selected !== 7 ? selected = 7 : selected = null" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
-                                <span class="text-lg font-semibold text-gray-900">{{ __('') }}</span>
+                                <span class="text-lg font-semibold text-gray-900">{{ __('Do I need to pay to use FitFocus?') }}</span>
                                 <svg :class="selected == 7 ? 'rotate-180' : ''" class="h-5 w-5 text-gray-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </h2>
                             <div x-show="selected == 7" x-transition x-cloak class="p-4 text-gray-600">
+                                {{ __('No, FitFocus is completely free. All you need to do is register for an account, establish your details, and you\'re all set!') }}
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 8 -->
+                        <div class="border-b border-gray-200">
+                            <h2 @click="selected !== 8 ? selected = 8 : selected = null" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
+                                <span class="text-lg font-semibold text-gray-900">{{ __('') }}</span>
+                                <svg :class="selected == 8 ? 'rotate-180' : ''" class="h-5 w-5 text-gray-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </h2>
+                            <div x-show="selected == 8" x-transition x-cloak class="p-4 text-gray-600">
+                                {{ __('') }}
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 9 -->
+                        <div class="border-b border-gray-200">
+                            <h2 @click="selected !== 9 ? selected = 9 : selected = null" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
+                                <span class="text-lg font-semibold text-gray-900">{{ __('') }}</span>
+                                <svg :class="selected == 9 ? 'rotate-180' : ''" class="h-5 w-5 text-gray-500 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </h2>
+                            <div x-show="selected == 9" x-transition x-cloak class="p-4 text-gray-600">
                                 {{ __('') }}
                             </div>
                         </div>

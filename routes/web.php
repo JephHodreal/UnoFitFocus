@@ -15,7 +15,7 @@ Route::get('/', function () {
 Route::get('Home', [HomeController::class, 'viewHome'])->name('home');
 Route::get('About-Us', [HomeController::class, 'viewAboutUs'])->name('AboutUs');
 Route::get('Frequently-Asked-Questions', [HomeController::class, 'viewFAQs'])->name('FAQs');
-Route::get('Exercises', [HomeController::class, 'viewExercises'])->name('Exercises');
+Route::get('Workout-Library', [HomeController::class, 'viewWorkoutLibrary'])->name('WorkoutLibrary');
 Route::get('Privacy-Policy', [HomeController::class, 'viewPrivacyPolicy'])->name('PrivacyPolicy');
 Route::get('Terms-and-Conditions', [HomeController::class, 'viewToC'])->name('TermsAndConditions');
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
