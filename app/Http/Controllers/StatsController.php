@@ -98,21 +98,46 @@ class StatsController extends Controller
 
     private function getImprovementData($userId, $exercise)
     {
-        $data = StatsDashboard::where('fk_user_id', $userId)
-                    ->where('exercise', $exercise)
-                    ->orderBy('created_at', 'asc')
-                    ->get(['score', 'created_at']);
+        $difficulties = ['Beginner', 'Intermediate', 'Advanced'];
+        $dataByDifficulty = [];
+        $thirtyDaysAgo = Carbon::now()->subDays(30);
+        $today = Carbon::now();
 
-        $dates = $data->pluck('created_at')->map(function ($date) {
-            return $date->format('m/d/y');
-        });
+        // Generate a complete date range for the last 30 days
+        $dateRange = [];
+        for ($date = $thirtyDaysAgo->copy(); $date->lte($today); $date->addDay()) {
+            $dateRange[] = $date->format('m/d/y');
+        }
 
-        $scores = $data->pluck('score');
+        foreach ($difficulties as $difficulty) {
+            // Retrieve scores for the exercise, user, and difficulty within the last 30 days
+            $data = StatsDashboard::where('fk_user_id', $userId)
+                ->where('exercise', $exercise)
+                ->where('difficulty', $difficulty)
+                ->where('created_at', '>=', $thirtyDaysAgo)
+                ->orderBy('created_at', 'asc')
+                ->get(['score', 'created_at']);
 
-        return [
-            'dates' => $dates,
-            'scores' => $scores
-        ];
+            // Map the scores to the respective dates
+            $scoresByDate = [];
+            foreach ($data as $item) {
+                $date = Carbon::parse($item->created_at)->format('m/d/y');
+                $scoresByDate[$date] = $item->score;
+            }
+
+            // Create the scores array, inserting nulls for missing dates
+            $scoresArray = [];
+            foreach ($dateRange as $date) {
+                $scoresArray[] = $scoresByDate[$date] ?? null;
+            }
+
+            $dataByDifficulty[$difficulty] = [
+                'dates' => $dateRange,
+                'scores' => $scoresArray
+            ];
+        }
+
+        return $dataByDifficulty;
     }
 }
 
