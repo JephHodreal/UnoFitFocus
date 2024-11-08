@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import numpy as np
+import time
 from flask import Flask, Response, jsonify, request
 from flask_cors import CORS
 import pickle
@@ -131,25 +132,32 @@ def workout_tracker(workout, workout_angles):
     
     target_reps = 12
     target_sets = 3
-    target_time = 0
+    target_time = 30
 
     # Track for Plank
     if workout in ["Plank"]:
         if 55 < workout_angles["right_elbow_angle"] < 125:
             if workout_angles["right_knee_angle"] >= 170 or workout_angles["left_knee_angle"] >= 170:
                 if start_time is None:
-                    start_time = cap.get(cv2.CAP_PROP_POS_FRAMES) / 1000
-                elapsed_time = (cap.get(cv2.CAP_PROP_POS_FRAMES) / 1000) - start_time
+                    start_time = time.time()
+                elapsed_time = time.time() - start_time
+                if elapsed_time >= target_time:
+                    stage = "completed"
         elif 55 < workout_angles["left_elbow_angle"] < 125:
             if workout_angles["right_knee_angle"] >= 170 or workout_angles["left_knee_angle"] >= 170:
                 if start_time is None:
-                    start_time = cap.get(cv2.CAP_PROP_POS_FRAMES) / 1000
-                elapsed_time = (cap.get(cv2.CAP_PROP_POS_FRAMES) / 1000) - start_time
+                    start_time = time.time()
+                elapsed_time = time.time() - start_time
+                if elapsed_time >= target_time:
+                    stage = "completed"
         else:
             start_time = None
             elapsed_time = 0
 
-        total_time = f"{elapsed_time: .2f} sec"
+        if stage != "completed":
+            total_time = f"{elapsed_time: .2f}"
+        else:
+            total_time = f"{target_time: .2f}"
 
     # Track for Push-Up
     elif workout in ["Push-Up"]:
@@ -283,8 +291,12 @@ def get_prediction():
 
 @app.route('/set_workout', methods=['POST'])
 def set_workout():
-    global workout, model, reps
+    global workout, model, reps, sets, start_time, stage, set_counter
     reps = 0
+    sets = "0/3"
+    set_counter = 0
+    start_time = None
+    stage = None
     data = request.get_json()
     new_workout = data.get("workout", "")
     if new_workout != workout:
