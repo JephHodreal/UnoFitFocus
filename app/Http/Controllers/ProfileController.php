@@ -28,7 +28,7 @@ class ProfileController extends Controller
         ->where(function ($query) {
             $query->whereNull('height')
                   ->orWhereNull('weight')
-                  ->orWhereNull('birthdate')
+                  ->orWhereNull('age')
                   ->orWhereNull('gender');
         })
         ->exists();
@@ -67,7 +67,7 @@ class ProfileController extends Controller
         $userDetails->first_name = $request->name;
         $userDetails->middle_name = $request->middle_name;
         $userDetails->last_name = $request->last_name;
-        $userDetails->birthdate = $request->birthdate;
+        $userDetails->age = $request->age;
         $userDetails->height = $request->height;
         $userDetails->weight = $request->weight;
         $userDetails->gender = $request->gender;

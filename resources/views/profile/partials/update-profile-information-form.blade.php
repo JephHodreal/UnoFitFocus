@@ -60,11 +60,12 @@
             @endif
         </div>
 
+        <!-- Age -->
         <div>
-            <x-input-label for="birthdate" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Birthdate')" />
-            <input id="birthdate" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="date" name="birthdate" value ="{{ $userInfo->birthdate ?? '' }}" min="1900-01-01" max="{{ date('Y-m-d') }}" required autocomplete="Birthdate" />
-            <x-input-error :messages="$errors->get('birthdate')" class="mt-2" />
-        </div> 
+            <x-input-label for="age" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Age')" />
+            <x-text-input id="age" class="block mt-1 w-full" type="text" name="age" :value="old('age', $userInfo->age)" required autocomplete="age" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
+            <x-input-error :messages="$errors->get('age')" class="mt-2" />
+        </div>
 
         <!-- Height -->
         <div>

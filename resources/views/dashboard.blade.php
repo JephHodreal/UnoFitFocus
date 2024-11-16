@@ -69,7 +69,7 @@
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 text-gray-900">
-                            <h3 class="text-xl font-bold mb-6">{{ __('Workouts') }}</h3>
+                            <h3 class="text-xl font-bold mb-6">{{ __('Workout Summary') }}</h3>
                             <table class="table-auto w-full mb-6 hover-highlight">
                                 <thead>
                                     <tr>

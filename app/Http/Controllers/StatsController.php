@@ -25,7 +25,7 @@ class StatsController extends Controller
         ->where(function ($query) {
             $query->whereNull('height')
                   ->orWhereNull('weight')
-                  ->orWhereNull('birthdate')
+                  ->orWhereNull('age')
                   ->orWhereNull('gender');
         })
         ->exists();

@@ -10,7 +10,6 @@
         <x-guest-layout>
             <div class="flex flex-col sm:justify-center items-center sm:pt-[10%] bg-gray-100">
                 <!-- Session Status -->
-                <x-auth-session-status :status="session('status')"/>
                 <x-slot name="header">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         {{ __('Forgot your password?') }}
@@ -21,6 +20,7 @@
                 </x-slot>
                 <div class="w-1/2 lg:max-w-4xl sm:max-w-md px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                     <main>
+                        <x-auth-session-status class="text-center" :status="session('status')"/>
                         <form method="POST" action="{{ route('password.email') }}">
                             @csrf
                         
