@@ -1,28 +1,44 @@
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 import pickle
 
 # Load csv file
 df = pd.read_csv('script/landmarks.csv')
 
 # Seperate dependent and independent variables
-X = df.iloc[:, 2:]
+X = df.iloc[:, 2:10]
 y = df.iloc[:, 1]
+
+# Encode target labels as integers
+label_encoder = LabelEncoder()
+y = label_encoder.fit_transform(y)
 
 # Split train and test data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
 
-# Feature scaling
-X_train = StandardScaler().fit_transform(X_train)
-X_test = StandardScaler().fit_transform(X_test)
+# Define which columns are categorical (first 8 columns: 'exercise', 'difficulty', 'elbow_position', 'elbow_correctness', 'hip_position', 'hip_correctness', 'knee_position', 'knee_correctness')
+categorical_columns = list(range(2))
 
-# Instantiate the classification model
-clf = RandomForestClassifier()
+# Create ColumnTransformer: OneHotEncode the categorical columns and leave numerical columns as is
+preprocessor = ColumnTransformer(
+    transformers = [
+        ('categories', OneHotEncoder(), categorical_columns)
+    ], remainder = 'passthrough'  # Leave numerical columns unchanged
+)
 
-# Fit the model with train data
-clf.fit(X_train, y_train)
+# Create a pipeline with preprocessing and classifier steps
+pipeline = Pipeline(steps = [
+    ('preprocessor', preprocessor),
+    ('classifier', RandomForestClassifier())
+])
 
-# Pickle the model
-pickle.dump(clf, open("script/model.pkl", 'wb'))
+# Fit the model on the training data
+pipeline.fit(X_train, y_train)
+
+# Save the trained pipeline to a file
+with open('script/model.pkl', 'wb') as f:
+    pickle.dump(pipeline, f)

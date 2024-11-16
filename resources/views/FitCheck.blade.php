@@ -197,6 +197,7 @@
         const scriptOutput4 = document.getElementById('script-output4');
         let isCameraActive = false;
         const workout = "{{ $workout }}";
+        const difficulty = "{{$difficulty}}";
 
         // Function to show modal
         function showModal() {
@@ -255,19 +256,19 @@
             fetch("http://127.0.0.1:5000/get_prediction")                
                 .then(response => response.json())
                 .then(data => {
-                    scriptOutput.textContent = `Prediction: ${data.latest_prediction.prediction}`;
+                    scriptOutput.textContent = `Prediction: ${data.latest_prediction.prediction.charAt(0).toUpperCase() + data.latest_prediction.prediction.slice(1)} Posture`;
                     if (workout === "Plank"){
                         if (data.stage === "completed"){
                             scriptOutput3.textContent = `Time:  ${data.total_time} sec - Completed`;
                         }else{
                             scriptOutput3.textContent = `Time:  ${data.total_time} sec`;
                         }
-                        scriptOutput4.textContent = `Score:  ${data.score}`;
+                        scriptOutput4.textContent = `Score:  ${data.score} sec`;
                     }else if (workout === "Push-Up" || workout === "Squat"){
                         scriptOutput1.textContent = `Reps:  ${data.repetitions}`;
                         scriptOutput2.textContent = `Sets:  ${data.sets}`;
                         scriptOutput3.textContent = `Stage:  ${data.stage}`;
-                        scriptOutput4.textContent = `Score:  ${data.score}`;
+                        scriptOutput4.textContent = `Score:  ${data.score}/100`;
                     }
                 })
                 .catch(error => console.error('Error fetching prediction:', error));
@@ -276,13 +277,13 @@
         setInterval(fetchPrediction, 100);
 
         // Function to send workout type to Flask backend
-        function setWorkout(workoutType) {
+        function setWorkout(workoutType, difficulty) {
             fetch('http://127.0.0.1:5000/set_workout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ workout: workoutType }),
+                body: JSON.stringify({ workout: workoutType, difficulty: difficulty }),
             })
             .then(response => response.json())
             .then(data => {
@@ -294,7 +295,7 @@
         }
 
         // Call the function to send the workout to Flask when the page is loaded
-        setWorkout(workout);
+        setWorkout(workout, difficulty);
 
         // Show the modal automatically on page load
         window.onload = showModal;

@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import time
+from model import label_encoder
 from flask import Flask, Response, jsonify, request
 from flask_cors import CORS
 import pickle
@@ -26,35 +27,21 @@ stage = None
 total_time = ""
 start_time = None
 elapsed_time = 0
+raw_score = 0
 score = 0
 set_counter = 0
 
 # Add a global variable to store the workout type
 workout = ""  # Initial value; replace with an actual workout type when received
+difficulty = "" # Initial value; replace with an actual difficulty when received
 
-# Variable to hold the loaded model
-model = None
-"""
-def load_model(workout_type):
-    global model
-    if workout_type == "Plank":
-        with open('script/classifier_plank.pkl', 'rb') as model_file:
-            model = pickle.load(model_file)
-    elif workout_type == "Push-Up":
-        with open('script/classifier_pushup.pkl', 'rb') as model_file:
-            model = pickle.load(model_file)
-    elif workout_type == "Squat":
-        with open('script/classifier_squat.pkl', 'rb') as model_file:
-            model = pickle.load(model_file)
-    else:
-"""
 with open('script/model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
 def generate_frames():
-    global workout, model
+    global workout, difficulty, model
     while cap.isOpened():
-        global latest_prediction, reps, sets, stage, total_time, score
+        global reps, sets, stage, total_time, score
         # read the camera frame
         success, frame = cap.read()
         if not success:
@@ -82,26 +69,16 @@ def generate_frames():
                 mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
 
                 workout_landmarks = get_workout_landmarks(landmarks)
-                workout_angles = calculate_workout_angles(workout, workout_landmarks)
+                workout_angles = calculate_workout_angles(workout_landmarks)
                 draw_workout_angles(frame, workout, workout_landmarks, workout_angles)
 
-                output = workout_tracker(workout, workout_angles)
+                output = workout_tracker(workout, difficulty, workout_angles, model)
 
                 reps = output[0]
                 sets = output[1]
                 stage = output[2]
                 total_time = output[3]
                 score = output[4]
-
-                # Convert landmarks to a flat list
-                landmarks_flat = np.array([[lm.x, lm.y, lm.z, lm.visibility] for lm in landmarks]).flatten()
-                if model:
-                    # Make prediction if model is loaded
-                    prediction = model.predict([landmarks_flat])
-                    # Update latest prediction for access by the JSON endpoint
-                    latest_prediction = {"prediction": prediction[0]}
-                else:
-                    latest_prediction = {"prediction": "No model loaded"}
                     
             # Encode the frame in JPEG format
             ret, buffer = cv2.imencode('.jpg', frame)
@@ -123,16 +100,41 @@ def calculate_angle(a, b, c):
 
     return angle
 
-def workout_tracker(workout, workout_angles):
+def workout_tracker(workout, difficulty, workout_angles, model):
     # Variables to track workout
-    global reps, sets, stage, total_time, score, start_time, elapsed_time, set_counter
+    global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction
 
     if stage == "completed":
+        raw_score = 0
         return reps, sets, stage, total_time, score
     
-    target_reps = 12
-    target_sets = 3
-    target_time = 30
+    if difficulty in ["Beginner"]:
+        target_reps = 12
+        target_sets = 3
+        target_time = 15
+    elif difficulty in ["Intermediate"]:
+        target_reps = 20
+        target_sets = 3
+        target_time = 30
+    elif difficulty in ["Advanced"]:
+        target_reps = 30
+        target_sets = 3
+        target_time = 60
+
+    input_data = [workout.lower().replace("-", ""), difficulty.lower()] + list(workout_angles.values())
+    input_data = np.array(input_data).reshape(1, -1)
+
+    print("Input data for prediction:", input_data)
+
+    if model:
+        # Make prediction if model is loaded
+        prediction = model.predict(input_data)
+        # Convert numerical prediction back to original string label
+        decoded_prediction = label_encoder.inverse_transform(prediction)
+        # Update latest prediction for access by the JSON endpoint
+        latest_prediction = {"prediction": decoded_prediction[0]}
+    else:
+        latest_prediction = {"prediction": "No model loaded"}
 
     # Track for Plank
     if workout in ["Plank"]:
@@ -183,8 +185,11 @@ def workout_tracker(workout, workout_angles):
             if stage == "down":
                 stage = "up"
                 reps += 1
+                if (prediction == 0):
+                    raw_score += 1
             if stage == "You are too low":
                 stage = "up"
+                reps += 1
 
     # Track for Squat
     elif workout in ["Squat"]:
@@ -210,9 +215,13 @@ def workout_tracker(workout, workout_angles):
             if stage == "down":
                 stage = "up"
                 reps += 1
+                if (prediction == 0):
+                    raw_score += 1
             if stage == "You are too low":
                 stage = "up"
+                reps += 1
 
+    score = f"{raw_score}/{(target_reps * target_sets)} {(raw_score / (target_reps * target_sets)) * 100: .2f}"
     return reps, sets, stage, total_time, score
 
 def get_workout_landmarks(landmarks):
@@ -233,24 +242,16 @@ def get_workout_landmarks(landmarks):
     }
     return workout_landmarks
 
-def calculate_workout_angles(workout, workout_landmarks): 
-    # Calculate angles based on landmark coordinates
-    if workout in ["Plank", "Push-Up"]:
-         # Calculate angles for plank/pushup
-        workout_angles = {
-            "right_elbow_angle": calculate_angle(workout_landmarks["right_wrist"], workout_landmarks["right_elbow"], workout_landmarks["right_shoulder"]),
-            "left_elbow_angle": calculate_angle(workout_landmarks["left_wrist"], workout_landmarks["left_elbow"], workout_landmarks["left_shoulder"]),
-            "right_knee_angle": calculate_angle(workout_landmarks["right_hip"], workout_landmarks["right_knee"], workout_landmarks["right_ankle"]),
-            "left_knee_angle": calculate_angle(workout_landmarks["left_hip"], workout_landmarks["left_knee"], workout_landmarks["left_ankle"])
-        }
-    else:
-         # Calculate angles for squat
-        workout_angles = {
-            "right_hip_angle": calculate_angle(workout_landmarks["right_shoulder"], workout_landmarks["right_hip"], workout_landmarks["right_knee"]),
-            "left_hip_angle": calculate_angle(workout_landmarks["left_shoulder"], workout_landmarks["left_hip"], workout_landmarks["left_knee"]),
-            "right_knee_angle": calculate_angle(workout_landmarks["right_hip"], workout_landmarks["right_knee"], workout_landmarks["right_ankle"]),
-            "left_knee_angle": calculate_angle(workout_landmarks["left_hip"], workout_landmarks["left_knee"], workout_landmarks["left_ankle"])
-        }
+def calculate_workout_angles(workout_landmarks): 
+    # Calculate angles
+    workout_angles = {
+        "right_elbow_angle": calculate_angle(workout_landmarks["right_wrist"], workout_landmarks["right_elbow"], workout_landmarks["right_shoulder"]),
+        "left_elbow_angle": calculate_angle(workout_landmarks["left_wrist"], workout_landmarks["left_elbow"], workout_landmarks["left_shoulder"]),
+        "right_hip_angle": calculate_angle(workout_landmarks["right_shoulder"], workout_landmarks["right_hip"], workout_landmarks["right_knee"]),
+        "left_hip_angle": calculate_angle(workout_landmarks["left_shoulder"], workout_landmarks["left_hip"], workout_landmarks["left_knee"]),
+        "right_knee_angle": calculate_angle(workout_landmarks["right_hip"], workout_landmarks["right_knee"], workout_landmarks["right_ankle"]),
+        "left_knee_angle": calculate_angle(workout_landmarks["left_hip"], workout_landmarks["left_knee"], workout_landmarks["left_ankle"])
+    }
     return workout_angles
 
 def draw_workout_angles(frame, workout, workout_landmarks, workout_angles):
@@ -291,14 +292,16 @@ def get_prediction():
 
 @app.route('/set_workout', methods=['POST'])
 def set_workout():
-    global workout, model, reps, sets, start_time, stage, set_counter
+    global workout, model, reps, sets, start_time, stage, set_counter, score, difficulty
     reps = 0
     sets = "0/3"
     set_counter = 0
+    score = 0
     start_time = None
     stage = None
     data = request.get_json()
     new_workout = data.get("workout", "")
+    difficulty = data.get("difficulty", "")
     if new_workout != workout:
         workout = new_workout
         #load_model(workout)
