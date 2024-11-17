@@ -11,13 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        /*Schema::create('li_user', function (Blueprint $table) {
-            $table->bigInteger('li_user_id')->unsigned()->primary();
-            $table->string('email')->unique()->index();
-            $table->string('password')->index();
-            $table->timestamps(); //created and updated
-        });*/
-
         Schema::create('user_info', function (Blueprint $table) {
             $table->bigIncrements('user_info_id');
             $table->bigInteger('user_id')->unsigned();
@@ -29,11 +22,12 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
-            $table->date('birthdate')->nullable();
-            $table->integer('height')->nullable();
-            $table->integer('weight')->nullable();
+            $table->integer('age')->nullable();
+            $table->float('height', 5, 2)->nullable();
+            $table->float('weight', 5, 2)->nullable();
+            $table->float('bmi', 5, 2)->nullable();
             $table->string('gender')->nullable();
-            $table->string('profile_pic')->nullable();
+            $table->string('profile_pic')->default('assets/images/placeholder.png');
             $table->timestamps(); //created and updated
         });
     }
@@ -43,7 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //Schema::dropIfExists('li_user');
         Schema::dropIfExists('user_info');
     }
 };

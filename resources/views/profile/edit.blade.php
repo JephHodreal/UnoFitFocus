@@ -91,9 +91,10 @@
                                 <strong>Middle Name:</strong> <span>{{ $userInfo->middle_name }}</span>
                                 <strong>Last Name:</strong> <span>{{ $userInfo->last_name }}</span>
                                 <strong>Email:</strong> <span>{{ $user->email }}</span>
-                                <strong>Birthdate:</strong> <span>{{ $userInfo->birthdate }}</span>
+                                <strong>Age:</strong> <span>{{ $userInfo->age }}</span>
                                 <strong>Height:</strong> <span>{{ $userInfo->height }} cm</span>
                                 <strong>Weight:</strong> <span>{{ $userInfo->weight }} kg</span>
+                                <strong>BMI:</strong> <span>{{ $userInfo->bmi }}</span>
                                 <strong>Gender:</strong> <span>{{ $userInfo->gender }}</span>
                             </div>
                         </div>
@@ -102,7 +103,7 @@
                         <template x-if="showPictureModal">
                             <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-opacity">
                                 <div class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto relative">
-                                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Change Profile Picture</h3>
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4">{{ __('Change Profile Picture') }}</h3>
 
                                     <!-- File Input for Profile Picture -->
                                     <form action="{{ route('profile.updatePicture') }}" method="POST" enctype="multipart/form-data">

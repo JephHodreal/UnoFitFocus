@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Workout Library | FitFocus</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body x-data="{ openModal: null }">
     <x-guest-layout>
@@ -146,7 +146,7 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="container mx-auto py-2 px-6">
                         <h2 class="text-4xl font-bold text-center pt-8 mb-10">{{ __('Warm-Up and Cooldown Exercises') }}</h2>
-                        <p class="text-center text-gray-600 mb-10">
+                        <p class="text-justify text-gray-600 mb-10">
                             {{ __('It is important to conduct warm-up and cooldown exercises before and after a workout session, 
                             respectively. Warm-ups increases your heart rate and blood flow to improve oxygen delivery, reduces the 
                             risk of injuries or strains, and enhances performances. Cooldowns help lower the heart rate and blood flow 
@@ -171,69 +171,6 @@
 
         <!-- Modals Container -->
         <div>
-            <!-- Push-Up Modal -->
-            <x-modal name="push-up-modal" maxWidth="lg" x-show="openModal === 'push-up-modal'" @click.away="openModal = null">
-                <div class="p-6">
-                    <h2 class="text-2xl font-bold mb-4">{{ __('Push-Up') }}</h2>
-                    <p class="text-gray-700 mb-4">{{ __('The push-up is an upper body exercise that targets the chest, shoulders, and triceps while also working out the biceps, back, stomach, and hips.') }}</p>
-                    <p class="text-gray-700 mb-4 font-bold">{{ __('Benefits:') }}</p>
-                    <ul class="list-disc list-inside mb-4">
-                        <li>{{ __('Increases upper-body strength and engages the core') }} </li>
-                        <li>{{ __('Strengthening your back, shoulders, and abs can help improve posture') }} </li>
-                        <li>{{ __('As a type of strength training, it supports bone health and boosts heart health') }} </li>
-                    </ul>
-                    <p class="text-gray-700 mb-4 font-bold">{{ __('Process:') }}</p>
-                    <ol class="list-decimal list-inside">
-                        <li>{{ __('Start in a plank position with your hands under your shoulders.') }}</li>
-                        <li>{{ __('Lower your body until your chest nearly touches the floor.') }}</li>
-                        <li>{{ __('Push through your palms to raise your body back to the starting position.') }}</li>
-                    </ol>
-                    <img src="../assets/images/pu_standard.gif" alt="Push Up" class="object-contain h-96 w-full">
-                </div>
-            </x-modal>
-
-            <!-- Squat Modal -->
-            <x-modal name="squat-modal" maxWidth="lg" x-show="openModal === 'squat-modal'" @click.away="openModal = null">
-                <div class="p-6">
-                    <h2 class="text-2xl font-bold mb-4">{{ __('Squat') }}</h2>
-                    <p class="text-gray-700 mb-4">{{ __('The squat is a fundamental exercise that targets the quadriceps, hamstrings, and glutes while working out the core, hips, calves, obliques.') }}</p>
-                    <p class="text-gray-700 mb-4 font-bold">{{ __('Benefits:') }}</p>
-                    <ul class="list-disc list-inside mb-4">
-                        <li>{{ __('Helps build muscle and burn calories fast') }} </li>
-                        <li>{{ __('Strengthening the lower body muscles can boost speed and keep bones strong') }} </li>
-                        <li>{{ __('By working out the core, it improves mobility and balance') }} </li>
-                    </ul>
-                    <p class="text-gray-700 mb-4 font-bold">{{ __('Process:') }}</p>
-                    <ol class="list-decimal list-inside mb-4">
-                        <li>{{ __('Stand with your feet shoulder-width apart.')}}</li>
-                        <li>{{ __('Lower your hips as if sitting back into a chair.')}}</li>
-                        <li>{{ __('Push through your heels to return to the starting position.')}}</li>
-                    </ol>
-                    <img src="../assets/images/sq_standard.gif" alt="Squat" class="object-contain h-96 w-full mb-4">
-                </div>
-            </x-modal>
-
-            <!-- Plank Modal -->
-            <x-modal name="plank-modal" maxWidth="lg" x-show="openModal === 'plank-modal'" @click.away="openModal = null">
-                <div class="p-6">
-                    <h2 class="text-2xl font-bold mb-4">{{ __('Plank') }}</h2>
-                    <p class="text-gray-700 mb-4">{{ __('The plank is a core-strengthening exercise that engages multiple muscle groups.') }}</p>
-                    <p class="text-gray-700 mb-4 font-bold">{{ __('Benefits:') }}</p>
-                    <ul class="list-disc list-inside mb-4">
-                        <li>{{ __('Can reduce lower back pain') }} </li>
-                        <li>{{ __('Improves balance, stability, and endurance') }} </li>
-                        <li>{{ __('By strengthening the core, it promotes good posture') }} </li>
-                    </ul>
-                    <p class="text-gray-700 mb-4 font-bold">{{ __('Process:') }}</p>
-                    <ol class="list-decimal list-inside mb-4">
-                        <li>{{ __('Start in a forearm plank position with your elbows under your shoulders.')}}</li>
-                        <li>{{ __('Keep your body in a straight line from head to toes.')}}</li>
-                        <li>{{ __('Hold the position as long as possible without dropping your hips.')}}</li>
-                    </ol>
-                    <img src="../assets/images/pl_standard.gif" alt="Plank" class="object-contain h-96 w-full mb-4">
-                </div>
-            </x-modal>
-
             <!-- Warm-Up Modal -->
             <x-modal name="warmup-modal" maxWidth="lg" x-show="openModal === 'warmup-modal'">
                 <div x-data="{ currentSlide: 0, exercises: [
@@ -263,7 +200,7 @@
                         <h3 class="text-lg font-semibold mb-2">How to Perform:</h3>
                         <ol class="list-decimal pl-5 space-y-2">
                             <template x-for="(step, index) in exercises[currentSlide].steps" :key="`${currentSlide}-${index}`">
-                                <li class="text-gray-700" x-text="`${index + 1}. ${step}`"></li>
+                                <li class="text-gray-700" x-text="`${index + 1}. ${currentSlide}.. ${currentSlide-index}.. ${step}`"></li>
                             </template>
                         </ol>
                     </div>

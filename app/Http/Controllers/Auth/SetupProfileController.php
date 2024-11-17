@@ -29,10 +29,15 @@ class SetupProfileController extends Controller
     {
         $user_info = UserDetails::where('user_id', Auth::id())->first();
 
-        $user_info->birthdate = $request->birthdate;
+        $user_info->age = $request->age;
         $user_info->height = $request->height;
         $user_info->weight = $request->weight;
         $user_info->gender = $request->gender;
+
+        // Calculate BMI
+        $heightInMeters = $request->height / 100;
+        $bmi = $request->weight / ($heightInMeters * $heightInMeters);
+        $user_info->bmi = round($bmi, 2);
 
         if ($request->hasFile('profile_pic')) {
             $file = $request->file('profile_pic');

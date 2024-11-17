@@ -12,14 +12,13 @@ class LoginController extends Controller
 {
     protected function create(array $data)
     {
-        // First, create a record in the li_user table
+        // create a record in the users table
         $loginUser = User::create([
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
 
-        // Then, create a record in the user_info table using the ID of the created login_info record
-        
+        // create a record in the user_info table
         UserDetails::create([
             'user_id' => $loginUser->id,
             'first_name' => $data['first_name'],
