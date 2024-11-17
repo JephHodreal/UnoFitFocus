@@ -113,10 +113,12 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         target_sets = 3
         target_time = 15
     elif difficulty in ["Intermediate"]:
+        difficulty = "Standard"
         target_reps = 20
         target_sets = 3
         target_time = 30
     elif difficulty in ["Advanced"]:
+        difficulty = "Standard"
         target_reps = 30
         target_sets = 3
         target_time = 60
