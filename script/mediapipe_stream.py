@@ -29,6 +29,8 @@ start_time = None
 elapsed_time = 0
 raw_score = 0
 score = 0
+modalScore1 = 0
+modalScore2 = 0
 set_counter = 0
 
 # Add a global variable to store the workout type
@@ -102,14 +104,14 @@ def calculate_angle(a, b, c):
 
 def workout_tracker(workout, difficulty, workout_angles, model):
     # Variables to track workout
-    global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction
+    global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction, modalScore1, modalScore2
 
     if stage == "completed":
         raw_score = 0
         return reps, sets, stage, total_time, score
     
     if difficulty in ["Beginner"]:
-        target_reps = 12
+        target_reps = 2
         target_sets = 3
         target_time = 15
     elif difficulty in ["Intermediate"]:
@@ -224,7 +226,9 @@ def workout_tracker(workout, difficulty, workout_angles, model):
                 reps += 1
 
     score = f"{raw_score}/{(target_reps * target_sets)} {(raw_score / (target_reps * target_sets)) * 100: .2f}"
-    return reps, sets, stage, total_time, score
+    modalScore1 = {raw_score}/{(target_reps * target_sets)}
+    modalScore2 = f"{(raw_score / (target_reps * target_sets)) * 100: .2f}"
+    return reps, sets, stage, total_time, score, modalScore1, modalScore2
 
 def get_workout_landmarks(landmarks):
     # Get coordinates for workout-related landmarks
@@ -288,7 +292,9 @@ def get_prediction():
         "sets": sets,
         "stage": stage,
         "total_time": total_time,
-        "score": score
+        "score": score,
+        "modalScore1": modalScore1,
+        "modalScore2": modalScore2
     }
     return jsonify(result)
 

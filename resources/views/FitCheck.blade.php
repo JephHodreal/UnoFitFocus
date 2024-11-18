@@ -15,12 +15,13 @@
             align-items: center; /* Center vertically */
             margin-top: 20px;
             background-color: black; /* Black background */
-            height: 400px; /* Set a height for the camera container */
+            height: 70%; /* Set a height for the camera container */
+            width: 70%;
             position: relative; /* For absolute positioning of the button */
         }
         #video-stream {
             width: 100%;
-            max-width: 600px;
+            height: 100%;
             border: 2px solid black;
             display: none; /* Hide video initially */
         }
@@ -79,11 +80,11 @@
                 <h2 class="text-xl text-gray-600">
                     Task: {{ $task }}
                 </h2>
-                <pre id="script-output">
+                {{-- <pre id="script-output">
                     Waiting for Camera:
-                </pre>
+                </pre> --}}
                 <!-- Table structure for Reps, Set, Stage, and Score -->
-                <table class="mx-auto mt-4 text-xl text-gray-600">
+                {{-- <table class="mx-auto mt-4 text-xl text-gray-600">
                     <tr>
                         <td class="text-left" style="width: 350px;"><pre id="script-output1">Reps:</pre></td>
                         <td class="text-left" style="width: 350px;"><pre id="script-output2">Sets:</pre></td>
@@ -92,7 +93,7 @@
                         <td class="text-left" style="width: 350px;"><pre id="script-output3">Stage:</pre></td>
                         <td class="text-left" style="width: 350px;"><pre id="script-output4">Score:</pre></td>
                     </tr>
-                </table>
+                </table> --}}
             </div>
             
             <div class="py-12 flex justify-center">
@@ -100,6 +101,27 @@
                     <button id="start-camera">Start Camera</button>
                     <img id="video" alt="Live Posture Check"></img>
                 </div>
+                <table class="mx-auto text-xl text-gray-600">
+                    <tr>
+                        <td>
+                        <pre id="script-output">
+                            Waiting for Camera:
+                        </pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" style="width: 350px;"><pre id="script-output1">Reps:</pre></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" style="width: 350px;"><pre id="script-output2">Sets:</pre></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" style="width: 350px;"><pre id="script-output3">Stage:</pre></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" style="width: 350px;"><pre id="script-output4">Score:</pre></td>
+                    </tr>
+                </table>
             </div>
 
             <!-- New button to open results modal -->
@@ -116,7 +138,7 @@
                     <p><strong>Workout:</strong> {{ $workout }}</p>
                     <p><strong>Difficulty:</strong> {{ $difficulty }}</p>
                     <p><strong>Task:</strong> {{ $task }}</p>
-                    <p><strong>Score:</strong> 70</p> <!-- Example static score; replace with dynamic score when ready -->
+                    <p><strong>Score:</strong><pre id="modalResult"></pre></p> <!-- Example static score; replace with dynamic score when ready -->
                     
                     <!-- Score Progress Bar -->
                     <div class="w-full bg-gray-200 rounded-full h-4 mt-2 mb-4">
@@ -195,6 +217,7 @@
         const scriptOutput2 = document.getElementById('script-output2');
         const scriptOutput3 = document.getElementById('script-output3');
         const scriptOutput4 = document.getElementById('script-output4');
+        const modalResult = document.getElementById('modalResult');
         let isCameraActive = false;
         const workout = "{{ $workout }}";
         const difficulty = "{{$difficulty}}";
@@ -230,6 +253,8 @@
             if (video.src === "") {
                 video.src = "http://127.0.0.1:5000/video_feed"; // Set the src when the button is clicked
                 video.style.display = 'block'; // Show video once camera starts
+                video.style.height = '100%';
+                video.style.width = '100%';
                 startCameraButton.style.display = 'none'; // Hide button after starting camera
                 isCameraActive = true; //flag to check if camera is active     
             }
@@ -269,6 +294,10 @@
                         scriptOutput2.textContent = `Sets:  ${data.sets}`;
                         scriptOutput3.textContent = `Stage:  ${data.stage}`;
                         scriptOutput4.textContent = `Score:  ${data.score}/100`;
+                    }
+                    if (data.stage === "completed"){
+                        resultsModal.classList.remove('hidden');
+                        modalResult.textContent = `Score:  ${data.modalScore2}/100`;
                     }
                 })
                 .catch(error => console.error('Error fetching prediction:', error));
