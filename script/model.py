@@ -20,7 +20,7 @@ y = label_encoder.fit_transform(y)
 # Split train and test data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
 
-# Define which columns are categorical (first 8 columns: 'exercise', 'difficulty', 'elbow_position', 'elbow_correctness', 'hip_position', 'hip_correctness', 'knee_position', 'knee_correctness')
+# Define which columns are categorical (first 8 columns: 'exercise', 'difficulty')
 categorical_columns = list(range(2))
 
 # Create ColumnTransformer: OneHotEncode the categorical columns and leave numerical columns as is

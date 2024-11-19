@@ -32,6 +32,7 @@ score = 0
 modalScore1 = 0
 modalScore2 = 0
 set_counter = 0
+overall_start_time = None
 
 # Add a global variable to store the workout type
 workout = ""  # Initial value; replace with an actual workout type when received
@@ -47,7 +48,6 @@ def generate_frames():
         # read the camera frame
         success, frame = cap.read()
         if not success:
-            prediction = {"workout": "No data"}
             reps = 0
             sets = "0/3"
             stage = None
@@ -104,9 +104,17 @@ def calculate_angle(a, b, c):
 
 def workout_tracker(workout, difficulty, workout_angles, model):
     # Variables to track workout
-    global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction, modalScore1, modalScore2
+    global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction, modalScore1, modalScore2, overall_start_time
+    """
+    workout_angles["left_elbow_angle"] = 99.8373963572712
+    workout_angles["right_elbow_angle"] = 83.12409255542481
+    workout_angles["left_hip_angle"] =  165.57508483824574
+    workout_angles["right_hip_angle"] = 163.84893486956926
+    workout_angles["left_knee_angle"] =  178.95603280543958
+    workout_angles["right_knee_angle"] =  178.45619864154318"""
 
     if stage == "completed":
+        overall_elapsed_time = 0
         raw_score = 0
         return reps, sets, stage, total_time, score
     
@@ -142,28 +150,46 @@ def workout_tracker(workout, difficulty, workout_angles, model):
 
     # Track for Plank
     if workout in ["Plank"]:
-        if 55 < workout_angles["right_elbow_angle"] < 125:
-            if workout_angles["right_knee_angle"] >= 170 or workout_angles["left_knee_angle"] >= 170:
-                if start_time is None:
-                    start_time = time.time()
-                elapsed_time = time.time() - start_time
-                if elapsed_time >= target_time:
-                    stage = "completed"
-        elif 55 < workout_angles["left_elbow_angle"] < 125:
-            if workout_angles["right_knee_angle"] >= 170 or workout_angles["left_knee_angle"] >= 170:
-                if start_time is None:
-                    start_time = time.time()
-                elapsed_time = time.time() - start_time
-                if elapsed_time >= target_time:
-                    stage = "completed"
+        # Start overall timer when the user first assumes correct posture
+        if overall_start_time is None and (
+            55 < workout_angles["right_elbow_angle"] < 125 or 55 < workout_angles["left_elbow_angle"] < 125
+        ):
+            overall_start_time = time.time()
+
+        # Check if the user is in the correct posture
+        if prediction == 0 and (
+            55 < workout_angles["right_elbow_angle"] < 125 or 55 < workout_angles["left_elbow_angle"] < 125
+        ):
+            if start_time is None:
+                # Start or resume the correct posture timer
+                start_time = time.time() - elapsed_time
+            elapsed_time = time.time() - start_time
         else:
-            start_time = None
-            elapsed_time = 0
+            # Pause correct posture timer when posture breaks
+            if start_time is not None:
+                elapsed_time = time.time() - start_time
+                start_time = None
+
+        # Calculate overall elapsed time
+        if overall_start_time is not None:
+            overall_elapsed_time = time.time() - overall_start_time
+            # Check if target time for overall timer is met
+            if overall_elapsed_time >= target_time:
+                stage = "completed"
+        else:
+            overall_elapsed_time = 0
+
+        # Display times
+        if elapsed_time >= target_time:
+            elapsed_time = target_time
+        raw_score = (elapsed_time / target_time) * 100
 
         if stage != "completed":
-            total_time = f"{elapsed_time: .2f}"
+            total_time = f"{overall_elapsed_time:.2f}"
+            score = f"{raw_score:.2f}"
         else:
             total_time = f"{target_time: .2f}"
+            score = f"{raw_score:.2f}"
 
     # Track for Push-Up
     elif workout in ["Push-Up"]:
@@ -225,38 +251,52 @@ def workout_tracker(workout, difficulty, workout_angles, model):
                 stage = "up"
                 reps += 1
 
-    score = f"{raw_score}/{(target_reps * target_sets)} {(raw_score / (target_reps * target_sets)) * 100: .2f}"
-    modalScore1 = {raw_score}/{(target_reps * target_sets)}
-    modalScore2 = f"{(raw_score / (target_reps * target_sets)) * 100: .2f}"
+    if workout in ["Plank"]:
+        modalScore2 = f"{total_time}/{target_time}"
+        modalScore2 = score
+    elif workout in ["Push-Up", "Squat"]:
+        score = f"{raw_score}/{(target_reps * target_sets)} {(raw_score / (target_reps * target_sets)) * 100: .2f}"
+        modalScore1 = f"{raw_score}/{(target_reps * target_sets)}"
+        modalScore2 = f"{(raw_score / (target_reps * target_sets)) * 100: .2f}"
     return reps, sets, stage, total_time, score, modalScore1, modalScore2
 
-def get_workout_landmarks(landmarks):
+def get_workout_landmarks(landmarks, visibility_threshold = 0.75):
     # Get coordinates for workout-related landmarks
-    workout_landmarks = {
-        "right_shoulder": [landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].y],
-        "right_elbow": [landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].y],
-        "right_wrist": [landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].y],
-        "right_hip": [landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].y],
-        "right_knee": [landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].y],
-        "right_ankle": [landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].y],
-        "left_shoulder": [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x, landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y],
-        "left_elbow": [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x, landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y],
-        "left_wrist": [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x, landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y],
-        "left_hip": [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x, landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y],
-        "left_knee": [landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].y],
-        "left_ankle": [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y],
-    }
+    workout_landmarks = {}
+    
+    # List of relevant landmarks
+    landmark_names = [
+        ("right_shoulder", mp_pose.PoseLandmark.RIGHT_SHOULDER),
+        ("right_elbow", mp_pose.PoseLandmark.RIGHT_ELBOW),
+        ("right_wrist", mp_pose.PoseLandmark.RIGHT_WRIST),
+        ("right_hip", mp_pose.PoseLandmark.RIGHT_HIP),
+        ("right_knee", mp_pose.PoseLandmark.RIGHT_KNEE),
+        ("right_ankle", mp_pose.PoseLandmark.RIGHT_ANKLE),
+        ("left_shoulder", mp_pose.PoseLandmark.LEFT_SHOULDER),
+        ("left_elbow", mp_pose.PoseLandmark.LEFT_ELBOW),
+        ("left_wrist", mp_pose.PoseLandmark.LEFT_WRIST),
+        ("left_hip", mp_pose.PoseLandmark.LEFT_HIP),
+        ("left_knee", mp_pose.PoseLandmark.LEFT_KNEE),
+        ("left_ankle", mp_pose.PoseLandmark.LEFT_ANKLE),
+    ]
+    
+    # Extract coordinates for landmarks with sufficient visibility
+    for name, landmark_enum in landmark_names:
+        landmark = landmarks[landmark_enum.value]
+        #if landmark.visibility >= visibility_threshold:
+        workout_landmarks[name] = [landmark.x, landmark.y]
+    
     return workout_landmarks
 
 def calculate_workout_angles(workout_landmarks): 
     # Calculate angles
     workout_angles = {
-        "right_elbow_angle": calculate_angle(workout_landmarks["right_wrist"], workout_landmarks["right_elbow"], workout_landmarks["right_shoulder"]),
         "left_elbow_angle": calculate_angle(workout_landmarks["left_wrist"], workout_landmarks["left_elbow"], workout_landmarks["left_shoulder"]),
-        "right_hip_angle": calculate_angle(workout_landmarks["right_shoulder"], workout_landmarks["right_hip"], workout_landmarks["right_knee"]),
+        "right_elbow_angle": calculate_angle(workout_landmarks["right_wrist"], workout_landmarks["right_elbow"], workout_landmarks["right_shoulder"]),
         "left_hip_angle": calculate_angle(workout_landmarks["left_shoulder"], workout_landmarks["left_hip"], workout_landmarks["left_knee"]),
-        "right_knee_angle": calculate_angle(workout_landmarks["right_hip"], workout_landmarks["right_knee"], workout_landmarks["right_ankle"]),
-        "left_knee_angle": calculate_angle(workout_landmarks["left_hip"], workout_landmarks["left_knee"], workout_landmarks["left_ankle"])
+        "right_hip_angle": calculate_angle(workout_landmarks["right_shoulder"], workout_landmarks["right_hip"], workout_landmarks["right_knee"]),
+        "left_knee_angle": calculate_angle(workout_landmarks["left_hip"], workout_landmarks["left_knee"], workout_landmarks["left_ankle"]),
+        "right_knee_angle": calculate_angle(workout_landmarks["right_hip"], workout_landmarks["right_knee"], workout_landmarks["right_ankle"])
     }
     return workout_angles
 
@@ -266,18 +306,12 @@ def draw_workout_angles(frame, workout, workout_landmarks, workout_angles):
         coord = tuple(np.multiply(landmark, [frame.shape[1], frame.shape[0]]).astype(int))
         cv2.putText(frame, f"{workout_angles[angle_name]:.2f}", coord, cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
-    if workout in ["Plank", "Push-Up"]:
-        # Draw each angle on the frame for plank/pushup
-        draw_angle_text("right_elbow_angle", workout_landmarks["right_elbow"])
-        draw_angle_text("left_elbow_angle", workout_landmarks["left_elbow"])
-        draw_angle_text("right_knee_angle", workout_landmarks["right_knee"])
-        draw_angle_text("left_knee_angle", workout_landmarks["left_knee"])
-    else:
-        # Draw each angle on the frame for squat
-        draw_angle_text("right_hip_angle", workout_landmarks["right_hip"])
-        draw_angle_text("right_knee_angle", workout_landmarks["right_knee"])
-        draw_angle_text("left_hip_angle", workout_landmarks["left_hip"])
-        draw_angle_text("left_knee_angle", workout_landmarks["left_knee"])
+    draw_angle_text("right_elbow_angle", workout_landmarks["right_elbow"])
+    draw_angle_text("left_elbow_angle", workout_landmarks["left_elbow"])
+    draw_angle_text("right_knee_angle", workout_landmarks["right_knee"])
+    draw_angle_text("left_knee_angle", workout_landmarks["left_knee"])
+    draw_angle_text("left_hip_angle", workout_landmarks["left_hip"])
+    draw_angle_text("left_knee_angle", workout_landmarks["left_knee"])
         
 @app.route('/video_feed')
 def video_feed():
@@ -300,13 +334,14 @@ def get_prediction():
 
 @app.route('/set_workout', methods=['POST'])
 def set_workout():
-    global workout, model, reps, sets, start_time, stage, set_counter, score, difficulty
+    global workout, model, reps, sets, start_time, stage, set_counter, score, difficulty, overall_start_time
     reps = 0
     sets = "0/3"
     set_counter = 0
     score = 0
     start_time = None
     stage = None
+    overall_start_time = None
     data = request.get_json()
     new_workout = data.get("workout", "")
     difficulty = data.get("difficulty", "")

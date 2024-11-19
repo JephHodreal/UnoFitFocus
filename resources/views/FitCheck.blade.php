@@ -288,7 +288,7 @@
                         }else{
                             scriptOutput3.textContent = `Time:  ${data.total_time} sec`;
                         }
-                        scriptOutput4.textContent = `Score:  ${data.score} sec`;
+                        scriptOutput4.textContent = `Score:  ${data.score}/100`;
                     }else if (workout === "Push-Up" || workout === "Squat"){
                         scriptOutput1.textContent = `Reps:  ${data.repetitions}`;
                         scriptOutput2.textContent = `Sets:  ${data.sets}`;
