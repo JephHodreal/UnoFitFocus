@@ -126,8 +126,6 @@
     </form>
 </section>
 
-{{-- <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script> --}}
 <script>
     document.getElementById('cancel-edit-btn').addEventListener('click', function() {
         // Hide the password edit form and show the view-only mode (if applicable)

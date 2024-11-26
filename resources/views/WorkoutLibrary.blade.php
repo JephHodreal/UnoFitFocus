@@ -108,7 +108,7 @@
                         <!-- Information Column -->
                         <div class="md:w-1/2 space-y-4">
                             <h2 class="text-2xl font-bold">{{ __('Plank') }}</h2>
-                            <p class="text-gray-700">{{ __('The plank is a core-strengthening exercise that engages multiple muscle groups, , working out the core, glutes, quads, shoulders, arms, chest, abdominals, and back.') }}</p>
+                            <p class="text-gray-700">{{ __('The plank is a core-strengthening exercise that engages multiple muscle groups, working out the core, glutes, quads, shoulders, arms, chest, abdominals, and back.') }}</p>
                             <p class="text-gray-700 font-bold">{{ __('Benefits:') }}</p>
                             <ul class="list-disc list-inside text-gray-700">
                                 <li>{{ __('Can reduce lower back pain') }} </li>
