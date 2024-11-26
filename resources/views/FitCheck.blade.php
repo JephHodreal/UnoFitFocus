@@ -80,6 +80,9 @@
                 <h2 class="text-xl text-gray-600">
                     Task: {{ $task }}
                 </h2>
+                <h2 id="timer" class="text-xl text-red-600 font-bold mt-2">
+                    Timer: 5:00
+                </h2>
                 {{-- <pre id="script-output">
                     Waiting for Camera:
                 </pre> --}}
@@ -221,6 +224,11 @@
         let isCameraActive = false;
         const workout = "{{ $workout }}";
         const difficulty = "{{$difficulty}}";
+        let isModalShown = false;
+        let timer = document.getElementById('timer');
+        let countdownInterval;
+        let isFetching = true;
+        timer.style.color = 'green';
 
         // Function to show modal
         function showModal() {
@@ -247,6 +255,44 @@
             nextSlideButton.classList.toggle('hidden', currentSlide === slides.length - 1);
             getStartedButton.classList.toggle('hidden', currentSlide !== slides.length - 1);
         }
+
+        // Function to start the countdown timer
+        function startTimer(duration) {
+            let timeRemaining = duration; // Time in seconds (5 minutes = 300 seconds)
+
+            // Clear any existing timer interval
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+
+            // Update the timer display every second
+            countdownInterval = setInterval(() => {
+                let minutes = Math.floor(timeRemaining / 60);
+                let seconds = timeRemaining % 60;
+
+                // Format the time as mm:ss
+                timer.textContent = `Timer: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+                // Decrement the timer
+                if (timeRemaining > 0) {
+                    timeRemaining--;
+                } else {
+                    clearInterval(countdownInterval);
+                    timer.textContent = 'Time\'s up!';
+                    timer.style.color = 'red';
+                    isTimerActive = false;
+                    stop_prediction();
+                }
+            }, 1000); // 1000ms = 1 second
+        }
+
+        function stop_prediction() {
+            isFetching = false; // Stop fetchPrediction loop
+            resultsModal.classList.remove('hidden'); // Show results modal
+            modalResult.textContent = `Score: ${scriptOutput4.textContent.split(':')[1].trim()}`; // Display final score in modal
+            isModalShown = true; // Prevent re-triggering the modal
+        }
+
         
         // Request access to the camera
         startCameraButton.addEventListener('click', () => {
@@ -256,12 +302,13 @@
                 video.style.height = '100%';
                 video.style.width = '100%';
                 startCameraButton.style.display = 'none'; // Hide button after starting camera
-                isCameraActive = true; //flag to check if camera is active     
+                isCameraActive = true; //flag to check if camera is active
+                startTimer(300); // Start the timer with 5 minutes (300 seconds)
             }
         });
 
         function fetchPrediction() {
-            if (!isCameraActive) { // Only fetch prediction if camera is active
+            if (!isFetching || !isCameraActive) { // Stop if not fetching prediction or if camera is active
                 scriptOutput.textContent = "Waiting for Camera"; // Keep showing "No data" if camera is not active
                 
                 if (workout === "Plank"){
@@ -295,15 +342,20 @@
                         scriptOutput3.textContent = `Stage:  ${data.stage}`;
                         scriptOutput4.textContent = `Score:  ${data.score}/100`;
                     }
-                    if (data.stage === "completed"){
-                        resultsModal.classList.remove('hidden');
-                        modalResult.textContent = `Score:  ${data.modalScore2}/100`;
+                    if (data.stage === "completed" && !isModalShown){
+                        stop_prediction();
+                        clearInterval(countdownInterval); // Stop the timer
+                        timer.textContent = 'Workout Completed!';
                     }
                 })
                 .catch(error => console.error('Error fetching prediction:', error));
         }
 
-        setInterval(fetchPrediction, 100);
+        setInterval(() => {
+            if (isFetching) {
+                fetchPrediction();
+            }
+        }, 1000);
 
         // Function to send workout type to Flask backend
         function setWorkout(workoutType, difficulty) {
@@ -369,6 +421,7 @@
         resultsModal.addEventListener('click', (event) => {
             if (event.target === resultsModal) {
                 resultsModal.classList.add('hidden');
+                isModalShown = false;
             }
         });
     </script>
