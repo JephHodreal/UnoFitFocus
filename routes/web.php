@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\FitCheckController;
 use App\Http\Controllers\Auth\GoogleController;
 
@@ -19,13 +20,6 @@ Route::get('Workout-Library', [HomeController::class, 'viewWorkoutLibrary'])->na
 Route::get('Privacy-Policy', [HomeController::class, 'viewPrivacyPolicy'])->name('PrivacyPolicy');
 Route::get('Terms-and-Conditions', [HomeController::class, 'viewToC'])->name('TermsAndConditions');
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//Route::post('/posture-check', [PostureController::class, 'checkPosture']);
-
-//Route::post('/posture-check', [FitCheckController::class, 'checkPosture']);
-//Route::get('/fitcheck', [FitCheckController::class, 'show']);
-Route::post('/Fitcheck', [FitCheckController::class, 'show'])
-    ->middleware(['auth', 'verified'])
-    ->name('FitCheck');
 
 Route::get('/dashboard', [StatsController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -41,9 +35,13 @@ Route::get('/Setup', function () {
     return view('Setup');
 })->middleware(['auth', 'verified'])->name('Setup');
 
-Route::get('/Workout', function () {
-    return view('Workout');
-})->middleware(['auth', 'verified'])->name('Workout');
+Route::get('/Workout', [WorkoutController::class, 'showWorkout'])
+    ->middleware(['auth', 'verified'])
+    ->name('Workout');
+
+Route::post('/Fitcheck', [FitCheckController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('FitCheck');
 
 Route::post('/Setup', function () {
     return view('Setup');

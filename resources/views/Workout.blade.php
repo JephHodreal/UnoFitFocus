@@ -28,6 +28,7 @@
                         @csrf
                         <input type="hidden" name="workout" id="workoutInput">
                         <input type="hidden" name="difficulty" id="difficultyInput">
+                        <input type="hidden" name="task" id="taskInput">
 
                         <div class="flex justify-around mt-8">
                             <div class="workout-item w-72 cursor-pointer transform transition-transform duration-300 hover:scale-105" id="pushup">
@@ -46,7 +47,7 @@
                         
                         <div class="modal fixed inset-0 hidden bg-black bg-opacity-60 justify-center items-center" id="modal">
                             <div class="bg-white p-8 rounded-lg text-center max-w-md w-full">
-                                <h2 class="text-xl font-bold mb-6" id="workout-title">Select Difficulty</h2>
+                                <h2 class="text-xl font-bold mb-6" id="workout-title">{{ __('Select Difficulty') }}</h2>
                                 <div class="flex justify-around my-4">
                                     <button type="button" class="difficulty-btn border-green-500 border-2 text-green-500 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" data-difficulty="Beginner">Beginner</button>
                                     <button type="button" class="difficulty-btn border-yellow-500 border-2 text-yellow-500 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" data-difficulty="Intermediate">Intermediate</button>
@@ -69,6 +70,7 @@
     </main>
 
     <script>
+        const scores = @json($scores);
         let selectedWorkout = null;
         let selectedDifficulty = null;
 
@@ -77,6 +79,7 @@
         const modal = document.getElementById('modal');
         const workoutInput = document.getElementById('workoutInput');
         const difficultyInput = document.getElementById('difficultyInput');
+        const taskInput = document.getElementById('taskInput');
         const taskDescription = document.getElementById('taskDescription');
         const goBtn = document.getElementById('goBtn');
 
@@ -98,6 +101,34 @@
             }
         };
 
+        // Check if a difficulty is selectable
+        function isDifficultySelectable(workout, difficulty) {
+            const levels = ["Beginner", "Intermediate", "Advanced"];
+            const levelIndex = levels.indexOf(difficulty);
+
+            if (levelIndex === 0) return true;
+
+            const prevLevel = levels[levelIndex - 1];
+            const prevScore = scores[workout]?.find(s => s.difficulty === prevLevel)?.max_score || 0;
+
+            return prevScore >= 100;
+        }
+
+        // Enable/Disable buttons based on scores
+        function updateButtonStates() {
+            difficultyBtns.forEach(btn => {
+                const difficulty = btn.dataset.difficulty;
+                if (!isDifficultySelectable(selectedWorkout, difficulty)) {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            });
+        }
+
+        // Handle workout selection
         workoutOptions.forEach(option => {
             option.addEventListener('click', function () {
                 selectedWorkout = option.querySelector('p').innerText;
@@ -105,12 +136,15 @@
                 workoutInput.value = selectedWorkout;
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
+                updateButtonStates(); // Update button states based on the selected workout
             });
         });
 
+        // Handle difficulty selection
         difficultyBtns.forEach(btn => {
             btn.addEventListener('click', function () {
-                difficultyBtns.forEach(b => {b.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white');
+                difficultyBtns.forEach(b => {
+                    b.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white');
                     if (b.classList.contains('border-green-500')) {
                         b.classList.add('text-green-500');
                     } else if (b.classList.contains('border-yellow-500')) {
@@ -146,19 +180,41 @@
             });
         });
 
-        document.getElementById('closeBtn').addEventListener('click', function () {
+        goBtn.addEventListener('click', function () {
+            if (selectedWorkout && selectedDifficulty) {
+                document.getElementById('workoutInput').value = selectedWorkout;
+                document.getElementById('difficultyInput').value = selectedDifficulty;
+                document.getElementById('taskInput').value = tasks[selectedWorkout][selectedDifficulty];
+
+                document.getElementById('workoutForm').submit();
+            } else {
+                alert("Please select a valid workout and difficulty.");
+            }
+        });
+
+        modal.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Cancel button click
+        document.getElementById('closeBtn').addEventListener('click', closeModal);
+
+        function closeModal() {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
             selectedWorkout = null;
             selectedDifficulty = null;
             workoutInput.value = '';
             difficultyInput.value = '';
+            taskInput.value = '';
             taskDescription.innerText = '';
             goBtn.disabled = true;
             goBtn.classList.add('bg-gray-400', 'text-gray-700', 'cursor-not-allowed');
             goBtn.classList.remove('bg-green-600', 'text-white');
             difficultyBtns.forEach(btn => btn.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white'));
-        });
+        }
     </script>
 </body>
 </html>
