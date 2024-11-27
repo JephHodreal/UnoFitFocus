@@ -124,6 +124,9 @@
                     <tr>
                         <td class="text-left" style="width: 350px;"><pre id="script-output4">Score:</pre></td>
                     </tr>
+                    <tr>
+                        <td class="text-left" style="width: 350px;" id="script-output5">Posture Feedback</td>
+                    </tr>
                 </table>
             </div>
 
@@ -227,6 +230,7 @@
         const scriptOutput2 = document.getElementById('script-output2');
         const scriptOutput3 = document.getElementById('script-output3');
         const scriptOutput4 = document.getElementById('script-output4');
+        const scriptOutput5 = document.getElementById('script-output5');
         const modalResult = document.getElementById('modalResult');
         let isCameraActive = false;
         const workout = "{{ $workout }}";
@@ -336,6 +340,18 @@
                 .then(response => response.json())
                 .then(data => {
                     scriptOutput.textContent = `Prediction: ${data.latest_prediction.prediction.charAt(0).toUpperCase() + data.latest_prediction.prediction.slice(1)} Posture`;
+
+                    // Update the background color based on the prediction
+                    if (data.latest_prediction.prediction === "correct") {
+                        scriptOutput5.textContent = "Correct Posture";
+                        scriptOutput5.style.backgroundColor = "green";
+                        scriptOutput5.style.color = "white";
+                    } else {
+                        scriptOutput5.textContent = "Incorrect Posture";
+                        scriptOutput5.style.backgroundColor = "red";
+                        scriptOutput5.style.color = "white";
+                    }
+
                     if (workout === "Plank"){
                         if (data.stage === "completed"){
                             scriptOutput3.textContent = `Time:  ${data.total_time} sec - Completed`;
