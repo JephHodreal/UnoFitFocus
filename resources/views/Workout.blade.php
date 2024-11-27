@@ -82,7 +82,7 @@
 
         const tasks = {
             "Push-Up": {
-                "Beginner": "Knees on floor push-up, 15 reps",
+                "Beginner": "Knees on floor push-up, 12 reps",
                 "Intermediate": "Standard push-up, 20 reps",
                 "Advanced": "Standard push-up, 30 reps"
             },
@@ -110,15 +110,25 @@
 
         difficultyBtns.forEach(btn => {
             btn.addEventListener('click', function () {
-                difficultyBtns.forEach(b => b.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white'));
-                btn.classList.add('text-white');
+                difficultyBtns.forEach(b => {b.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white');
+                    if (b.classList.contains('border-green-500')) {
+                        b.classList.add('text-green-500');
+                    } else if (b.classList.contains('border-yellow-500')) {
+                        b.classList.add('text-yellow-500');
+                    } else if (b.classList.contains('border-red-500')) {
+                        b.classList.add('text-red-500');
+                    }
+                });
 
-                if (btn.classList.contains('text-green-500')) {
-                    btn.classList.add('bg-green-500');
-                } else if (btn.classList.contains('text-yellow-500')) {
-                    btn.classList.add('bg-yellow-500');
-                } else if (btn.classList.contains('text-red-500')) {
-                    btn.classList.add('bg-red-500');
+                if (btn.classList.contains('border-green-500')) {
+                    btn.classList.remove('text-green-500');
+                    btn.classList.add('bg-green-500', 'text-white');
+                } else if (btn.classList.contains('border-yellow-500')) {
+                    btn.classList.remove('text-yellow-500');
+                    btn.classList.add('bg-yellow-500', 'text-white');
+                } else if (btn.classList.contains('border-red-500')) {
+                    btn.classList.remove('text-red-500');
+                    btn.classList.add('bg-red-500', 'text-white');
                 }
 
                 selectedDifficulty = btn.dataset.difficulty;

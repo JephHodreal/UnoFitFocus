@@ -134,6 +134,13 @@
                 </button>
             </div>
 
+            <!-- New button to stop workout -->
+            <div class="text-center mt-6">
+                <button id="end-workout-button" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                    End Workout
+                </button>
+            </div>
+            
             <!-- Workout Results Modal -->
             <div id="results-modal" class="modal fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
                 <div class="modal-content bg-white rounded-lg p-6 relative max-w-md mx-auto text-center">
@@ -289,11 +296,10 @@
         function stop_prediction() {
             isFetching = false; // Stop fetchPrediction loop
             resultsModal.classList.remove('hidden'); // Show results modal
-            modalResult.textContent = `Score: ${scriptOutput4.textContent.split(':')[1].trim()}`; // Display final score in modal
+            modalResult.textContent = scriptOutput4.textContent.split('Score: ')[1].trim() // Display final score in modal
             isModalShown = true; // Prevent re-triggering the modal
         }
 
-        
         // Request access to the camera
         startCameraButton.addEventListener('click', () => {
             if (video.src === "") {
@@ -302,6 +308,7 @@
                 video.style.height = '100%';
                 video.style.width = '100%';
                 startCameraButton.style.display = 'none'; // Hide button after starting camera
+                timer.style.color = 'green';
                 isCameraActive = true; //flag to check if camera is active
                 startTimer(300); // Start the timer with 5 minutes (300 seconds)
             }
@@ -409,6 +416,14 @@
         const resultsModal = document.getElementById('results-modal');
         const showResultsButton = document.getElementById('show-results-button');
         const closeResultsModalButton = document.getElementById('close-results-modal');
+        const endWorkoutButton = document.getElementById('end-workout-button');
+
+        endWorkoutButton.addEventListener('click', () => {
+            stop_prediction();
+            clearInterval(countdownInterval); // Stop the timer
+            timer.style.color = 'red';
+            timer.textContent = 'Workout Stopped!';
+        });
 
         showResultsButton.addEventListener('click', () => {
             resultsModal.classList.remove('hidden');

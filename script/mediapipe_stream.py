@@ -119,7 +119,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         return reps, sets, stage, total_time, score
     
     if difficulty in ["Beginner"]:
-        target_reps = 2
+        target_reps = 12
         target_sets = 3
         target_time = 15
     elif difficulty in ["Intermediate"]:
