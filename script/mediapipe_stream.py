@@ -41,6 +41,21 @@ difficulty = "" # Initial value; replace with an actual difficulty when received
 with open('script/model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
+def generate_delay_frames():
+    while cap.isOpened():
+        success, frame = cap.read()  # Capture frame-by-frame
+        if not success:
+            break
+        else:
+            # Encode the frame to JPEG format
+            ret, buffer = cv2.imencode('.jpg', frame)
+            if not ret:
+                break
+            frame = buffer.tobytes()  # Convert frame to bytes
+            # Yield the frame as a multipart response
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
 def generate_frames():
     global workout, difficulty, model
     while cap.isOpened():
@@ -103,18 +118,22 @@ def calculate_angle(a, b, c):
     return angle
 
 def workout_tracker(workout, difficulty, workout_angles, model):
+
     # Variables to track workout
     global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction, modalScore1, modalScore2, overall_start_time
+    
     """
     workout_angles["left_elbow_angle"] = 99.8373963572712
     workout_angles["right_elbow_angle"] = 83.12409255542481
     workout_angles["left_hip_angle"] =  165.57508483824574
     workout_angles["right_hip_angle"] = 163.84893486956926
     workout_angles["left_knee_angle"] =  178.95603280543958
-    workout_angles["right_knee_angle"] =  178.45619864154318"""
-
+    workout_angles["right_knee_angle"] =  178.45619864154318
+    """
+    
     if stage == "completed":
         overall_elapsed_time = 0
+        elapsed_time = 0
         raw_score = 0
         return reps, sets, stage, total_time, score, modalScore1, modalScore2
     
@@ -153,15 +172,11 @@ def workout_tracker(workout, difficulty, workout_angles, model):
     # Track for Plank
     if workout in ["Plank"]:
         # Start overall timer when the user first assumes correct posture
-        if overall_start_time is None and (
-            55 < workout_angles["right_elbow_angle"] < 125 or 55 < workout_angles["left_elbow_angle"] < 125
-        ):
+        if overall_start_time is None and prediction == 0 and (55 < workout_angles["right_elbow_angle"] < 125 and 55 < workout_angles["left_elbow_angle"] < 125):
             overall_start_time = time.time()
 
         # Check if the user is in the correct posture
-        if prediction == 0 and (
-            55 < workout_angles["right_elbow_angle"] < 125 or 55 < workout_angles["left_elbow_angle"] < 125
-        ):
+        if prediction == 0 and (55 < workout_angles["right_elbow_angle"] < 125 or 55 < workout_angles["left_elbow_angle"] < 125):
             if start_time is None:
                 # Start or resume the correct posture timer
                 start_time = time.time() - elapsed_time
@@ -322,6 +337,10 @@ def video_feed():
     # Stream the video frames as a multipart response
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/delay_feed')
+def delay_feed():
+    return Response(generate_delay_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 @app.route('/get_prediction')
 def get_prediction():
     result = {
@@ -343,7 +362,7 @@ def set_workout():
     sets = "0/3"
     set_counter = 0
     raw_score = 0
-    score = "0"
+    score = ""
     start_time = None
     stage = None
     overall_start_time = None

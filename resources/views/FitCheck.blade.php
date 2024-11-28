@@ -306,38 +306,57 @@
 
         // Request access to the camera
         startCameraButton.addEventListener('click', () => {
-            video.style.display = 'block'; // Show video once camera starts
+            // Start the camera feed
+            video.src = "http://127.0.0.1:5000/delay_feed"; // Set the src when the button is clicked
+            video.style.display = 'block'; // Show video after countdown finishes
             video.style.height = '100%';
             video.style.width = '100%';
             startCameraButton.style.display = 'none'; // Hide button after starting camera
-            
-            if (video.src === "") {
-                let countdown = 10; // 10-second countdown
-                const countdownDisplay = document.createElement('div'); // Create a countdown display element
-                countdownDisplay.style.position = 'absolute';
-                countdownDisplay.style.top = '50%';
-                countdownDisplay.style.left = '50%';
-                countdownDisplay.style.transform = 'translate(-50%, -50%)';
-                countdownDisplay.style.fontSize = '2rem';
-                countdownDisplay.style.color = 'red';
-                countdownDisplay.style.textAlign = 'center';
-                document.body.appendChild(countdownDisplay);
+            isFetching = false;
 
-                const countdownInterval = setInterval(() => {
-                    countdownDisplay.textContent = `Starting in ${countdown} seconds...`;
-                    countdown -= 1;
-                    if (countdown < 0) {
-                        clearInterval(countdownInterval);
-                        document.body.removeChild(countdownDisplay); // Remove the countdown display
+            let countdown = 10; // 10-second countdown
+            const countdownDisplay = document.createElement('div'); // Create a countdown display element
+            countdownDisplay.style.position = 'absolute';
+            countdownDisplay.style.top = '50%';
+            countdownDisplay.style.left = '50%';
+            countdownDisplay.style.transform = 'translate(-50%, -50%)';
+            countdownDisplay.style.fontSize = '2rem';
+            countdownDisplay.style.color = 'red';
+            countdownDisplay.style.textAlign = 'center';
+            countdownDisplay.style.zIndex = '20'; 
 
-                        // Start the camera feed
-                        video.src = "http://127.0.0.1:5000/video_feed"; // Set the src when the button is clicked
-                        timer.style.color = 'green';
-                        isCameraActive = true; //flag to check if camera is active
-                        startTimer(300); // Start the timer with 5 minutes (300 seconds)
-                    }
-                }, 1000);
-            }
+            // Create the overlay element
+            const overlay = document.createElement('div');
+            overlay.style.position = 'absolute';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'black';
+            overlay.style.opacity = '0.25'; // 25% opacity
+            overlay.style.zIndex = '10'; // Ensure it sits above the video
+
+            video.parentElement.appendChild(overlay);
+            video.parentElement.appendChild(countdownDisplay);
+
+            const countdownInterval = setInterval(() => {
+                countdownDisplay.textContent = `Starting in ${countdown} seconds...`;
+                countdown -= 1;
+                if (countdown < 0) {
+                    isFetching = true;
+                    clearInterval(countdownInterval);
+                    video.parentElement.removeChild(overlay);
+                    video.parentElement.removeChild(countdownDisplay); // Remove the countdown display
+                    video.src = "http://127.0.0.1:5000/video_feed"; // Set the src when the button is clicked
+                    video.style.display = 'block'; // Show video after countdown finishes
+                    video.style.height = '100%';
+                    video.style.width = '100%';
+                    startCameraButton.style.display = 'none'; // Hide button after starting camera
+                    timer.style.color = 'green';
+                    isCameraActive = true; //flag to check if camera is active
+                    startTimer(300); // Start the timer with 5 minutes (300 seconds)
+                }
+            }, 1000);
         });
 
         function fetchPrediction() {
@@ -390,7 +409,7 @@
                     if (data.stage === "completed" && !isModalShown){
                         stop_prediction();
                         clearInterval(countdownInterval); // Stop the timer
-                        timer.textContent = 'Workout Completed!';
+                        timer.textContent = 'Workout Complete!';
                     }
                 })
                 .catch(error => console.error('Error fetching prediction:', error));
