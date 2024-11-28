@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import numpy as np
+import math
 import time
 from model import label_encoder
 from flask import Flask, Response, jsonify, request
@@ -85,8 +86,9 @@ def generate_frames():
                 landmarks = results.pose_landmarks.landmark
                 mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
 
+                workout_visibility = get_workout_visibility(landmarks)
                 workout_landmarks = get_workout_landmarks(landmarks)
-                workout_angles = calculate_workout_angles(workout_landmarks)
+                workout_angles = calculate_workout_angles(workout_landmarks, workout_visibility)
                 draw_workout_angles(frame, workout, workout_landmarks, workout_angles)
 
                 output = workout_tracker(workout, difficulty, workout_angles, model)
@@ -121,16 +123,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
 
     # Variables to track workout
     global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction, modalScore1, modalScore2, overall_start_time
-    
-    """
-    workout_angles["left_elbow_angle"] = 99.8373963572712
-    workout_angles["right_elbow_angle"] = 83.12409255542481
-    workout_angles["left_hip_angle"] =  165.57508483824574
-    workout_angles["right_hip_angle"] = 163.84893486956926
-    workout_angles["left_knee_angle"] =  178.95603280543958
-    workout_angles["right_knee_angle"] =  178.45619864154318
-    """
-    
+
     if stage == "completed":
         overall_elapsed_time = 0
         elapsed_time = 0
@@ -155,8 +148,20 @@ def workout_tracker(workout, difficulty, workout_angles, model):
     input_data = [workout.lower().replace("-", ""), difficulty.lower()] + list(workout_angles.values())
     input_data = np.array(input_data).reshape(1, -1)
 
-    print("Input data for prediction:", input_data)
+    # Debugging: Print input data with angle names
+    print("Input data for prediction:")
+    print(f"workout: {workout.lower().replace('-', '')}")
+    print(f"difficulty: {difficulty.lower()}")
 
+    for angle_name, angle_value in workout_angles.items():
+        print(f"{angle_name}: {angle_value}")
+
+    # Check if at least one angle is 0
+    if any(angle == 0 for angle in workout_angles.values()):
+        print("At least one angle is not found.")
+        latest_prediction = {"prediction": "At least 1 angle is not found. No"}
+        return reps, sets, "at least one angle is not found", total_time, score, modalScore1, modalScore2
+    
     if model:
         # Make prediction if model is loaded
         prediction = model.predict(input_data)
@@ -206,7 +211,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
             score = f"{raw_score:.2f}"
         else:
             total_time = f"{target_time: .2f}"
-            score = f"{raw_score:.2f}"
+            score = f"{math.ceil(raw_score):.0f}"
 
     # Track for Push-Up
     elif workout in ["Push-Up"]:
@@ -222,7 +227,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
             stage = "completed"
 
         if stage == None:
-            stage = "up"
+            stage = "rest"
 
         if (0 < workout_angles["right_elbow_angle"] < 55) and (0 < workout_angles["left_elbow_angle"] < 55):
             if (prediction == 0):
@@ -253,7 +258,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
             stage = "completed"
 
         if stage == None:
-            stage = "up"
+            stage = "rest"
 
         if (0 < workout_angles["right_knee_angle"] < 55) and (0 < workout_angles["left_knee_angle"] < 55):
             if (prediction == 0):
@@ -274,12 +279,39 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         modalScore2 = f"{total_time}/{target_time}"
         modalScore2 = score
     elif workout in ["Push-Up", "Squat"]:
-        score = f"{raw_score}/{(target_reps * target_sets)} {(raw_score / (target_reps * target_sets)) * 100: .2f}"
+        score = f"{raw_score}/{(target_reps * target_sets)} {math.ceil((raw_score / (target_reps * target_sets)) * 100): .0f}"
         modalScore1 = f"{raw_score}/{(target_reps * target_sets)}"
         modalScore2 = f"{(raw_score / (target_reps * target_sets)) * 100: .2f}"
     return reps, sets, stage, total_time, score, modalScore1, modalScore2
 
-def get_workout_landmarks(landmarks, visibility_threshold = 0.75):
+def get_workout_visibility(landmarks):
+    # Get coordinates for workout-related landmarks
+    workout_visibility = {}
+    
+    # List of relevant landmarks
+    landmark_names = [
+        ("right_shoulder", mp_pose.PoseLandmark.RIGHT_SHOULDER),
+        ("right_elbow", mp_pose.PoseLandmark.RIGHT_ELBOW),
+        ("right_wrist", mp_pose.PoseLandmark.RIGHT_WRIST),
+        ("right_hip", mp_pose.PoseLandmark.RIGHT_HIP),
+        ("right_knee", mp_pose.PoseLandmark.RIGHT_KNEE),
+        ("right_ankle", mp_pose.PoseLandmark.RIGHT_ANKLE),
+        ("left_shoulder", mp_pose.PoseLandmark.LEFT_SHOULDER),
+        ("left_elbow", mp_pose.PoseLandmark.LEFT_ELBOW),
+        ("left_wrist", mp_pose.PoseLandmark.LEFT_WRIST),
+        ("left_hip", mp_pose.PoseLandmark.LEFT_HIP),
+        ("left_knee", mp_pose.PoseLandmark.LEFT_KNEE),
+        ("left_ankle", mp_pose.PoseLandmark.LEFT_ANKLE),
+    ]
+    
+    # Extract coordinates for landmarks with sufficient visibility
+    for name, landmark_enum in landmark_names:
+        landmark = landmarks[landmark_enum.value]
+        workout_visibility[name] = [landmark.visibility]
+    
+    return workout_visibility
+
+def get_workout_landmarks(landmarks):
     # Get coordinates for workout-related landmarks
     workout_landmarks = {}
     
@@ -302,12 +334,11 @@ def get_workout_landmarks(landmarks, visibility_threshold = 0.75):
     # Extract coordinates for landmarks with sufficient visibility
     for name, landmark_enum in landmark_names:
         landmark = landmarks[landmark_enum.value]
-        #if landmark.visibility >= visibility_threshold:
         workout_landmarks[name] = [landmark.x, landmark.y]
     
     return workout_landmarks
 
-def calculate_workout_angles(workout_landmarks): 
+def calculate_workout_angles(workout_landmarks, workout_visibility, visibility_threshold = 0.5): 
     # Calculate angles
     workout_angles = {
         "left_elbow_angle": calculate_angle(workout_landmarks["left_wrist"], workout_landmarks["left_elbow"], workout_landmarks["left_shoulder"]),
@@ -317,6 +348,44 @@ def calculate_workout_angles(workout_landmarks):
         "left_knee_angle": calculate_angle(workout_landmarks["left_hip"], workout_landmarks["left_knee"], workout_landmarks["left_ankle"]),
         "right_knee_angle": calculate_angle(workout_landmarks["right_hip"], workout_landmarks["right_knee"], workout_landmarks["right_ankle"])
     }
+    
+    # Check visibility for each angle
+    if (workout_visibility["left_wrist"][0] < visibility_threshold and workout_visibility["left_elbow"][0] < visibility_threshold and workout_visibility["left_shoulder"][0] < visibility_threshold):
+        workout_angles["left_elbow_angle"] = 0
+
+    if (workout_visibility["right_wrist"][0] < visibility_threshold and workout_visibility["right_elbow"][0] < visibility_threshold and workout_visibility["right_shoulder"][0] < visibility_threshold):
+        workout_angles["right_elbow_angle"] = 0
+
+    if (workout_visibility["left_shoulder"][0] < visibility_threshold and workout_visibility["left_hip"][0] < visibility_threshold and workout_visibility["left_knee"][0] < visibility_threshold):
+        workout_angles["left_hip_angle"] = 0
+
+    if (workout_visibility["right_shoulder"][0] < visibility_threshold and workout_visibility["right_hip"][0] < visibility_threshold and workout_visibility["right_knee"][0] < visibility_threshold):
+        workout_angles["right_hip_angle"] = 0
+
+    if (workout_visibility["left_hip"][0] < visibility_threshold and workout_visibility["left_knee"][0] < visibility_threshold and workout_visibility["left_ankle"][0] < visibility_threshold):
+        workout_angles["left_knee_angle"] = 0
+
+    if (workout_visibility["right_hip"][0] < visibility_threshold and workout_visibility["right_knee"][0] < visibility_threshold and workout_visibility["right_ankle"][0] < visibility_threshold):
+        workout_angles["right_knee_angle"] = 0
+    
+    if abs(workout_visibility["left_elbow"][0] - workout_visibility["right_elbow"][0]) > .50:
+        if (workout_visibility["left_elbow"][0] > workout_visibility["right_elbow"][0]):
+            workout_angles["right_elbow_angle"] = workout_angles["left_elbow_angle"]
+        else:
+            workout_angles["left_elbow_angle"] = workout_angles["right_elbow_angle"]
+
+    if abs(workout_visibility["left_hip"][0] - workout_visibility["right_hip"][0]) > .50:
+        if (workout_visibility["left_hip"][0] > workout_visibility["right_hip"][0]):
+            workout_angles["right_hip_angle"] = workout_angles["left_hip_angle"]
+        else:
+            workout_angles["left_hip_angle"] = workout_angles["right_hip_angle"]
+
+    if abs(workout_visibility["left_knee"][0] - workout_visibility["right_knee"][0]) > .50:
+        if (workout_visibility["left_knee"][0] > workout_visibility["right_knee"][0]):
+            workout_angles["right_knee_angle"] = workout_angles["left_knee_angle"]
+        else:
+            workout_angles["left_knee_angle"] = workout_angles["right_knee_angle"]
+
     return workout_angles
 
 def draw_workout_angles(frame, workout, workout_landmarks, workout_angles):

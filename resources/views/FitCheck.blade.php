@@ -432,10 +432,14 @@
                         scriptOutput5.textContent = "Correct Posture";
                         scriptOutput5.style.backgroundColor = "green";
                         scriptOutput5.style.color = "white";
-                    } else {
+                    } else if (data.latest_prediction.prediction === "incorrect"){
                         scriptOutput5.textContent = "Incorrect Posture";
                         scriptOutput5.style.backgroundColor = "red";
                         scriptOutput5.style.color = "white";
+                    } else {
+                        scriptOutput5.textContent = "No Posture";
+                        scriptOutput5.style.backgroundColor = "white";
+                        scriptOutput5.style.color = "black";
                     }
 
                     if (workout === "Plank"){
