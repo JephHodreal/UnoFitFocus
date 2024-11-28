@@ -67,6 +67,48 @@ class StatsController extends Controller
         $squatGraph = $this->getImprovementData($user->id, 'Squat');
         $plankGraph = $this->getImprovementData($user->id, 'Plank');
 
+        // Fetch the last performed dates and calculate notifications
+        $notifications = [];
+        $timezone = 'Asia/Manila';
+        foreach ($exercises as $exercise) {
+            $lastAttempt = StatsDashboard::where('fk_user_id', $user->id)
+                ->where('exercise', $exercise)
+                ->latest('date_performed')
+                ->first();
+
+            if ($lastAttempt) {
+                // Parse the date safely
+                try {
+                    $lastDate = \Carbon\Carbon::parse($lastAttempt->date_performed)->setTimezone($timezone);
+                    $now = now()->setTimezone($timezone);
+
+                    // Calculate the difference in days
+                    $daysAgo = (int) $lastDate->diffInDays($now);
+        
+                    // Debugging: Log the days since last attempt
+                    \Log::info("Exercise: {$exercise}, Days Ago: {$daysAgo}");
+        
+                    // Add notification if more than 7 days have passed since last attempt
+                    if ($daysAgo > 7) {
+                        $notifications[] = [
+                            'exercise' => $exercise,
+                            'daysAgo' => $daysAgo,
+                        ];
+                    }
+                } catch (\Exception $e) {
+                    \Log::error("Error parsing date for exercise: {$exercise}. Error: " . $e->getMessage());
+                }
+            } else {
+                // If the user has never attempted this exercise
+                $notifications[] = [
+                    'exercise' => $exercise,
+                    'daysAgo' => 'No record',
+                ];
+            }
+        }
+
+        //\Log::info("Notifications: ", $notifications);
+
         // Pass profile completion status to the view
         return view('dashboard', [
             'profileIncomplete' => $profileIncomplete,
@@ -74,6 +116,7 @@ class StatsController extends Controller
             'pushUpGraph' => $pushUpGraph,
             'squatGraph' => $squatGraph,
             'plankGraph' => $plankGraph,
+            'notifications' => $notifications,
         ]);
     }
 

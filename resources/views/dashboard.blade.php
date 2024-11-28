@@ -30,7 +30,7 @@
                 </h2>
             </x-slot>
 
-            <!-- Conditionally Render Modal -->
+            <!-- Modal if profile is incomplete -->
             @if($profileIncomplete)
                 <!-- Pop-up Modal -->
                 <div x-data="{ showModal: true }">
@@ -43,15 +43,14 @@
                             x-transition:leave-start="opacity-100 transform scale-100"
                             x-transition:leave-end="opacity-0 transform scale-90">
 
-                            <!-- Close Button -->
                             <button @click="showModal = false" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                 </svg>
                             </button>
 
-                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Almost there!</h3>
-                            <p class="text-gray-600 mb-6">Complete your profile by adding some additional information.</p>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">{{ __('Almost there!') }}</h3>
+                            <p class="text-gray-600 mb-6">{{ __('Complete your profile by adding some additional information.') }}</p>
                             
                             <div class="flex justify-center w-full">
                                 <a href="{{ route('Setup') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150'">
@@ -62,10 +61,70 @@
                     </div>
                 </div>
             @endif
-            <!-- End Modal -->
+
+            {{-- Notification Section --}}
+            <div class="py-6">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6 text-gray-900">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-xl font-bold">{{ __('Exercise Notifications') }}
+                                    @if($notifications && count($notifications) > 0)
+                                        <span class="ml-2 bg-red-500 text-white text-sm font-bold py-1 px-2 rounded-full">
+                                            {{ count($notifications) }}
+                                        </span>
+                                    @endif
+                                </h3>
+                                <div>
+                                    <button class="text-blue-500 hover:underline" onclick="toggleNotificationList()">
+                                        <span id="toggleText">{{ __('Show') }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <ul id="notificationList" class="space-y-4 mt-4" style="display: none;">
+                                @if($notifications && count($notifications) > 0)
+                                    @foreach($notifications as $notification)
+                                        <li class="bg-yellow-100 p-4 rounded-lg">
+                                            @if($notification['daysAgo'] === 'No record')
+                                                <p class="text-gray-800">
+                                                    {{ __('You haven\'t started') }} <span class="font-bold">{{ $notification["exercise"] }}</span> {{ __('yet. Give it a try to get started on your fitness journey!') }}
+                                                </p>
+                                            @else
+                                                <p class="text-gray-800">
+                                                    {{ __('It\'s been') }} <span class="font-bold">{{ $notification["daysAgo"] }}</span> {{ __('days since you last performed') }}
+                                                    <span class="font-bold">{{ $notification["exercise"] }}</span>{{ __('. Time to get back on track!') }}
+                                                </p>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                @else
+                                    <li class="bg-green-100 p-4 rounded-lg">
+                                        <p class="text-gray-800">{{ __('Great job! You\'ve been consistent with your workouts.') }}</p>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function toggleNotificationList() {
+                    const list = document.getElementById('notificationList');
+                    const toggleText = document.getElementById('toggleText');
+            
+                    if (list.style.display === 'none') {
+                        list.style.display = 'block';
+                        toggleText.innerText = 'Hide';
+                    } else {
+                        list.style.display = 'none';
+                        toggleText.innerText = 'Show';
+                    }
+                }
+            </script>
 
             <!-- Table for Workouts with Status -->
-            <div class="py-12">
+            <div class="py-6">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 text-gray-900">
@@ -108,91 +167,8 @@
                 </div>
             </div>
 
+            {{-- Workout Distribution Section --}}
             {{-- <div class="py-12">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-6 text-gray-900">
-                            <!-- Graphs -->
-                            <h3 class="text-xl font-bold mb-6">Performance Graphs</h3>
-            
-                            <div class="mb-6">
-                                @if(empty(array_sum(array_column($stats['Push-Up'], 'numTries'))) && 
-                                    empty(array_sum(array_column($stats['Squat'], 'numTries'))) && 
-                                    empty(array_sum(array_column($stats['Plank'], 'numTries'))))
-                                    <p class="text-center text-gray-600">No data found for workouts completed</p>
-                                @else
-                                    <canvas id="exerciseChart" width="300" height="150"></canvas> <!-- Reduced size -->
-                                    <p class="text-center text-gray-600 mt-2">Workouts Completed</p>
-                                @endif
-                            </div>
-            
-                            <div class="mb-6">
-                                @if(empty(array_sum(array_column($stats['Push-Up'], 'numTries'))) && 
-                                    empty(array_sum(array_column($stats['Squat'], 'numTries'))) && 
-                                    empty(array_sum(array_column($stats['Plank'], 'numTries'))))
-                                    <p class="text-center text-gray-600">No data found for tries per difficulty</p>
-                                @else
-                                    <canvas id="difficultyChart" width="300" height="150"></canvas> <!-- Reduced size -->
-                                    <p class="text-center text-gray-600 mt-2">Tries Per Difficulty</p>
-                                @endif
-                            </div>
-            
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    const ctx1 = document.getElementById('exerciseChart')?.getContext('2d');
-                                    if (ctx1) {
-                                        new Chart(ctx1, {
-                                            type: 'bar',
-                                            data: {
-                                                labels: ['Push-Up', 'Squat', 'Plank'],
-                                                datasets: [{
-                                                    label: 'Total Workouts',
-                                                    data: [
-                                                        {{ array_sum(array_column($stats['Push-Up'], 'numTries')) }},
-                                                        {{ array_sum(array_column($stats['Squat'], 'numTries')) }},
-                                                        {{ array_sum(array_column($stats['Plank'], 'numTries')) }}
-                                                    ],
-                                                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56']
-                                                }]
-                                            },
-                                            options: {
-                                                aspectRatio: 2.5,
-                                                scales: {
-                                                    y: { beginAtZero: true }
-                                                }
-                                            }
-                                        });
-                                    }
-            
-                                    const ctx2 = document.getElementById('difficultyChart')?.getContext('2d');
-                                    if (ctx2) {
-                                        new Chart(ctx2, {
-                                            type: 'doughnut',
-                                            data: {
-                                                labels: ['Beginner', 'Intermediate', 'Advanced'],
-                                                datasets: [{
-                                                    label: 'Tries Per Difficulty',
-                                                    data: [
-                                                        {{ array_sum(array_column($stats['Push-Up'], 'numTries')) }},
-                                                        {{ array_sum(array_column($stats['Squat'], 'numTries')) }},
-                                                        {{ array_sum(array_column($stats['Plank'], 'numTries')) }}
-                                                    ],
-                                                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56']
-                                                }]
-                                            },
-                                            options: {
-                                                aspectRatio: 2.5,
-                                            }
-                                        });
-                                    }
-                                });
-                            </script>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-            
-            <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 text-gray-900">
@@ -312,9 +288,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
-            <div class="py-12">
+            {{-- Improvement Graphs --}}
+            <div class="py-6">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 text-gray-900">
