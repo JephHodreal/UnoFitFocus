@@ -86,7 +86,7 @@ class StatsController extends Controller
                     $daysAgo = (int) $lastDate->diffInDays($now);
         
                     // Debugging: Log the days since last attempt
-                    \Log::info("Exercise: {$exercise}, Days Ago: {$daysAgo}");
+                    //\Log::info("Exercise: {$exercise}, Days Ago: {$daysAgo}");
         
                     // Add notification if more than 7 days have passed since last attempt
                     if ($daysAgo > 7) {

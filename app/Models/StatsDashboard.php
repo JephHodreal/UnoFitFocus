@@ -11,8 +11,7 @@
         protected $table = 'workout_sessions';
         protected $primaryKey = 'session_id';
     
-        protected $fillable = ['fk_user_id', 'exercise', 'difficulty', 'score', 'date_performed', 'start_time',
-            'end_time',];
+        protected $fillable = ['fk_user_id', 'exercise', 'difficulty', 'score', 'date_performed',];
     
         public function userStats()
         {

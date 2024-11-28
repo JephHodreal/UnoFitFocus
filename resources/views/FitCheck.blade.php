@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>FitCheck | FitFocus</title>
@@ -37,13 +38,6 @@
             cursor: pointer;
             z-index: 10; /* Above the camera feed */
         }
-        #script-output {
-            margin-top: 20px;
-            white-space: pre-wrap;
-            background-color: #f1f1f1;
-            padding: 10px;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
@@ -60,13 +54,29 @@
 
             <div class="container mx-auto mb-4 pt-4">
                 <div class="text-left flex justify-between items-center">
-                    <a href="{{ route('Workout') }}" class="inline-flex items-center px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-200">
+                    <a id="back-to-workout-link" href="#" class="inline-flex items-center px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-200">
                         {{ __('← Back to Workout Selection') }}
                     </a>
                     <button id="help-button" class="inline-flex items-center px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-200">
                         <img src="https://img.icons8.com/material-outlined/24/000000/help.png" alt="help icon" class="mr-2"/>
                         {{ __('Help') }}
                     </button>
+                </div>
+            </div>
+
+            <!-- Confirmation Modal for Back to Workout Selection-->
+            <div id="leave-session-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full text-center">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">{{ __('Leave Workout Session?') }}</h3>
+                    <p class="text-gray-600 mb-6">{{ __('Are you sure you want to leave this session? Unsaved progress will be lost.') }}</p>
+                    <div class="flex justify-between">
+                        <button id="cancel-leave-session" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
+                            {{ __('No') }}
+                        </button>
+                        <a id="confirm-leave-session" href="{{ route('Workout') }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                            {{ __('Yes') }}
+                        </a>
+                    </div>
                 </div>
             </div>
             
@@ -77,71 +87,85 @@
                 <h2 class="text-xl text-gray-600">
                     Difficulty Level: {{ $difficulty }}
                 </h2>
-                <h2 class="text-xl text-gray-600">
-                    Task: {{ $task }}
+                <h2 id="workout-task" class="text-xl text-gray-600">
+                    Objective: {{ $task }}
                 </h2>
                 <h2 id="timer" class="text-xl text-red-600 font-bold mt-2">
                     Timer: 5:00
                 </h2>
-                {{-- <pre id="script-output">
-                    Waiting for Camera:
-                </pre> --}}
-                <!-- Table structure for Reps, Set, Stage, and Score -->
-                {{-- <table class="mx-auto mt-4 text-xl text-gray-600">
-                    <tr>
-                        <td class="text-left" style="width: 350px;"><pre id="script-output1">Reps:</pre></td>
-                        <td class="text-left" style="width: 350px;"><pre id="script-output2">Sets:</pre></td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" style="width: 350px;"><pre id="script-output3">Stage:</pre></td>
-                        <td class="text-left" style="width: 350px;"><pre id="script-output4">Score:</pre></td>
-                    </tr>
-                </table> --}}
             </div>
             
             <div class="py-12 flex justify-center">
-                <div id="camera-container">
-                    <button id="start-camera">Start Camera</button>
-                    <img id="video" alt="Live Posture Check"></img>
+                <!-- Camera Container -->
+                <div id="camera-container" class="flex flex-col items-center">
+                    <button id="start-camera" class="px-6 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none">
+                        {{ __('Start Camera') }}
+                    </button>
+                    <img id="video" alt="Live Posture Check" class="mt-4 w-70 h-auto rounded-lg shadow-lg">
                 </div>
-                <table class="mx-auto text-xl text-gray-600">
-                    <tr>
-                        <td>
-                        <pre id="script-output">
-                            Waiting for Camera:
-                        </pre>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" style="width: 350px;"><pre id="script-output1">Reps:</pre></td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" style="width: 350px;"><pre id="script-output2">Sets:</pre></td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" style="width: 350px;"><pre id="script-output3">Stage:</pre></td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" style="width: 350px;"><pre id="script-output4">Score:</pre></td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" style="width: 350px;" id="script-output5">Posture Feedback</td>
-                    </tr>
-                </table>
+            
+                <!-- Workout Status Table -->
+                <div class="ml-8 text-xl text-gray-600 space-y-4 w-64 flex flex-col justify-center">
+                    <!-- Waiting for Camera -->
+                    <div id="script-output" class="font-mono text-2xl text-center">
+                        {{ __('Waiting for Camera:') }}
+                    </div>
+            
+                    <!-- Reps -->
+                    <div id="script-output1" class="text-left text-2xl font-semibold">
+                        {{ __('Reps:') }}
+                    </div>
+
+                    <!-- Sets -->
+                    <div id="script-output2" class="text-left text-2xl font-semibold">
+                        {{ __('Sets:') }}
+                    </div>
+            
+                    <!-- Stage -->
+                    <div id="script-output3" class="text-left text-2xl font-semibold">
+                        {{ __('Stage:') }}
+                    </div>
+            
+                    <!-- Score -->
+                    <div id="script-output4" class="text-left text-2xl font-semibold">
+                        {{ __('Score:') }}
+                    </div>
+            
+                    <!-- Posture Feedback -->
+                    <div id="script-output5" class="text-left text-2xl font-semibold bg-gray-200 p-2 rounded-md shadow-sm h-16 whitespace-normal overflow-y-auto">
+                        {{ __('Posture Feedback') }}
+                    </div>
+                </div>
             </div>
 
             <!-- New button to open results modal -->
             <div class="text-center mt-6">
                 <button id="show-results-button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    Show Workout Results
+                    {{ __('Show Workout Results') }}
                 </button>
             </div>
 
             <!-- New button to stop workout -->
             <div class="text-center mt-6">
                 <button id="end-workout-button" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                    End Workout
+                    {{ __('End Workout') }}
                 </button>
+            </div>
+
+            <!-- Confirmation Modal -->
+            <div id="confirmation-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full text-center">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">{{ __('End Workout Early?') }}</h3>
+                    <p class="text-gray-600 mb-6">{{ __('Are you sure you want to stop the workout early? Your workout session will still be saved in your workout history.') }}</p>
+                    <div class="flex justify-between">
+                        <button id="cancel-end-workout" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
+                            {{ __('No') }}
+                        </button>
+                        <button id="confirm-end-workout" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                            {{ __('Yes') }}
+                        </button>
+                    </div>
+                </div>
             </div>
             
             <!-- Workout Results Modal -->
@@ -150,17 +174,17 @@
                     <h2 class="text-2xl font-bold mb-4">Workout Results</h2>
                     <p><strong>Workout:</strong> {{ $workout }}</p>
                     <p><strong>Difficulty:</strong> {{ $difficulty }}</p>
-                    <p><strong>Task:</strong> {{ $task }}</p>
-                    <p><strong>Score:</strong><pre id="modalResult"></pre></p> <!-- Example static score; replace with dynamic score when ready -->
+                    <p><strong>Objective:</strong> {{ $task }}</p>
+                    <p><strong>Score:</strong><pre id="modalResult"></pre></p>
                     
                     <!-- Score Progress Bar -->
                     <div class="w-full bg-gray-200 rounded-full h-4 mt-2 mb-4">
-                        <div class="bg-green-500 h-4 rounded-full" style="width: 70%;"></div>
+                        <div id="progress-bar" class="bg-green-500 h-4 rounded-full" style="width: 0;"></div>
                     </div>
 
                     <!-- Buttons for Retry and Back to Workout Selection -->
                     <div class="flex justify-between mt-6">
-                        <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100">
+                        <button id="retry-button" class="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100">
                             Retry
                         </button>
                         <a href="{{ route('Workout') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
@@ -302,6 +326,27 @@
             resultsModal.classList.remove('hidden'); // Show results modal
             modalResult.textContent = scriptOutput4.textContent.split('Score: ')[1].trim() // Display final score in modal
             isModalShown = true; // Prevent re-triggering the modal
+
+            // Extract workout details
+            const finalScore = parseInt(scriptOutput4.textContent.split('Score: ')[1].trim());
+            const sessionData = {
+                exercise: workout,
+                difficulty: difficulty,
+                score: finalScore,
+            };
+
+            // Send POST request to save data
+            fetch('/save-workout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: JSON.stringify(sessionData),
+            })
+                .then(response => response.json())
+                .then(data => console.log(data.message))
+                .catch(error => console.error('Error saving workout session:', error));
         }
 
         // Request access to the camera
@@ -399,12 +444,17 @@
                         }else{
                             scriptOutput3.textContent = `Time:  ${data.total_time} sec`;
                         }
-                        scriptOutput4.textContent = `Score:  ${data.score}/100`;
+                        const roundedScore = Math.ceil(data.score);
+                        scriptOutput4.textContent = `Score:  ${roundedScore}/100`;
+                        updateProgressBar(roundedScore);
                     }else if (workout === "Push-Up" || workout === "Squat"){
                         scriptOutput1.textContent = `Reps:  ${data.repetitions}`;
                         scriptOutput2.textContent = `Sets:  ${data.sets}`;
                         scriptOutput3.textContent = `Stage:  ${data.stage}`;
+                        //const roundedScore = Math.ceil(data.score);
+                        //scriptOutput4.textContent = `Score:  ${roundedScore}/100`;
                         scriptOutput4.textContent = `Score:  ${data.score}/100`;
+                        updateProgressBar(data.score);
                     }
                     if (data.stage === "completed" && !isModalShown){
                         stop_prediction();
@@ -413,6 +463,12 @@
                     }
                 })
                 .catch(error => console.error('Error fetching prediction:', error));
+        }
+
+        // Function to update the progress bar width
+        function updateProgressBar(score) {
+            const progressBar = document.getElementById('progress-bar');
+            progressBar.style.width = `${score}%`; // Set the width based on the score
         }
 
         setInterval(() => {
@@ -474,12 +530,27 @@
         const showResultsButton = document.getElementById('show-results-button');
         const closeResultsModalButton = document.getElementById('close-results-modal');
         const endWorkoutButton = document.getElementById('end-workout-button');
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const confirmEndWorkout = document.getElementById('confirm-end-workout');
+        const cancelEndWorkout = document.getElementById('cancel-end-workout');
 
+        // Show the confirmation modal when "End Workout" button is clicked
         endWorkoutButton.addEventListener('click', () => {
-            stop_prediction();
+            confirmationModal.classList.remove('hidden');
+        });
+
+        // Handle "Yes, End Workout" button click
+        confirmEndWorkout.addEventListener('click', () => {
+            confirmationModal.classList.add('hidden'); // Hide the modal
+            stop_prediction(); // Stop the workout
             clearInterval(countdownInterval); // Stop the timer
             timer.style.color = 'red';
             timer.textContent = 'Workout Stopped!';
+        });
+
+        // Handle "No, Continue" button click
+        cancelEndWorkout.addEventListener('click', () => {
+            confirmationModal.classList.add('hidden'); // Hide the modal
         });
 
         showResultsButton.addEventListener('click', () => {
@@ -496,6 +567,29 @@
                 isModalShown = false;
             }
         });
+
+        const backToWorkoutLink = document.getElementById('back-to-workout-link');
+        const leaveSessionModal = document.getElementById('leave-session-modal');
+        const confirmLeaveSession = document.getElementById('confirm-leave-session');
+        const cancelLeaveSession = document.getElementById('cancel-leave-session');
+
+        // Prevent default navigation and show modal
+        backToWorkoutLink.addEventListener('click', (event) => {
+            event.preventDefault(); // Stop the default navigation
+            leaveSessionModal.classList.remove('hidden'); // Show confirmation modal
+        });
+
+        // Handle "No, Stay" button click
+        cancelLeaveSession.addEventListener('click', () => {
+            leaveSessionModal.classList.add('hidden'); // Hide modal
+        });
+
+        // const retryButton = document.getElementById('retry-button');
+        // const taskElement = document.getElementById('workout-task'); // Fetch the task element
+        // const task = taskElement.textContent.split(': ')[1];
+        // retryButton.addEventListener('click', () => {
+        //     window.location.href = `/FitCheck-retry?workout=${encodeURIComponent(workout)}&difficulty=${encodeURIComponent(difficulty)}&task=${encodeURIComponent(task)}`;
+        // });
     </script>
 </body>
 </html>

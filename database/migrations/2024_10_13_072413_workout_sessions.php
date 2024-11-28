@@ -22,8 +22,6 @@ return new class extends Migration
             $table->string('difficulty')->index();
             $table->tinyInteger('score')->index();
             $table->date('date_performed');
-            $table->time('start_time');
-            $table->time('end_time');
             $table->timestamps(); //created and updated
         });
     }

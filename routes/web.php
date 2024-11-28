@@ -43,6 +43,13 @@ Route::post('/Fitcheck', [FitCheckController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('FitCheck');
 
+// Route::get('/FitCheck-retry', [FitCheckController::class, 'showFitCheck'])
+//     ->middleware(['auth', 'verified'])
+//     ->name('FitCheck');
+
+Route::post('/save-workout-session', [FitCheckController::class, 'saveWorkoutSession'])
+    ->middleware(['auth', 'verified']);
+    
 Route::post('/Setup', function () {
     return view('Setup');
 })->middleware(['auth', 'verified'])->name('Setup');
