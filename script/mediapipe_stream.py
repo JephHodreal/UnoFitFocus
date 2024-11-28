@@ -208,7 +208,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
 
         if stage != "completed":
             total_time = f"{overall_elapsed_time:.2f}"
-            score = f"{raw_score:.2f}"
+            score = f"{math.ceil(raw_score):.0f}"
         else:
             total_time = f"{target_time: .2f}"
             score = f"{math.ceil(raw_score):.0f}"
