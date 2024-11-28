@@ -1,7 +1,6 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-import math
 import time
 from model import label_encoder
 from flask import Flask, Response, jsonify, request
@@ -208,10 +207,10 @@ def workout_tracker(workout, difficulty, workout_angles, model):
 
         if stage != "completed":
             total_time = f"{overall_elapsed_time:.2f}"
-            score = f"{math.ceil(raw_score):.0f}"
+            score = f"{raw_score:.2f}"
         else:
             total_time = f"{target_time: .2f}"
-            score = f"{math.ceil(raw_score):.0f}"
+            score = f"{raw_score:.2f}"
 
     # Track for Push-Up
     elif workout in ["Push-Up"]:
@@ -279,7 +278,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         modalScore2 = f"{total_time}/{target_time}"
         modalScore2 = score
     elif workout in ["Push-Up", "Squat"]:
-        score = f"{raw_score}/{(target_reps * target_sets)} {math.ceil((raw_score / (target_reps * target_sets)) * 100): .0f}"
+        score = f"{raw_score}/{(target_reps * target_sets)} {(raw_score / (target_reps * target_sets)) * 100: .0f}"
         modalScore1 = f"{raw_score}/{(target_reps * target_sets)}"
         modalScore2 = f"{(raw_score / (target_reps * target_sets)) * 100: .2f}"
     return reps, sets, stage, total_time, score, modalScore1, modalScore2
