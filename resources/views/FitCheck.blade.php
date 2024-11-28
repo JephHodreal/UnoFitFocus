@@ -306,15 +306,37 @@
 
         // Request access to the camera
         startCameraButton.addEventListener('click', () => {
+            video.style.display = 'block'; // Show video once camera starts
+            video.style.height = '100%';
+            video.style.width = '100%';
+            startCameraButton.style.display = 'none'; // Hide button after starting camera
+            
             if (video.src === "") {
-                video.src = "http://127.0.0.1:5000/video_feed"; // Set the src when the button is clicked
-                video.style.display = 'block'; // Show video once camera starts
-                video.style.height = '100%';
-                video.style.width = '100%';
-                startCameraButton.style.display = 'none'; // Hide button after starting camera
-                timer.style.color = 'green';
-                isCameraActive = true; //flag to check if camera is active
-                startTimer(300); // Start the timer with 5 minutes (300 seconds)
+                let countdown = 10; // 10-second countdown
+                const countdownDisplay = document.createElement('div'); // Create a countdown display element
+                countdownDisplay.style.position = 'absolute';
+                countdownDisplay.style.top = '50%';
+                countdownDisplay.style.left = '50%';
+                countdownDisplay.style.transform = 'translate(-50%, -50%)';
+                countdownDisplay.style.fontSize = '2rem';
+                countdownDisplay.style.color = 'red';
+                countdownDisplay.style.textAlign = 'center';
+                document.body.appendChild(countdownDisplay);
+
+                const countdownInterval = setInterval(() => {
+                    countdownDisplay.textContent = `Starting in ${countdown} seconds...`;
+                    countdown -= 1;
+                    if (countdown < 0) {
+                        clearInterval(countdownInterval);
+                        document.body.removeChild(countdownDisplay); // Remove the countdown display
+
+                        // Start the camera feed
+                        video.src = "http://127.0.0.1:5000/video_feed"; // Set the src when the button is clicked
+                        timer.style.color = 'green';
+                        isCameraActive = true; //flag to check if camera is active
+                        startTimer(300); // Start the timer with 5 minutes (300 seconds)
+                    }
+                }, 1000);
             }
         });
 

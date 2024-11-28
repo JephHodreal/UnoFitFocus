@@ -28,7 +28,7 @@ total_time = ""
 start_time = None
 elapsed_time = 0
 raw_score = 0
-score = 0
+score = "0"
 modalScore1 = 0
 modalScore2 = 0
 set_counter = 0
@@ -116,7 +116,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
     if stage == "completed":
         overall_elapsed_time = 0
         raw_score = 0
-        return reps, sets, stage, total_time, score
+        return reps, sets, stage, total_time, score, modalScore1, modalScore2
     
     if difficulty in ["Beginner"]:
         target_reps = 12
@@ -147,6 +147,8 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         latest_prediction = {"prediction": decoded_prediction[0]}
     else:
         latest_prediction = {"prediction": "No model loaded"}
+
+    print({"prediction": prediction})
 
     # Track for Plank
     if workout in ["Plank"]:
@@ -207,11 +209,12 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         if stage == None:
             stage = "up"
 
-        if (35 < workout_angles["right_elbow_angle"] < 55) and (35 < workout_angles["left_elbow_angle"] < 55):
-            stage = "down"
-        elif (workout_angles["right_elbow_angle"] < 35) and (workout_angles["left_elbow_angle"] < 35):
-            stage = "You are too low"
-        elif (workout_angles["right_elbow_angle"] > 55) or (workout_angles["left_elbow_angle"] > 55):
+        if (0 < workout_angles["right_elbow_angle"] < 55) and (0 < workout_angles["left_elbow_angle"] < 55):
+            if (prediction == 0):
+                stage = "down"
+            elif (prediction == 1):
+                stage = "You are too low"
+        elif (workout_angles["right_elbow_angle"] > 55) and (workout_angles["left_elbow_angle"] > 55):
             if stage == "down":
                 stage = "up"
                 reps += 1
@@ -237,11 +240,12 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         if stage == None:
             stage = "up"
 
-        if (35 < workout_angles["right_knee_angle"] < 55) and (35 < workout_angles["left_knee_angle"] < 55):
-            stage = "down"
-        elif (workout_angles["right_knee_angle"] < 35) and (workout_angles["left_knee_angle"] < 35):
-            stage = "You are too low"
-        elif (workout_angles["right_knee_angle"] > 55) or (workout_angles["left_knee_angle"] > 55):
+        if (0 < workout_angles["right_knee_angle"] < 55) and (0 < workout_angles["left_knee_angle"] < 55):
+            if (prediction == 0):
+                stage = "down"
+            elif (prediction == 1):
+                stage = "You are too low"
+        elif (workout_angles["right_knee_angle"] > 55) and (workout_angles["left_knee_angle"] > 55):
             if stage == "down":
                 stage = "up"
                 reps += 1
@@ -334,11 +338,12 @@ def get_prediction():
 
 @app.route('/set_workout', methods=['POST'])
 def set_workout():
-    global workout, model, reps, sets, start_time, stage, set_counter, score, difficulty, overall_start_time
+    global workout, model, reps, sets, start_time, stage, set_counter, score, difficulty, overall_start_time, raw_score
     reps = 0
     sets = "0/3"
     set_counter = 0
-    score = 0
+    raw_score = 0
+    score = "0"
     start_time = None
     stage = None
     overall_start_time = None
