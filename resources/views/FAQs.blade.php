@@ -104,7 +104,7 @@
                                 </svg>
                             </h2>
                             <div x-show="selected == 6" x-transition x-cloak class="p-4 text-gray-600">
-                                {{ __('FitFocus\'s human pose estimation has been trained to detect and analyze your posture up to 92% accuracy.') }}
+                                {{ __('FitFocus\'s human pose estimation has been trained to detect and analyze your posture up to 85% accuracy.') }}
                             </div>
                         </div>
 
@@ -120,7 +120,7 @@
                                 {{ __('No, FitFocus is completely free. All you need to do is register for an account, establish your details, and you\'re all set!') }}
                             </div>
                         </div>
-
+{{-- 
                         <!-- FAQ Item 8 -->
                         <div class="border-b border-gray-200">
                             <h2 @click="selected !== 8 ? selected = 8 : selected = null" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
@@ -145,7 +145,7 @@
                             <div x-show="selected == 9" x-transition x-cloak class="p-4 text-gray-600">
                                 {{ __('') }}
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>

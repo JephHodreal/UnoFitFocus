@@ -79,22 +79,22 @@
                             <h2 class="text-3xl font-bold mb-12">Meet the Developers</h2>
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                 <div class="developer-card text-center hover:scale-105 transition-transform duration-300 border-2 shadow-lg hover:shadow-xl rounded-lg p-6 bg-white">
-                                    <img src="../assets/images/placeholder.png" alt="Developer 1" class="w-32 h-32 rounded-full mx-auto mb-4">
+                                    <img src="../assets/images/ResearcherJeph.png" alt="Developer 1" class="w-32 h-32 rounded-full mx-auto mb-4">
                                     <h3 class="text-xl font-semibold">Jeph Hodreal</h3>
                                     <p class="text-gray-600">Lead Developer & Project Manager</p>
                                 </div>
                                 <div class="developer-card text-center hover:scale-105 transition-transform duration-300 border-2 shadow-lg hover:shadow-xl rounded-lg p-6 bg-white">
-                                    <img src="../assets/images/placeholder.png" alt="Developer 2" class="w-32 h-32 rounded-full mx-auto mb-4">
+                                    <img src="../assets/images/ResearcherMags.png" alt="Developer 2" class="w-32 h-32 rounded-full mx-auto mb-4">
                                     <h3 class="text-xl font-semibold">Magallanes Jr. Butuhan</h3>
                                     <p class="text-gray-600">Machine Learning Engineer & Backend Developer</p>
                                 </div>
                                 <div class="developer-card text-center hover:scale-105 transition-transform duration-300 border-2 shadow-lg hover:shadow-xl rounded-lg p-6 bg-white">
-                                    <img src="../assets/images/placeholder.png" alt="Developer 3" class="w-32 h-32 rounded-full mx-auto mb-4">
+                                    <img src="../assets/images/ResearcherPrincess.jpg" alt="Developer 3" class="w-32 h-32 rounded-full mx-auto mb-4">
                                     <h3 class="text-xl font-semibold">Princess Martinez</h3>
                                     <p class="text-gray-600">Dataset Collector & Researcher</p>
                                 </div>
                                 <div class="developer-card text-center hover:scale-105 transition-transform duration-300 border-2 shadow-lg hover:shadow-xl rounded-lg p-6 bg-white">
-                                    <img src="../assets/images/placeholder.png" alt="Developer 4" class="w-32 h-32 rounded-full mx-auto mb-4">
+                                    <img src="../assets/images/ResearcherMonique.png" alt="Developer 4" class="w-32 h-32 rounded-full mx-auto mb-4">
                                     <h3 class="text-xl font-semibold">Monique Burilla</h3>
                                     <p class="text-gray-600">Researcher & Documentation Specialist</p>
                                 </div>

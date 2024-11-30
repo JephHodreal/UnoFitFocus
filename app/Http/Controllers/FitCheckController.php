@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class FitCheckController extends Controller
 {
@@ -25,17 +26,10 @@ class FitCheckController extends Controller
         return view('FitCheck', compact('workout', 'difficulty', 'task'));
     }
 
-    // public function showFitCheck(Request $request)
-    // {
-    //     $workout = $request->query('workout');
-    //     $difficulty = $request->query('difficulty');
-    //     $task = $request->query('task');
-
-    //     return view('FitCheck', compact('workout', 'difficulty', 'task'));
-    // }
-
     public function saveWorkoutSession(Request $request)
     {
+        Log::info('Request Method:', [$request->method()]);
+        Log::info('Request Data:', $request->all());
         // Validate the request data
         $validatedData = $request->validate([
             'exercise' => 'required|string|max:255',

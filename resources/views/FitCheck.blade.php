@@ -1,13 +1,16 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>FitCheck | FitFocus</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs" defer></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <style>
         #camera-container {
@@ -91,7 +94,7 @@
                     Objective: {{ $task }}
                 </h2>
                 <h2 id="timer" class="text-xl text-red-600 font-bold mt-2">
-                    Timer: 5:00
+                    Timer: 10:00
                 </h2>
             </div>
             
@@ -293,7 +296,7 @@
 
         // Function to start the countdown timer
         function startTimer(duration) {
-            let timeRemaining = duration; // Time in seconds (5 minutes = 300 seconds)
+            let timeRemaining = duration; // Time in seconds (10 minutes = 600 seconds)
 
             // Clear any existing timer interval
             if (countdownInterval) {
@@ -325,10 +328,21 @@
             isFetching = false; // Stop fetchPrediction loop
             resultsModal.classList.remove('hidden'); // Show results modal
             modalResult.textContent = scriptOutput4.textContent.split('Score: ')[1].trim() // Display final score in modal
-            isModalShown = true; // Prevent re-triggering the modal
+            isModalShown = true; // Prevent re-triggering the modals
+
+            let finalScore;
+
+            if (workout === "Push-Up" || workout === "Squat") {
+                // For Push-Up or Squat, extract the percentage part
+                const scoreText = scriptOutput4.textContent.split('Score: ')[1].trim().split(' '); // Extract text after "Score: "
+                const secondScore = scoreText[2]; // Get the second score
+                finalScore = parseInt(secondScore.split('/')[0]);
+            } else {
+                // For plank, extract the single value
+                finalScore = parseInt(scriptOutput4.textContent.split('Score: ')[1].trim());
+            }
 
             // Extract workout details
-            const finalScore = parseInt(scriptOutput4.textContent.split('Score: ')[1].trim());
             const sessionData = {
                 exercise: workout,
                 difficulty: difficulty,
@@ -344,7 +358,14 @@
                 },
                 body: JSON.stringify(sessionData),
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        // Log error if response is not OK
+                        console.error(`Error: HTTP ${response.status} - ${response.statusText}`);
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => console.log(data.message))
                 .catch(error => console.error('Error saving workout session:', error));
         }
@@ -397,9 +418,9 @@
                     video.style.height = '100%';
                     video.style.width = '100%';
                     startCameraButton.style.display = 'none'; // Hide button after starting camera
-                    timer.style.color = 'green';
+                    timer.style.color = 'red';
                     isCameraActive = true; //flag to check if camera is active
-                    startTimer(300); // Start the timer with 5 minutes (300 seconds)
+                    startTimer(600); // Start the timer with 10 minutes (600 seconds)
                 }
             }, 1000);
         });
@@ -487,6 +508,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 },
                 body: JSON.stringify({ workout: workoutType, difficulty: difficulty }),
             })
@@ -587,13 +609,6 @@
         cancelLeaveSession.addEventListener('click', () => {
             leaveSessionModal.classList.add('hidden'); // Hide modal
         });
-
-        // const retryButton = document.getElementById('retry-button');
-        // const taskElement = document.getElementById('workout-task'); // Fetch the task element
-        // const task = taskElement.textContent.split(': ')[1];
-        // retryButton.addEventListener('click', () => {
-        //     window.location.href = `/FitCheck-retry?workout=${encodeURIComponent(workout)}&difficulty=${encodeURIComponent(difficulty)}&task=${encodeURIComponent(task)}`;
-        // });
     </script>
 </body>
 </html>
