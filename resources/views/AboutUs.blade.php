@@ -94,7 +94,7 @@
                                     <p class="text-gray-600">Dataset Collector & Researcher</p>
                                 </div>
                                 <div class="developer-card text-center hover:scale-105 transition-transform duration-300 border-2 shadow-lg hover:shadow-xl rounded-lg p-6 bg-white">
-                                    <img src="../assets/images/ResearcherMonique.png" alt="Developer 4" class="w-32 h-32 rounded-full mx-auto mb-4">
+                                    <img src="../assets/images/ResearcherMonique.PNG" alt="Developer 4" class="w-32 h-32 rounded-full mx-auto mb-4">
                                     <h3 class="text-xl font-semibold">Monique Burilla</h3>
                                     <p class="text-gray-600">Researcher & Documentation Specialist</p>
                                 </div>

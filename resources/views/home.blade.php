@@ -23,7 +23,7 @@ session_start();
             </x-slot>
 
             <div class="py-6">
-                <div class="hero-section bg-cover bg-fixed bg-center text-white text-center flex justify-center items-center" style="background-image: url({{ asset('../assets/images/homehero.png') }}); height: 75vh;">
+                <div class="hero-section bg-cover bg-fixed bg-center text-white text-center flex justify-center items-center" style="background-image: url({{ asset('../assets/images/homehero.PNG') }}); height: 75vh;">
                     <div class="hero-content max-w-3xl mx-auto text-center animate-fadeIn">
                         <h2 class="text-4xl font-semibold mb-5 tracking-wider font-poppins">Welcome to FitFocus!</h2>
                         <p class="text-xl font-light mb-7 leading-relaxed font-roboto">Your journey towards a healthier, fitter you starts here.</p>
@@ -44,7 +44,7 @@ session_start();
                     <div class="feats grid grid-cols-1 md:grid-cols-3 gap-8 text-white">
                         <div class="per-feat relative bg-gray-800 p-6 text-center h-64 overflow-hidden group">
                             <div class="off absolute inset-0 overflow-hidden">
-                                <img src="../assets/images/feature1.png" alt="FitFocus offers workout variety" class="object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-125">
+                                <img src="../assets/images/feature1.PNG" alt="FitFocus offers workout variety" class="object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-125">
                             </div>
                             <div class="feat-type absolute inset-0 flex flex-col justify-center items-center text-2xl">
                                 <span class="font-bold">{{ __('Workout Variety') }}</span>
@@ -54,7 +54,7 @@ session_start();
                 
                         <div class="per-feat relative bg-gray-800 p-6 text-center h-64 overflow-hidden group">
                             <div class="off absolute inset-0 overflow-hidden">
-                                <img src="../assets/images/feature2.png" alt="FitFocus provides live feedback." class="object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-125">
+                                <img src="../assets/images/feature2.PNG" alt="FitFocus provides live feedback." class="object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-125">
                             </div>
                             <div class="feat-type absolute inset-0 flex flex-col justify-center items-center text-2xl">
                                 <span class="font-bold">{{ __('Live Feedback') }}</span>
