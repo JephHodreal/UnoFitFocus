@@ -64,7 +64,7 @@ session_start();
                 
                         <div class="per-feat relative bg-gray-800 p-6 text-center h-64 overflow-hidden group">
                             <div class="off absolute inset-0 overflow-hidden">
-                                <img src="../assets/images/feature3.png" alt="FitFocus allows for convenient workouts." class="object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-125">
+                                <img src="../assets/images/feature3.PNG" alt="FitFocus allows for convenient workouts." class="object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-125">
                             </div>
                             <div class="feat-type absolute inset-0 flex flex-col justify-center items-center text-2xl">
                                 <span class="font-bold">{{ __('Convenient Use') }}</span>
