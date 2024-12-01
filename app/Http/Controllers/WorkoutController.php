@@ -24,6 +24,6 @@ class WorkoutController extends Controller
             ->get()
             ->groupBy('exercise');
 
-        return view('workout', compact('scores'));
+        return view('Workout', compact('scores'));
     }   
 }
