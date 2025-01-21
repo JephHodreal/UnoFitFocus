@@ -27,6 +27,9 @@ return new class extends Migration
             $table->float('weight', 5, 2)->nullable();
             $table->float('bmi', 5, 2)->nullable();
             $table->string('gender')->nullable();
+            $table->string('fitness_goal')->nullable();
+            $table->string('fitness_level')->nullable();
+            $table->string('health_condition')->nullable();
             $table->string('profile_pic')->default('assets/images/placeholder.png');
             $table->timestamps(); //created and updated
         });

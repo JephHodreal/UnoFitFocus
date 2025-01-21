@@ -12,7 +12,7 @@
         protected $primaryKey = 'user_info_id';
     
         protected $fillable = ['user_id', 'first_name', 'middle_name', 'last_name', 'age', 'height',
-            'weight', 'bmi', 'gender', 'profile_pic',];
+            'weight', 'bmi', 'gender', 'fitness_goal', 'fitness_level', 'health_condition', 'profile_pic',];
     
         public function loginUser()
         {

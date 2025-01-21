@@ -18,24 +18,28 @@
         @csrf
         @method('patch')
             
+        <!-- First Name -->
         <div>
             <x-input-label for="name" :value="__('First Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $userInfo->first_name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
+        <!-- Middle Name -->
         <div>
             <x-input-label for="middle_name" :value="__('Middle Name')" />
             <x-text-input id="middle_name" name="middle_name" type="text" class="mt-1 block w-full" :value="old('middle_name', $userInfo->middle_name)" required autocomplete="middle_name" />
             <x-input-error class="mt-2" :messages="$errors->get('middle_name')" />
         </div>
 
+        <!-- Last Name -->
         <div>
             <x-input-label for="last_name" :value="__('Last Name')" />
             <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full" :value="old('last_name', $userInfo->last_name)" required autocomplete="last_name" />
             <x-input-error class="mt-2" :messages="$errors->get('last_name')" />
         </div>
 
+        <!-- Email -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
@@ -88,23 +92,103 @@
                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                     <div class="flex items-center ps-3">
                         <input id="gender_man" type="radio" value="Man" name="gender" {{ $userInfo->gender === 'Man' ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                        <label for="gender_man" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Man </label>
+                        <label for="gender_man" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"> {{ __('Man') }} </label>
                     </div>
                 </li>
                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                     <div class="flex items-center ps-3">
                         <input id="gender_woman" type="radio" value="Woman" name="gender" {{ $userInfo->gender === 'Woman' ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                        <label for="gender_woman" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Woman</label>
+                        <label for="gender_woman" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"> {{ __('Woman') }} </label>
                     </div>
                 </li>
                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                     <div class="flex items-center ps-3">
                         <input id="gender_gqnb" type="radio" value="Genderqueer/Non-binary" name="gender" {{ $userInfo->gender === 'Genderqueer/Non-binary' ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                        <label for="gender_gqnb" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Genderqueer/Non-binary</label>
+                        <label for="gender_gqnb" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"> {{ __('Genderqueer/Non-binary')}} </label>
                     </div>
                 </li>
             </ul>
             <x-input-error :messages="$errors->get('gender')" class="mt-2" />
+        </div>
+
+        <!-- Fitness Goal -->
+        <div>
+            <x-input-label for="fitness_goal" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('My current fitness goal is to ...')" />
+            <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                    <div class="flex items-center ps-3">
+                        <input id="goal_lose_weight" type="radio" value="Lose Weight" name="fitness_goal" {{ $userInfo->fitness_goal === 'Lose Weight' ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <label for="goal_lose_weight" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ __('Lose Weight') }} </label>
+                    </div>
+                </li>
+                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                    <div class="flex items-center ps-3">
+                        <input id="goal_consistent_schedule" type="radio" value="Have a Consistent Workout Schedule" name="fitness_goal" {{ $userInfo->fitness_goal === 'Have a Consistent Workout Schedule' ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <label for="goal_consistent_schedule" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"> {{ __('Have a Consistent Workout Schedule') }} </label>
+                    </div>
+                </li>
+                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                    <div class="flex items-center ps-3">
+                        <input id="goal_bodyweight_training" type="radio" value="Improve in Bodyweight Training" name="fitness_goal" {{ $userInfo->fitness_goal === 'Improve in Bodyweight Training' ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <label for="goal_bodyweight_training" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"> {{ __('Improve in Bodyweight Training') }} </label>
+                    </div>
+                </li>
+            </ul>
+            <x-input-error :messages="$errors->get('fitness_goal')" class="mt-2" />
+        </div>
+
+        <!-- Fitness Level -->
+        <div>
+            <x-input-label for="fitness_level" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('What is your current fitness level?')" />
+            <div class="grid grid-cols-3 gap-4 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <!-- Beginner -->
+                <label for="level_beginner" class="flex flex-col items-center text-center py-4 px-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <input id="level_beginner" type="radio" value="Beginner" name="fitness_level" {{ $userInfo->fitness_level === 'Beginner' ? 'checked' : '' }} class="w-5 h-5 mb-2 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <span class="block text-base font-medium text-gray-900 dark:text-gray-300">{{ __('Beginner') }}</span>
+                    <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                        <span class="font-bold">Criteria:</span> No or little prior experience, learning the basics of exercise, and just starting out.
+                    </p>
+                </label>
+
+                <!-- Intermediate -->
+                <label for="level_intermediate" class="flex flex-col items-center text-center py-4 px-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <input id="level_intermediate" type="radio" value="Intermediate" name="fitness_level" {{ $userInfo->fitness_level === 'Intermediate' ? 'checked' : '' }} class="w-5 h-5 mb-2 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <span class="block text-base font-medium text-gray-900 dark:text-gray-300">{{ __('Intermediate') }}</span>
+                    <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                        <span class="font-bold">Criteria:</span> Comfortable with basic exercises, able to maintain a consistent routine, and looking for improvement.
+                    </p>
+                </label>
+
+                <!-- Advanced -->
+                <label for="level_advanced" class="flex flex-col items-center text-center py-4 px-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <input id="level_advanced" type="radio" value="Advanced" name="fitness_level" {{ $userInfo->fitness_level === 'Advanced' ? 'checked' : '' }} class="w-5 h-5 mb-2 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <span class="block text-base font-medium text-gray-900 dark:text-gray-300">{{ __('Advanced') }}</span>
+                    <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                        <span class="font-bold">Criteria:</span> Proficient in various exercises, well-versed in fitness routines, and aiming for peak performance.
+                    </p>
+                </label>
+            </div>
+            <x-input-error :messages="$errors->get('fitness_level')" class="mt-2" />
+        </div>
+
+        <!-- Health Condition -->
+        <div>
+            <x-input-label for="health_condition" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('My current fitness goal is to ...')" />
+            <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                    <div class="flex items-center ps-3">
+                        <input id="health_yes" type="radio" value="Yes" name="health_condition" {{ $userInfo->health_condition === 'Yes' ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <label for="health_yes" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ __('Yes') }} </label>
+                    </div>
+                </li>
+                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                    <div class="flex items-center ps-3">
+                        <input id="health_no" type="radio" value="No" name="health_condition" {{ $userInfo->health_condition === 'No' ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <label for="health_no" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"> {{ __('No') }} </label>
+                    </div>
+                </li>
+            </ul>
+            <x-input-error :messages="$errors->get('health_condition')" class="mt-2" />
         </div>
 
         <div class="flex items-center gap-4">

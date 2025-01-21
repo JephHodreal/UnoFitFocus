@@ -96,6 +96,9 @@
                                 <strong>Weight:</strong> <span>{{ $userInfo->weight }} kg</span>
                                 <strong>BMI:</strong> <span>{{ $userInfo->bmi }}</span>
                                 <strong>Gender:</strong> <span>{{ $userInfo->gender }}</span>
+                                <strong>Fitness Goal:</strong> <span>{{ $userInfo->fitness_goal }}</span>
+                                <strong>Fitness Level:</strong> <span>{{ $userInfo->fitness_level }}</span>
+                                <strong>Health Condition:</strong> <span>{{ $userInfo->health_condition }}</span>
                             </div>
                         </div>
 
