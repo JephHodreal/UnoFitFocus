@@ -6,6 +6,7 @@ from model import label_encoder
 from flask import Flask, Response, jsonify, request
 from flask_cors import CORS
 import pickle
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -121,7 +122,9 @@ def calculate_angle(a, b, c):
 def workout_tracker(workout, difficulty, workout_angles, model):
 
     # Variables to track workout
-    global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction, modalScore1, modalScore2, overall_start_time
+    global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction, modalScore1, modalScore2, overall_start_time, signal
+
+    signal = None
 
     if stage == "completed":
         overall_elapsed_time = 0
@@ -184,12 +187,14 @@ def workout_tracker(workout, difficulty, workout_angles, model):
             if start_time is None:
                 # Start or resume the correct posture timer
                 start_time = time.time() - elapsed_time
+                signal = "correct_sound"
             elapsed_time = time.time() - start_time
         else:
             # Pause correct posture timer when posture breaks
             if start_time is not None:
                 elapsed_time = time.time() - start_time
                 start_time = None
+                signal = "error_sound"
 
         # Calculate overall elapsed time
         if overall_start_time is not None:
@@ -231,17 +236,21 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         if (0 < workout_angles["right_elbow_angle"] < 55) and (0 < workout_angles["left_elbow_angle"] < 55):
             if (prediction == 0):
                 stage = "down"
+                signal = "down_sound"
             elif (prediction == 1):
                 stage = "You are too low"
+                signal = "error_sound"
         elif (workout_angles["right_elbow_angle"] > 55) and (workout_angles["left_elbow_angle"] > 55):
             if stage == "down":
                 stage = "up"
                 reps += 1
                 if (prediction == 0):
                     raw_score += 1
+                    signal = "correct_sound"
             if stage == "You are too low":
                 stage = "up"
                 reps += 1
+                #signal = "up_sound"
 
     # Track for Squat
     elif workout in ["Squat"]:
@@ -262,17 +271,21 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         if (0 < workout_angles["right_knee_angle"] < 55) and (0 < workout_angles["left_knee_angle"] < 55):
             if (prediction == 0):
                 stage = "down"
+                signal = "down_sound"
             elif (prediction == 1):
                 stage = "You are too low"
+                signal = "error_sound"
         elif (workout_angles["right_knee_angle"] > 55) and (workout_angles["left_knee_angle"] > 55):
             if stage == "down":
                 stage = "up"
                 reps += 1
                 if (prediction == 0):
                     raw_score += 1
+                    signal = "correct_sound"
             if stage == "You are too low":
                 stage = "up"
                 reps += 1
+                #signal = "up_sound"
 
     if workout in ["Plank"]:
         modalScore2 = f"{total_time}/{target_time}"
@@ -281,7 +294,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         score = f"{raw_score}/{(target_reps * target_sets)} {(raw_score / (target_reps * target_sets)) * 100: .0f}"
         modalScore1 = f"{raw_score}/{(target_reps * target_sets)}"
         modalScore2 = f"{(raw_score / (target_reps * target_sets)) * 100: .2f}"
-    return reps, sets, stage, total_time, score, modalScore1, modalScore2
+    return reps, sets, stage, total_time, score, modalScore1, modalScore2, signal
 
 def get_workout_visibility(landmarks):
     # Get coordinates for workout-related landmarks
@@ -419,7 +432,8 @@ def get_prediction():
         "total_time": total_time,
         "score": score,
         "modalScore1": modalScore1,
-        "modalScore2": modalScore2
+        "modalScore2": modalScore2,
+        "signal": signal
     }
     return jsonify(result)
 

@@ -267,6 +267,11 @@
         let countdownInterval;
         let isFetching = true;
         timer.style.color = 'green';
+        const errorSound = new Audio('{{ asset('sounds/error_sound.MP3') }}');
+        const correctSound = new Audio('{{ asset('sounds/correct_sound.MP3') }}');
+        const downSound = new Audio('{{ asset('sounds/down_sound.MP3') }}');
+        const upSound = new Audio('{{ asset('sounds/up_sound.MP3') }}');
+        const dingSound = new Audio('{{ asset('sounds/ding_sound.MP3') }}');
 
         // Function to show modal
         function showModal() {
@@ -486,8 +491,26 @@
                         clearInterval(countdownInterval); // Stop the timer
                         timer.textContent = 'Workout Complete!';
                     }
+                    if (data.signal) {
+                        playSound(data.signal);
+                    }
                 })
                 .catch(error => console.error('Error fetching prediction:', error));
+        }
+
+        // Function to play sound
+        function playSound(signal) {
+            if (signal === "error_sound") {
+                errorSound.play().catch(error => console.error('Error playing error sound:', error));
+            } else if (signal === "correct_sound") {
+                correctSound.play().catch(error => console.error('Error playing correct sound:', error));
+            } else if (signal === "down_sound") {
+                downSound.play().catch(error => console.error('Error playing down sound:', error));
+            } else if (signal === "up_sound") {
+                upSound.play().catch(error => console.error('Error playing up sound:', error));
+            } else if (signal === "ding_sound") {
+                dingSound.play().catch(error => console.error('Error playing ding sound:', error));
+            }
         }
 
         // Function to update the progress bar width
