@@ -7,15 +7,47 @@
     <title>Workout Library | FitFocus</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        .tab-button {
+            padding: 0.5rem 1.5rem;
+            border: 2px solid transparent;
+            border-radius: 9999px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+    
+        .tab-button.active {
+            background-color: #1d4ed8;
+            color: white;
+            border-color: #1d4ed8;
+        }
+    
+        .tab-content.hidden {
+            display: none;
+        }
+    
+        .tab-content.active {
+            animation: fade-in 0.3s ease-in-out;
+        }
+    
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body x-data="{ openModal: null }">
     <x-guest-layout>
         <x-slot name="header">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Exercises') }}
+                {{ __('Workout Library') }}
             </h2>
             <h2 class="text-x2 text-gray-800 leading-tight">
-                {{ __('Find out what exercises FitFocus checks!') }}
+                {{ __('Learn the description, benefits, targeted muscles, and procedure of the workouts analyzed by FitFocus.') }}
             </h2>
         </x-slot>
 
@@ -23,118 +55,53 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="container mx-auto py-2 px-6">
-                        <h2 class="text-4xl font-bold text-center pt-8 mb-6">{{ __('Bodyweight Exercises') }}</h2>
+                    <div class="flex justify-center space-x-4">
+                        <button id="tab-strength" class="tab-button active">{{ __('Muscle Strength') }}</button>
+                        <button id="tab-endurance" class="tab-button">{{ __('Muscle Endurance') }}</button>
+                        <button id="tab-both" class="tab-button">{{ __('Muscle Strength and Endurance') }}</button>
+                    </div>
+
+                    <hr class="border-t border-gray-500 my-4 w-1/2 mx-auto">
+
+                    <!-- Tab Content -->
+                    <div id="tab-content-strength" class="tab-content active">
+                        <h2 class="text-4xl font-bold text-center pt-8 mb-6">{{ __('Muscle Strength') }}</h2>
                         <p class="text-center text-gray-600 mb-6">
-                            {{ __('Learn the description, benefits, targeted muscles, and procedure of the workouts analyzed by FitFocus.') }}
+                            {{ __("Muscular strength relates to your ability to move and lift objects. It's measured by how much force
+                            you can exert and how much weight you can lift for a short period of time. In FitFocus, muscle
+                            strength will test your ability to perform push-ups and squats in the proper form for a specific
+                            number of repetitions.") }}
                         </p>
+                        @include('components.workouts.pushup')
+                        <hr class="border-t border-gray-500 my-4 w-1/2 mx-auto">
+                        @include('components.workouts.squat')
                     </div>
 
-                    <hr class="border-t border-gray-500 my-4 w-1/2 mx-auto">
-                    
-                    <!-- Push-Up Section -->
-                    <div class="flex flex-col md:flex-row items-center rounded-lg p-8">
-                        <!-- Information Column -->
-                        <div class="md:w-1/2 space-y-4">
-                            <h2 class="text-2xl font-bold">{{ __('Push-Up') }}</h2>
-                            <p class="text-gray-700">{{ __('The push-up is an upper body exercise that targets the chest, shoulders, and triceps while also working out the biceps, back, stomach, and hips.') }}</p>
-                            <p class="text-gray-700 font-bold">{{ __('Benefits:') }}</p>
-                            <ul class="list-disc list-inside text-gray-700">
-                                <li>{{ __('Increases upper-body strength and engages the core') }}</li>
-                                <li>{{ __('Strengthening your back, shoulders, and abs can help improve posture') }}</li>
-                                <li>{{ __('As a type of strength training, it supports bone health and boosts heart health') }}</li>
-                            </ul>
-                            <p class="text-gray-700 font-bold">{{ __('Process:') }}</p>
-                            <ol class="list-decimal list-inside text-gray-700">
-                                <li>{{ __('Start in a plank position with your hands under your shoulders.') }}</li>
-                                <li>{{ __('Lower your body until your chest nearly touches the floor.') }}</li>
-                                <li>{{ __('Push through your palms to raise your body back to the starting position.') }}</li>
-                            </ol>
-                        </div>
-                        <!-- GIF Column -->
-                        <div class="md:w-1/2 flex justify-center md:justify-end mt-6 md:mt-0">
-                            <img src="../assets/images/pu_standard.gif" alt="Push Up GIF" class="object-contain h-96 w-full md:w-auto rounded-lg">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 py-8">
-                        <div class="aspect-w-16 aspect-h-9 relative rounded-lg shadow-lg overflow-hidden">
-                            <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/jWxvty2KROs" title="Push-Up Video 1" allowfullscreen></iframe>
-                        </div>
-                        <div class="aspect-w-16 aspect-h-9 relative rounded-lg shadow-lg overflow-hidden">
-                            <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/lsRAK6cr5kY" title="Push-Up Video 2" allowfullscreen></iframe>
-                        </div>
+                    <div id="tab-content-endurance" class="tab-content hidden">
+                        <h2 class="text-4xl font-bold text-center pt-8 mb-6">{{ __('Muscle Endurance') }}</h2>
+                        <p class="text-center text-gray-600 mb-6">
+                            {{ __('Muscular endurance refers to the ability of a muscle to sustain repeated contractions against
+                            resistance for an extended period of time. To increase muscular endurance, you should engage in
+                            activities that work your muscles more than usual such as squats and push-ups. In FitFocus, muscle
+                            endurance will test your ability to perform as many correct push-ups and squats within a limited
+                            amount of time, as well as to hold a plank position for a specified number of seconds.') }}
+                        </p>
+                        @include('components.workouts.pushup')
+                        <hr class="border-t border-gray-500 my-4 w-1/2 mx-auto">
+                        @include('components.workouts.squat')
+                        <hr class="border-t border-gray-500 my-4 w-1/2 mx-auto">
+                        @include('components.workouts.plank')
                     </div>
 
-                    <hr class="border-t border-gray-500 my-4 w-1/2 mx-auto">
-
-                    <!-- Squat Section -->
-                    <div class="flex flex-col md:flex-row items-center rounded-lg p-8 space-y-4 md:space-y-0">
-                        <!-- GIF Column -->
-                        <div class="md:w-1/2 flex justify-center md:justify-start">
-                            <img src="../assets/images/sq_standard.gif" alt="Squat GIF" class="object-contain h-96 w-full md:w-auto rounded-lg">
-                        </div>
-
-                        <!-- Information Column -->
-                        <div class="md:w-1/2 space-y-4">
-                            <h2 class="text-2xl font-bold">{{ __('Squat') }}</h2>
-                            <p class="text-gray-700">{{ __('The squat is a fundamental exercise that targets the quadriceps, hamstrings, and glutes while working out the core, hips, calves, obliques.') }}</p>
-                            <p class="text-gray-700 font-bold">{{ __('Benefits:') }}</p>
-                            <ul class="list-disc list-inside text-gray-700">
-                                <li>{{ __('Helps build muscle and burn calories fast') }}</li>
-                                <li>{{ __('Strengthening the lower body muscles can boost speed and keep bones strong') }}</li>
-                                <li>{{ __('By working out the core, it improves mobility and balance') }}</li>
-                            </ul>
-                            <p class="text-gray-700 font-bold">{{ __('Process:') }}</p>
-                            <ol class="list-decimal list-inside text-gray-700">
-                                <li>{{ __('Stand with your feet shoulder-width apart.') }}</li>
-                                <li>{{ __('Lower your hips as if sitting back into a chair.') }}</li>
-                                <li>{{ __('Push through your heels to return to the starting position.') }}</li>
-                            </ol>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 py-8">
-                        <div class="relative aspect-w-16 aspect-h-9 rounded-lg shadow-lg overflow-hidden">
-                            <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/xqvCmoLULNY" title="Squat Video Tutorial 1" allowfullscreen></iframe>
-                        </div>
-                        <div class="relative aspect-w-16 aspect-h-9 rounded-lg shadow-lg overflow-hidden">
-                            <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/rXEproFdDn4" title="Squat Video Tutorial 2" allowfullscreen></iframe>
-                        </div>
-                    </div>
-
-                    <hr class="border-t border-gray-500 my-4 w-1/2 mx-auto">
-
-                    <!-- Plank Section -->
-                    <div class="flex flex-col md:flex-row items-center rounded-lg p-8">
-                        <!-- Information Column -->
-                        <div class="md:w-1/2 space-y-4">
-                            <h2 class="text-2xl font-bold">{{ __('Plank') }}</h2>
-                            <p class="text-gray-700">{{ __('The plank is a core-strengthening exercise that engages multiple muscle groups, working out the core, glutes, quads, shoulders, arms, chest, abdominals, and back.') }}</p>
-                            <p class="text-gray-700 font-bold">{{ __('Benefits:') }}</p>
-                            <ul class="list-disc list-inside text-gray-700">
-                                <li>{{ __('Can reduce lower back pain') }} </li>
-                                <li>{{ __('Improves balance, stability, and endurance') }} </li>
-                                <li>{{ __('By strengthening the core, it promotes good posture') }} </li>
-                            </ul>
-                            <p class="text-gray-700 font-bold">{{ __('Process:') }}</p>
-                            <ol class="list-decimal list-inside text-gray-700">
-                                <li>{{ __('Start in a forearm plank position with your elbows under your shoulders.')}}</li>
-                                <li>{{ __('Keep your body in a straight line from head to toes.')}}</li>
-                                <li>{{ __('Hold the position as long as possible without dropping your hips.')}}</li>
-                            </ol>
-                        </div>
-                
-                        <!-- GIF Column -->
-                        <div class="md:w-1/2 flex justify-center md:justify-end mt-6 md:mt-0">
-                            <img src="../assets/images/pl_standard.gif" alt="Plank GIF" class="object-contain h-96 w-full md:w-auto rounded-lg">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 py-8">
-                        <div class="aspect-w-16 aspect-h-9 relative rounded-lg shadow-lg overflow-hidden">
-                            <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/pvIjsG5Svck" title="Plank Video 1" allowfullscreen></iframe>
-                        </div>
-                        <div class="aspect-w-16 aspect-h-9 relative rounded-lg shadow-lg overflow-hidden">
-                            <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/t7Vjprc8BCY" title="Plank Video 2" allowfullscreen></iframe>
-                        </div>
+                    <div id="tab-content-both" class="tab-content hidden">
+                        <h2 class="text-4xl font-bold text-center pt-8 mb-6">{{ __('Muscle Strength and Endurance') }}</h2>
+                        <p class="text-center text-gray-600 mb-6">
+                            {{ __('Muscle strength and endurance combines both health-related fitness components to test your 
+                            ability to maintain your power as you perform push-ups and squats for multiple sets.') }}
+                        </p>
+                        @include('components.workouts.pushup')
+                        <hr class="border-t border-gray-500 my-4 w-1/2 mx-auto">
+                        @include('components.workouts.squat')
                     </div>
                 </div>
             </div>
@@ -256,6 +223,19 @@
                     });
                 }
             }));
+        });
+
+        const tabs = document.querySelectorAll('.tab-button');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => {
+                tabs.forEach((t) => t.classList.remove('active'));
+                contents.forEach((content) => content.classList.add('hidden'));
+
+                tab.classList.add('active');
+                contents[index].classList.remove('hidden');
+            });
         });
     </script>
 </body>
