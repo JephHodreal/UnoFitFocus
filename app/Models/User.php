@@ -52,6 +52,11 @@ class User extends Authenticatable
         return $this->hasOne(UserDetails::class, 'user_id');
     }
 
+    public function parqInfo()
+    {
+        return $this->hasOne(PARQInfo::class, 'fk_userparq_id');
+    }
+
     public function userStats()
     {
         return $this->hasMany(StatsDashboard::class, 'fk_user_id');

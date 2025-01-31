@@ -135,7 +135,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
     if difficulty in ["Beginner"]:
         target_reps = 12
         target_sets = 3
-        target_time = 15
+        target_time = 60
     elif difficulty in ["Intermediate"]:
         difficulty = "Standard"
         target_reps = 20

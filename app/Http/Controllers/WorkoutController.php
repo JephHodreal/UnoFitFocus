@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Models\StatsDashboard;
 use App\Models\User;
+use App\Models\PARQInfo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -24,6 +25,8 @@ class WorkoutController extends Controller
             ->get()
             ->groupBy('exercise');
 
-        return view('Workout', compact('scores'));
+        $hasParqAnswers = DB::table('parq_answers')->where('fk_userparq_id', $user->id)->exists();
+
+        return view('Workout', compact('scores', 'hasParqAnswers'));
     }   
 }

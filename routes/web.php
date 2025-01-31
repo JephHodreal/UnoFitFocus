@@ -8,6 +8,7 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\FitCheckController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\PARQController;
 
 Route::get('/', function () {
     return view('home');
@@ -30,6 +31,11 @@ Route::get('/Workout-History', [HomeController::class, 'viewWorkoutHistory'])
     ->name('WorkoutHistory');
 
 Route::get('/Workout-History', [HistoryController::class, 'index'])->name('WorkoutHistory');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/parq', [PARQController::class, 'create'])->name('parq.create');
+    Route::post('/parq', [PARQController::class, 'update'])->name('parq.update');
+});
 
 Route::get('/Setup', function () {
     return view('Setup');
