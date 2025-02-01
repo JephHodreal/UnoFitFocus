@@ -268,14 +268,14 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         if stage == None:
             stage = "rest"
 
-        if (0 < workout_angles["right_knee_angle"] < 55) and (0 < workout_angles["left_knee_angle"] < 55):
+        if (0 < workout_angles["right_knee_angle"] < 110) and (0 < workout_angles["left_knee_angle"] < 110):
             if (prediction == 0):
                 stage = "down"
                 signal = "down_sound"
             elif (prediction == 1):
                 stage = "You are too low"
                 signal = "error_sound"
-        elif (workout_angles["right_knee_angle"] > 55) and (workout_angles["left_knee_angle"] > 55):
+        elif (workout_angles["right_knee_angle"] > 110) and (workout_angles["left_knee_angle"] > 110):
             if stage == "down":
                 stage = "up"
                 reps += 1
