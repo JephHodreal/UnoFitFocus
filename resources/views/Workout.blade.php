@@ -61,7 +61,7 @@
                         <input type="hidden" name="difficulty" id="difficultyInput">
                         <input type="hidden" name="task" id="taskInput">
 
-                        <div class="flex justify-around mt-8 z-10 relative">
+                        <div class="flex justify-around mt-8">
                             <div class="workout-item w-72 cursor-pointer transform transition-transform duration-300 hover:scale-105" id="pushup">
                                 <img src="../assets/images/pu_standard.jpg" alt="Push-Up" class="w-full rounded-lg transition-shadow duration-300 hover:shadow-lg">
                                 <p class="mt-2">Push-Up</p>
@@ -139,10 +139,14 @@
 
             if (levelIndex === 0) return true;
 
-            const prevLevel = levels[levelIndex - 1];
-            const prevScore = scores[workout]?.find(s => s.difficulty === prevLevel)?.max_score || 0;
+            // const prevLevel = levels[levelIndex - 1];
+            // const prevScore = scores[workout]?.find(s => s.difficulty === prevLevel)?.max_score || 0;
 
-            return prevScore >= 100;
+            // return prevScore >= 100;
+            const prevLevel = levels[levelIndex - 1];
+            const perfectScoreCount = scores[workout]?.find(s => s.difficulty === prevLevel)?.perfect_score_count || 0;
+
+            return perfectScoreCount >= 3;
         }
 
         // Enable/Disable buttons based on scores

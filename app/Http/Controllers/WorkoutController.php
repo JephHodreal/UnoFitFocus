@@ -20,7 +20,7 @@ class WorkoutController extends Controller
         $user = Auth::user();
 
         $scores = StatsDashboard::where('fk_user_id', $user->id)
-            ->select('exercise', 'difficulty', DB::raw('MAX(score) as max_score'))
+            ->select('exercise', 'difficulty', DB::raw('SUM(CASE WHEN score = 100 THEN 1 ELSE 0 END) as perfect_score_count'))
             ->groupBy('exercise', 'difficulty')
             ->get()
             ->groupBy('exercise');
