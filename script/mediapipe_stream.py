@@ -133,6 +133,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         return reps, sets, stage, total_time, score, modalScore1, modalScore2
     
     if difficulty in ["Beginner"]:
+        difficulty = "Standard"
         target_reps = 12
         target_sets = 3
         target_time = 60
@@ -268,14 +269,14 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         if stage == None:
             stage = "rest"
 
-        if (0 < workout_angles["right_knee_angle"] < 110) and (0 < workout_angles["left_knee_angle"] < 110):
+        if (0 < workout_angles["right_knee_angle"] < 100) and (0 < workout_angles["left_knee_angle"] < 100):
             if (prediction == 0):
                 stage = "down"
                 signal = "down_sound"
             elif (prediction == 1):
                 stage = "You are too low"
                 signal = "error_sound"
-        elif (workout_angles["right_knee_angle"] > 110) and (workout_angles["left_knee_angle"] > 110):
+        elif (workout_angles["right_knee_angle"] > 100) and (workout_angles["left_knee_angle"] > 100):
             if stage == "down":
                 stage = "up"
                 reps += 1
