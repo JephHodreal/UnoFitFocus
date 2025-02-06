@@ -97,6 +97,73 @@
                     </form>
                 </div>
             </div>
+
+            <!-- Norms Explanation Section -->
+            <div class="container mx-auto p-6 bg-gray-100 rounded-lg shadow-md mt-12">
+                <h2 class="text-2xl font-bold text-gray-800">How Are Your Norms Calculated?</h2>
+                <p class="text-gray-700 mt-2">
+                    Your norms are based on your <strong>age, weight, and your subjective view of your fitness level</strong>.
+                    These norms help determine the ideal number of sets, repetitions, and durations for your selected workout.
+                </p>
+            </div>
+
+            <div class="container mx-auto mt-8">
+                <div class="flex justify-center space-x-8 mb-6">
+                    <!-- Workout Tabs -->
+                    <div class="flex space-x-2">
+                        <button class="tab workout-tab px-6 py-2 rounded-lg shadow-md font-medium
+                            {{ $selectedWorkout == 'Push-Up' ? 'bg-blue-600 text-white' : 'bg-gray-300 hover:bg-gray-400' }}" 
+                            data-workout="Push-Up">Push-Up</button>
+                        <button class="tab workout-tab px-6 py-2 rounded-lg shadow-md font-medium
+                            {{ $selectedWorkout == 'Squat' ? 'bg-blue-600 text-white' : 'bg-gray-300 hover:bg-gray-400' }}" 
+                            data-workout="Squat">Squat</button>
+                        <button class="tab workout-tab px-6 py-2 rounded-lg shadow-md font-medium
+                            {{ $selectedWorkout == 'Plank' ? 'bg-blue-600 text-white' : 'bg-gray-300 hover:bg-gray-400' }}" 
+                            data-workout="Plank">Plank</button>
+                    </div>
+            
+                    <!-- Difficulty Tabs -->
+                    <div class="flex space-x-2">
+                        <button class="tab difficulty-tab px-6 py-2 rounded-lg shadow-md font-medium
+                            {{ $selectedDifficulty == 'Beginner' ? 'bg-green-600 text-white' : 'bg-gray-300 hover:bg-gray-400' }}" 
+                            data-difficulty="Beginner">Beginner</button>
+                        <button class="tab difficulty-tab px-6 py-2 rounded-lg shadow-md font-medium
+                            {{ $selectedDifficulty == 'Intermediate' ? 'bg-green-600 text-white' : 'bg-gray-300 hover:bg-gray-400' }}" 
+                            data-difficulty="Intermediate">Intermediate</button>
+                        <button class="tab difficulty-tab px-6 py-2 rounded-lg shadow-md font-medium
+                            {{ $selectedDifficulty == 'Advanced' ? 'bg-green-600 text-white' : 'bg-gray-300 hover:bg-gray-400' }}" 
+                            data-difficulty="Advanced">Advanced</button>
+                    </div>
+                </div>
+            </div>
+
+            @include('components.norms-table', [
+                'normTable' => $normTable,
+                'ages' => $ages,
+                'weightRanges' => $weightRanges,
+                'highlightedNorms' => $highlightedNorms,
+                'userDetails' => $userDetails,
+                'selectedFitnessLevel' => $selectedFitnessLevel,
+                'selectedWorkout' => $selectedWorkout,
+                'selectedDifficulty' => $selectedDifficulty
+            ])
+
+            <!-- Fitness Level Experiment Section -->
+            <div class="container mx-auto text-center mt-8 p-6 bg-blue-100 rounded-lg">
+                <h2 class="text-xl font-bold text-gray-800">Want to see how your norms change based on your fitness level?</h2>
+                <p class="text-gray-700 mt-2">Change your fitness level below:</p>
+
+                <form method="GET" action="{{ route('Workout') }}" class="mt-4">
+                    <select name="fitness_level" class="border px-3 py-2 rounded-lg" onchange="this.form.submit()">
+                        <option value="">Select Fitness Level</option>
+                        @foreach ($fitnessLevels as $level)
+                            <option value="{{ $level }}" {{ request('fitness_level') == $level ? 'selected' : '' }}>
+                                {{ $level }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
         </x-app-layout>    
     </main>
 
@@ -113,6 +180,36 @@
         const taskInput = document.getElementById('taskInput');
         const taskDescription = document.getElementById('taskDescription');
         const goBtn = document.getElementById('goBtn');
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let selectedWorkout = "{{ $selectedWorkout }}";
+            let selectedDifficulty = "{{ $selectedDifficulty }}";
+
+            // Update the workout tab selection
+            document.querySelectorAll(".workout-tab").forEach(tab => {
+                tab.addEventListener("click", function () {
+                    document.querySelectorAll(".workout-tab").forEach(t => t.classList.remove("active"));
+                    this.classList.add("active");
+                    selectedWorkout = this.getAttribute("data-workout");
+                    updateTable();
+                });
+            });
+
+            // Update the difficulty tab selection
+            document.querySelectorAll(".difficulty-tab").forEach(tab => {
+                tab.addEventListener("click", function () {
+                    document.querySelectorAll(".difficulty-tab").forEach(t => t.classList.remove("active"));
+                    this.classList.add("active");
+                    selectedDifficulty = this.getAttribute("data-difficulty");
+                    updateTable();
+                });
+            });
+
+            // Update the table URL with the selected workout and difficulty
+            function updateTable() {
+                window.location.href = `{{ route('Workout') }}?workout=${selectedWorkout}&difficulty=${selectedDifficulty}`;
+            }
+        });
 
         const tasks = {
             "Push-Up": {

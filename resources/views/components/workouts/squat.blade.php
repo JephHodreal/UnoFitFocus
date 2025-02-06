@@ -10,11 +10,11 @@
             {{ __('Squat') }}
             <span class="flex items-center gap-2 px-3 py-1 bg-red-200 text-red-800 text-sm rounded-full relative group">
                 <img src="../assets/images/legs.PNG" alt="Legs Icon" class="h-4 w-4" />
-                {{ __('Legs') }}
+                {{ __('Lower Extremities') }}
                 <span
                     class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 >
-                    {{ __('This exercise primarily targets the legs.') }}
+                    {{ __('This exercise primarily targets the legs and thighs.') }}
                 </span>
             </span>
         </h2>

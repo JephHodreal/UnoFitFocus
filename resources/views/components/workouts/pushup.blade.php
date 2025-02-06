@@ -5,11 +5,11 @@
             {{ __('Push-Up') }}
             <span class="flex items-center gap-2 px-3 py-1 bg-blue-200 text-blue-800 text-sm rounded-full relative group">
                 <img src="../assets/images/chest.PNG" alt="Chest Icon" class="h-4 w-4" />
-                {{ __('Chest') }}
+                {{ __('Upper Extremities') }}
                 <span
                     class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 >
-                    {{ __('This exercise primarily targets the chest.') }}
+                    {{ __('This exercise primarily targets the chest and arms.') }}
                 </span>
             </span>
         </h2>
