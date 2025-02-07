@@ -53,47 +53,52 @@
 
             <div class="py-12">
                 <div class="container mx-auto text-center">
-                    <h1 class="text-4xl font-bold mb-4 text-gray-800">Select Your Workout</h1>
+                    <h1 class="text-4xl font-bold mb-6 text-gray-800">Select Your Workout</h1>
                     
                     <form id="workoutForm" action="{{ route('FitCheck') }}" method="POST">
                         @csrf
                         <input type="hidden" name="workout" id="workoutInput">
                         <input type="hidden" name="difficulty" id="difficultyInput">
+                        <input type="hidden" name="sets" id="setsInput">
+                        <input type="hidden" name="reps" id="repsInput">
+                        <input type="hidden" name="duration" id="durationInput">
                         <input type="hidden" name="task" id="taskInput">
-
-                        <div class="flex justify-around mt-8">
-                            <div class="workout-item w-72 cursor-pointer transform transition-transform duration-300 hover:scale-105" id="pushup">
-                                <img src="../assets/images/pu_standard.jpg" alt="Push-Up" class="w-full rounded-lg transition-shadow duration-300 hover:shadow-lg">
-                                <p class="mt-2">Push-Up</p>
-                            </div>
-                            <div class="workout-item w-72 cursor-pointer transform transition-transform duration-300 hover:scale-105" id="squat">
-                                <img src="../assets/images/sq_standard.jpg" alt="Squat" class="w-full rounded-lg transition-shadow duration-300 hover:shadow-lg">
-                                <p class="mt-2">Squat</p>
-                            </div>
-                            <div class="workout-item w-72 cursor-pointer transform transition-transform duration-300 hover:scale-105" id="plank">
-                                <img src="../assets/images/pl_standard.jpg" alt="Plank" class="w-full rounded-lg transition-shadow duration-300 hover:shadow-lg">
-                                <p class="mt-2">Plank</p>
-                            </div>
-                        </div>
-                        
-                        <div class="modal fixed inset-0 hidden bg-black bg-opacity-60 justify-center items-center" id="modal">
-                            <div class="bg-white p-8 rounded-lg text-center max-w-md w-full">
-                                <h2 class="text-xl font-bold mb-6" id="workout-title">{{ __('Select Difficulty') }}</h2>
-                                <div class="flex justify-around my-4">
-                                    <button type="button" class="difficulty-btn border-green-500 border-2 text-green-500 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" data-difficulty="Beginner">Beginner</button>
-                                    <button type="button" class="difficulty-btn border-yellow-500 border-2 text-yellow-500 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" data-difficulty="Intermediate">Intermediate</button>
-                                    <button type="button" class="difficulty-btn border-red-500 border-2 text-red-500 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" data-difficulty="Advanced">Advanced</button>
+            
+                        @foreach ($workouts as $workout)
+                            <div class="flex items-center border rounded-lg p-6 mb-6 bg-white shadow-md workout-item" data-workout="{{ $workout['name'] }}">
+                                <img src="{{ asset('assets/images/' . $workout['image']) }}" alt="{{ $workout['name'] }}" class="w-48 h-48 object-cover rounded-lg">
+                                <div class="ml-6 text-left">
+                                    <h2 class="text-2xl font-bold text-gray-800">{{ $workout['name'] }}</h2>
+                                    <p class="text-gray-600 mt-2 workout-description" data-default-description="{{ $workout['default_description'] }}">
+                                        {{ $workout['default_description'] }}
+                                    </p>
+                                    
+                                    <div class="mt-4 flex space-x-4">
+                                        @foreach (['Beginner', 'Intermediate', 'Advanced'] as $difficulty)
+                                            @php
+                                                $prevDifficulty = $difficulty === 'Intermediate' ? 'Beginner' : ($difficulty === 'Advanced' ? 'Intermediate' : null);
+                                                $isUnlocked = $prevDifficulty ? ($scores[$workout['name']][$prevDifficulty] ?? false) : true;
+                                            @endphp
+                                            <button type="button" 
+                                                    class="difficulty-btn border-2 py-2 px-4 rounded-lg transition-transform transform hover:scale-105 
+                                                    {{ $difficulty === 'Beginner' ? 'border-green-500 text-green-500' : '' }} 
+                                                    {{ $difficulty === 'Intermediate' ? 'border-yellow-500 text-yellow-500' : '' }} 
+                                                    {{ $difficulty === 'Advanced' ? 'border-red-500 text-red-500' : '' }} 
+                                                    {{ $isUnlocked ? '' : 'opacity-50 cursor-not-allowed' }}"
+                                                    data-workout="{{ $workout['name'] }}"
+                                                    data-difficulty="{{ $difficulty }}"
+                                                    @if (!$isUnlocked) title="Score a 100 in {{ $prevDifficulty }} at least 3 times to unlock {{ $difficulty }}." @endif
+                                                    {{ $isUnlocked ? '' : 'disabled' }}>
+                                                {{ $difficulty }}
+                                            </button>
+                                        @endforeach
+                                    </div>
                                 </div>
-
-                                <!-- Task Description Section -->
-                                <div id="taskDescription" class="my-4 text-gray-700"></div>
-
-                                <div class="modal-buttons flex justify-around mt-4">
-                                    <button type="button" class="close-btn border-red-600 border-2 text-red-600 py-2 px-4 rounded-lg hover:scale-105 transform transition-transform duration-200" id="closeBtn">Cancel</button>
-                                    <button type="submit" class="go-btn bg-gray-400 text-gray-700 py-2 px-4 rounded-lg cursor-not-allowed" id="goBtn" disabled>Continue</button>
-                                </div>
                             </div>
-                        </div>
+                        @endforeach
+            
+                        <button type="submit" class="bg-gray-400 text-gray-700 py-3 px-6 rounded-lg cursor-not-allowed mt-8 mx-auto block" 
+                                id="continueBtn" disabled>Continue</button>
                     </form>
                 </div>
             </div>
@@ -168,28 +173,29 @@
     </main>
 
     <script>
-        const scores = @json($scores);
-        let selectedWorkout = null;
-        let selectedDifficulty = null;
-
-        const workoutOptions = document.querySelectorAll('.workout-item');
-        const difficultyBtns = document.querySelectorAll('.difficulty-btn');
-        const modal = document.getElementById('modal');
-        const workoutInput = document.getElementById('workoutInput');
-        const difficultyInput = document.getElementById('difficultyInput');
-        const taskInput = document.getElementById('taskInput');
-        const taskDescription = document.getElementById('taskDescription');
-        const goBtn = document.getElementById('goBtn');
-
         document.addEventListener("DOMContentLoaded", function () {
             let selectedWorkout = "{{ $selectedWorkout }}";
             let selectedDifficulty = "{{ $selectedDifficulty }}";
 
             // Update the workout tab selection
             document.querySelectorAll(".workout-tab").forEach(tab => {
+                // Set initial active state based on server-side selected workout
+                if (tab.getAttribute("data-workout") === selectedWorkout) {
+                    tab.classList.add("bg-blue-600", "text-white");
+                    tab.classList.remove("bg-gray-300", "hover:bg-gray-400");
+                }
+
                 tab.addEventListener("click", function () {
-                    document.querySelectorAll(".workout-tab").forEach(t => t.classList.remove("active"));
-                    this.classList.add("active");
+                    // Remove active state from all workout tabs
+                    document.querySelectorAll(".workout-tab").forEach(t => {
+                        t.classList.remove("bg-blue-600", "text-white");
+                        t.classList.add("bg-gray-300", "hover:bg-gray-400");
+                    });
+
+                    // Add active state to clicked tab
+                    this.classList.add("bg-blue-600", "text-white");
+                    this.classList.remove("bg-gray-300", "hover:bg-gray-400");
+
                     selectedWorkout = this.getAttribute("data-workout");
                     updateTable();
                 });
@@ -197,9 +203,23 @@
 
             // Update the difficulty tab selection
             document.querySelectorAll(".difficulty-tab").forEach(tab => {
+                // Set initial active state based on server-side selected difficulty
+                if (tab.getAttribute("data-difficulty") === selectedDifficulty) {
+                    tab.classList.add("bg-green-600", "text-white");
+                    tab.classList.remove("bg-gray-300", "hover:bg-gray-400");
+                }
+
                 tab.addEventListener("click", function () {
-                    document.querySelectorAll(".difficulty-tab").forEach(t => t.classList.remove("active"));
-                    this.classList.add("active");
+                    // Remove active state from all difficulty tabs
+                    document.querySelectorAll(".difficulty-tab").forEach(t => {
+                        t.classList.remove("bg-green-600", "text-white");
+                        t.classList.add("bg-gray-300", "hover:bg-gray-400");
+                    });
+
+                    // Add active state to clicked tab
+                    this.classList.add("bg-green-600", "text-white");
+                    this.classList.remove("bg-gray-300", "hover:bg-gray-400");
+
                     selectedDifficulty = this.getAttribute("data-difficulty");
                     updateTable();
                 });
@@ -211,142 +231,77 @@
             }
         });
 
-        const tasks = {
-            "Push-Up": {
-                "Beginner": "Knees on floor push-up, 12 reps",
-                "Intermediate": "Standard push-up, 20 reps",
-                "Advanced": "Standard push-up, 30 reps"
-            },
-            "Squat": {
-                "Beginner": "Partial squat reaching 45 degrees from standing position, 15 reps",
-                "Intermediate": "Standard squat reaching 90 degrees from standing position, 20 reps",
-                "Advanced": "Standard squat reaching 90 degrees from standing position, 30 reps"
-            },
-            "Plank": {
-                "Beginner": "Hold plank position for 15 seconds",
-                "Intermediate": "Hold plank position for 30 seconds",
-                "Advanced": "Hold plank position for 60 seconds"
-            }
-        };
+        const workouts = @json($workouts);
+        let selectedWorkout = null;
+        let selectedDifficulty = null;
 
-        // Check if a difficulty is selectable
-        function isDifficultySelectable(workout, difficulty) {
-            const levels = ["Beginner", "Intermediate", "Advanced"];
-            const levelIndex = levels.indexOf(difficulty);
+        const workoutInput = document.getElementById('workoutInput');
+        const difficultyInput = document.getElementById('difficultyInput');
+        const setsInput = document.getElementById('setsInput');
+        const repsInput = document.getElementById('repsInput');
+        const durationInput = document.getElementById('durationInput');
+        const taskInput = document.getElementById('taskInput');
+        const continueBtn = document.getElementById('continueBtn');
 
-            if (levelIndex === 0) return true;
-
-            // const prevLevel = levels[levelIndex - 1];
-            // const prevScore = scores[workout]?.find(s => s.difficulty === prevLevel)?.max_score || 0;
-
-            // return prevScore >= 100;
-            const prevLevel = levels[levelIndex - 1];
-            const perfectScoreCount = scores[workout]?.find(s => s.difficulty === prevLevel)?.perfect_score_count || 0;
-
-            return perfectScoreCount >= 3;
-        }
-
-        // Enable/Disable buttons based on scores
-        function updateButtonStates() {
-            difficultyBtns.forEach(btn => {
-                const difficulty = btn.dataset.difficulty;
-                if (!isDifficultySelectable(selectedWorkout, difficulty)) {
-                    btn.disabled = true;
-                    btn.classList.add('opacity-50', 'cursor-not-allowed');
-                } else {
-                    btn.disabled = false;
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        // Reset all workout descriptions to default
+        function resetDescriptions() {
+            document.querySelectorAll('.workout-description').forEach(desc => {
+                const workout = workouts.find(w => w.name === desc.closest('.workout-item').dataset.workout);
+                if (workout) {
+                    desc.innerText = workout.default_description;
                 }
             });
         }
 
-        // Handle workout selection
-        workoutOptions.forEach(option => {
-            option.addEventListener('click', function () {
-                selectedWorkout = option.querySelector('p').innerText;
-                document.getElementById('workout-title').innerText = `${selectedWorkout}: Select Difficulty`;
-                workoutInput.value = selectedWorkout;
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                updateButtonStates(); // Update button states based on the selected workout
+        // Reset all button styles
+        function resetButtonStyles() {
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white');
             });
-        });
+        }
 
-        // Handle difficulty selection
-        difficultyBtns.forEach(btn => {
-            btn.addEventListener('click', function () {
-                difficultyBtns.forEach(b => {
-                    b.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white');
-                    if (b.classList.contains('border-green-500')) {
-                        b.classList.add('text-green-500');
-                    } else if (b.classList.contains('border-yellow-500')) {
-                        b.classList.add('text-yellow-500');
-                    } else if (b.classList.contains('border-red-500')) {
-                        b.classList.add('text-red-500');
+        document.querySelectorAll('.difficulty-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.classList.contains('cursor-not-allowed')) return;
+
+                // Reset all styles and descriptions
+                resetButtonStyles();
+                resetDescriptions();
+
+                // Add styles to clicked button
+                this.classList.add('text-white');
+                if (this.classList.contains('border-green-500')) {
+                    this.classList.add('bg-green-500');
+                } else if (this.classList.contains('border-yellow-500')) {
+                    this.classList.add('bg-yellow-500');
+                } else if (this.classList.contains('border-red-500')) {
+                    this.classList.add('bg-red-500'); // Changed from bg-red-700 to bg-red-500
+                }
+
+                selectedWorkout = this.dataset.workout;
+                selectedDifficulty = this.dataset.difficulty;
+
+                // Find the workout and update its description
+                const workout = workouts.find(w => w.name === selectedWorkout);
+                if (workout && workout.norm_descriptions && workout.norm_descriptions[selectedDifficulty]) {
+                    const descriptionElement = document.querySelector(
+                        `.workout-item[data-workout="${selectedWorkout}"] .workout-description`
+                    );
+                    if (descriptionElement) {
+                        descriptionElement.innerText = workout.norm_descriptions[selectedDifficulty];
                     }
-                });
-
-                if (btn.classList.contains('border-green-500')) {
-                    btn.classList.remove('text-green-500');
-                    btn.classList.add('bg-green-500', 'text-white');
-                } else if (btn.classList.contains('border-yellow-500')) {
-                    btn.classList.remove('text-yellow-500');
-                    btn.classList.add('bg-yellow-500', 'text-white');
-                } else if (btn.classList.contains('border-red-500')) {
-                    btn.classList.remove('text-red-500');
-                    btn.classList.add('bg-red-500', 'text-white');
                 }
 
-                selectedDifficulty = btn.dataset.difficulty;
+                // Update form inputs
+                workoutInput.value = selectedWorkout;
                 difficultyInput.value = selectedDifficulty;
-
-                // Update the task description based on the selected workout and difficulty
-                if (selectedWorkout && selectedDifficulty) {
-                    taskDescription.innerText = `Task: ${tasks[selectedWorkout][selectedDifficulty]}`;
-                }
-
-                // Enable and style the Continue button
-                goBtn.classList.remove('bg-gray-400', 'text-gray-700', 'cursor-not-allowed');
-                goBtn.classList.add('bg-green-600', 'text-white');
-                goBtn.disabled = false;
+                
+                // Enable continue button
+                continueBtn.classList.remove('bg-gray-400', 'text-gray-700', 'cursor-not-allowed');
+                continueBtn.classList.add('bg-green-600', 'text-white');
+                continueBtn.disabled = false;
             });
         });
-
-        goBtn.addEventListener('click', function () {
-            if (selectedWorkout && selectedDifficulty) {
-                document.getElementById('workoutInput').value = selectedWorkout;
-                document.getElementById('difficultyInput').value = selectedDifficulty;
-                document.getElementById('taskInput').value = tasks[selectedWorkout][selectedDifficulty];
-
-                document.getElementById('workoutForm').submit();
-            } else {
-                alert("Please select a valid workout and difficulty.");
-            }
-        });
-
-        modal.addEventListener('click', function (event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-
-        // Close modal on Cancel button click
-        document.getElementById('closeBtn').addEventListener('click', closeModal);
-
-        function closeModal() {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            selectedWorkout = null;
-            selectedDifficulty = null;
-            workoutInput.value = '';
-            difficultyInput.value = '';
-            taskInput.value = '';
-            taskDescription.innerText = '';
-            goBtn.disabled = true;
-            goBtn.classList.add('bg-gray-400', 'text-gray-700', 'cursor-not-allowed');
-            goBtn.classList.remove('bg-green-600', 'text-white');
-            difficultyBtns.forEach(btn => btn.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white'));
-        }
     </script>
 </body>
 </html>

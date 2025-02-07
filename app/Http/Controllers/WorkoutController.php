@@ -28,9 +28,18 @@ class WorkoutController extends Controller
             abort(404, 'User details not found.');
         }
 
+        // Retrieve user's last selected difficulty from a session or user preferences
+        $lastSelectedDifficulty = $request->session()->get('last_selected_difficulty', 'Beginner');
+        
+        // Prefer the current request's difficulty, otherwise use the last selected, or default to Beginner
+        $selectedDifficulty = $request->input('difficulty', $lastSelectedDifficulty);
+        
+        // Save the current selection for future visits
+        $request->session()->put('last_selected_difficulty', $selectedDifficulty);
+
         // Get filters with safe defaults
         $selectedWorkout = $request->input('workout', 'Push-Up');
-        $selectedDifficulty = $request->input('difficulty_level', 'Beginner');
+        //$selectedDifficulty = $request->input('difficulty_level', 'Beginner');
         $selectedFitnessLevel = $request->input('fitness_level', $userDetails->fitness_level ?? 'Beginner');
 
         // Retrieve norms filtered by gender, fitness level, workout, and difficulty
@@ -46,15 +55,15 @@ class WorkoutController extends Controller
         $weightRanges = $this->generateWeightRanges($userDetails->gender);
         $fitnessLevels = DB::table('workout_norms')->select('fitness_level')->distinct()->pluck('fitness_level');
 
-        // Initialize the norm table and highlighted norms
+        $userFitnessLevel = $userDetails->fitness_level;
+
+        // Build norms table
         $normTable = [];
         $highlightedNorms = null;
 
-        // Find the user's specific norm first
-        $userNorm = $norms->first(function ($norm) use ($userDetails) {
-            return $this->isAgeInRange($userDetails->age, $norm->age_range) &&
-                   $this->isInWeightRange($userDetails->weight, $norm->weight_range);
-        });
+        // Find the user's specific norm
+        $userNorm = $norms->first(fn($norm) => $this->isAgeInRange($userDetails->age, $norm->age_range) &&
+                                            $this->isInWeightRange($userDetails->weight, $norm->weight_range));
 
         if ($userNorm) {
             $highlightedNorms = [
@@ -64,44 +73,110 @@ class WorkoutController extends Controller
             ];
         }
 
-        // Build the norm table
         foreach ($ages as $age) {
             $normTable[$age] = [];
             
             foreach ($weightRanges as $weightRange) {
-                // Find matching norm for this age and weight combination
-                $matchingNorm = $norms->first(function ($norm) use ($age, $weightRange) {
-                    // Convert ranges for comparison
-                    $ageInRange = $this->isAgeInRange($age, $norm->age_range);
-                    $weightInRange = $this->isWeightRangeOverlapping($weightRange, $norm->weight_range);
-                    
-                    return $ageInRange && $weightInRange;
-                });
+                $matchingNorm = $norms->first(fn($norm) =>
+                    $this->isAgeInRange($age, $norm->age_range) &&
+                    $this->isWeightRangeOverlapping($weightRange, $norm->weight_range)
+                );
 
                 if ($matchingNorm) {
-                    if ($selectedWorkout === 'Plank') {
-                        $normTable[$age][$weightRange] = "{$matchingNorm->duration} sec";
-                    } else {
-                        $totalReps = $matchingNorm->sets * $matchingNorm->reps;
-                        $normTable[$age][$weightRange] = "{$totalReps} reps";
-                    }
+                    $normTable[$age][$weightRange] = $selectedWorkout === 'Plank'
+                        ? "{$matchingNorm->duration} sec"
+                        : ($matchingNorm->sets * $matchingNorm->reps) . " reps";
                 } else {
                     $normTable[$age][$weightRange] = 'N/A';
                 }
             }
         }
 
-        // Retrieve scores from StatsDashboard
+        /// Retrieve norms filtered by user's actual characteristics
+        $workoutNorms = DB::table('workout_norms')
+        ->where('gender', $userDetails->gender)
+        ->where('fitness_level', $userFitnessLevel)  // Use user's actual fitness level
+        ->whereIn('exercise_type', ['Push-Up', 'Squat', 'Plank'])
+        ->get()
+        ->groupBy('exercise_type');
+
+        // Update scores calculation for difficulty unlocking
         $scores = StatsDashboard::where('fk_user_id', $user->id)
-            ->select('exercise', 'difficulty', DB::raw('SUM(CASE WHEN score = 100 THEN 1 ELSE 0 END) as perfect_score_count'))
+            ->select('exercise', 'difficulty', DB::raw('COUNT(CASE WHEN score = 100 THEN 1 END) as perfect_score_count'))
             ->groupBy('exercise', 'difficulty')
             ->get()
-            ->groupBy('exercise');
+            ->groupBy('exercise')
+            ->mapWithKeys(function ($group, $exercise) {
+                return [
+                    $exercise => $group->mapWithKeys(function ($item) {
+                        return [$item->difficulty => $item->perfect_score_count >= 3];
+                    })->all()
+                ];
+            });
+
+        // Initialize Beginner difficulty as unlocked for all workouts
+        foreach (['Push-Up', 'Squat', 'Plank'] as $exercise) {
+            if (!isset($scores[$exercise])) {
+                $scores[$exercise] = ['Beginner' => true];
+            }
+            if (!isset($scores[$exercise]['Beginner'])) {
+                $scores[$exercise]['Beginner'] = true;
+            }
+        }
+
+        // Define available workouts with descriptions
+        $workouts = [
+            [
+                'name' => 'Push-Up',
+                'image' => 'pu_standard.jpg',
+                'default_description' => 'Perform a standard push-up with proper form.',
+                'norm_descriptions' => $this->generateNormDescriptions($workoutNorms['Push-Up'] ?? collect(), $userDetails)
+            ],
+            [
+                'name' => 'Squat',
+                'image' => 'sq_standard.jpg',
+                'default_description' => 'Perform a full-depth squat, ensuring your thighs are parallel to the floor.',
+                'norm_descriptions' => $this->generateNormDescriptions($workoutNorms['Squat'] ?? collect(), $userDetails)
+            ],
+            [
+                'name' => 'Plank',
+                'image' => 'pl_standard.jpg',
+                'default_description' => 'Hold a plank position with a straight back and engaged core.',
+                'norm_descriptions' => $this->generateNormDescriptions($workoutNorms['Plank'] ?? collect(), $userDetails)
+            ]
+        ];
 
         // Check if user has answered the PARQ form
         $hasParqAnswers = DB::table('parq_answers')->where('fk_userparq_id', $user->id)->exists();
 
-        return view('workout', compact('normTable', 'ages', 'weightRanges', 'highlightedNorms', 'selectedWorkout', 'selectedDifficulty', 'selectedFitnessLevel', 'hasParqAnswers', 'fitnessLevels', 'scores', 'userDetails'));
+        //return view('workout', compact('normTable', 'ages', 'weightRanges', 'highlightedNorms', 'selectedWorkout', 'selectedDifficulty', 'selectedFitnessLevel', 'hasParqAnswers', 'fitnessLevels', 'scores', 'userDetails'));
+        return view('workout', compact(
+            'workouts', 'norms', 'scores', 'ages', 'weightRanges', 'userNorm', 
+            'selectedWorkout', 'selectedDifficulty', 'selectedFitnessLevel', 
+            'hasParqAnswers', 'fitnessLevels', 'userDetails', 'normTable', 'highlightedNorms'
+        ));
+    }
+
+    private function generateNormDescriptions($workoutNorms, $userDetails)
+    {
+        $descriptions = [];
+        foreach (['Beginner', 'Intermediate', 'Advanced'] as $difficulty) {
+            $norm = $workoutNorms->first(function ($norm) use ($difficulty, $userDetails) {
+                return $norm->difficulty_level === $difficulty &&
+                       $this->isAgeInRange($userDetails->age, $norm->age_range) &&
+                       $this->isInWeightRange($userDetails->weight, $norm->weight_range);
+            });
+
+            if ($norm) {
+                $descriptions[$difficulty] = $norm->exercise_type === 'Plank'
+                    ? "Hold a plank for {$norm->duration} seconds."
+                    : "Perform {$norm->sets} sets of {$norm->reps} repetitions for a total of " . 
+                      ($norm->sets * $norm->reps) . " {$norm->exercise_type}s.";
+            } else {
+                $descriptions[$difficulty] = "No specific requirements found for your profile.";
+            }
+        }
+        return $descriptions;
     }
 
     private function isWeightRangeOverlapping($rangeA, $rangeB)
