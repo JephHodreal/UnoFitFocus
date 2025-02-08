@@ -94,33 +94,75 @@ class WorkoutController extends Controller
 
         /// Retrieve norms filtered by user's actual characteristics
         $workoutNorms = DB::table('workout_norms')
-        ->where('gender', $userDetails->gender)
-        ->where('fitness_level', $userFitnessLevel)  // Use user's actual fitness level
-        ->whereIn('exercise_type', ['Push-Up', 'Squat', 'Plank'])
-        ->get()
-        ->groupBy('exercise_type');
-
-        // Update scores calculation for difficulty unlocking
-        $scores = StatsDashboard::where('fk_user_id', $user->id)
-            ->select('exercise', 'difficulty', DB::raw('COUNT(CASE WHEN score = 100 THEN 1 END) as perfect_score_count'))
-            ->groupBy('exercise', 'difficulty')
+            ->where('gender', $userDetails->gender)
+            ->where('fitness_level', $userFitnessLevel)  // Use user's actual fitness level
+            ->whereIn('exercise_type', ['Push-Up', 'Squat', 'Plank'])
             ->get()
-            ->groupBy('exercise')
-            ->mapWithKeys(function ($group, $exercise) {
-                return [
-                    $exercise => $group->mapWithKeys(function ($item) {
-                        return [$item->difficulty => $item->perfect_score_count >= 3];
-                    })->all()
-                ];
-            });
+            ->groupBy('exercise_type');
 
-        // Initialize Beginner difficulty as unlocked for all workouts
+        // // Update scores calculation for difficulty unlocking
+        // $scores = StatsDashboard::where('fk_user_id', $user->id)
+        //     ->select('exercise', 'difficulty', DB::raw('COUNT(CASE WHEN score = 100 THEN 1 END) as perfect_score_count'))
+        //     ->groupBy('exercise', 'difficulty')
+        //     ->get()
+        //     ->groupBy('exercise')
+        //     ->mapWithKeys(function ($group, $exercise) {
+        //         return [
+        //             $exercise => $group->mapWithKeys(function ($item) {
+        //                 return [$item->difficulty => $item->perfect_score_count >= 3];
+        //             })->all()
+        //         ];
+        //     });
+
+        // // Initialize Beginner difficulty as unlocked for all workouts
+        // foreach (['Push-Up', 'Squat', 'Plank'] as $exercise) {
+        //     if (!isset($scores[$exercise])) {
+        //         $scores[$exercise] = ['Beginner' => true];
+        //     }
+        //     if (!isset($scores[$exercise]['Beginner'])) {
+        //         $scores[$exercise]['Beginner'] = true;
+        //     }
+        // }
+
+        // Get perfect scores count for each exercise-difficulty combination
+        $perfectScores = DB::table('workout_sessions')
+            ->where('fk_user_id', $user->id)
+            ->where('score', 100)
+            ->select('exercise', 'difficulty', DB::raw('COUNT(*) as perfect_count'))
+            ->groupBy('exercise', 'difficulty')
+            ->get();
+
+        // Initialize scores array with all difficulties locked
+        $scores = [];
         foreach (['Push-Up', 'Squat', 'Plank'] as $exercise) {
-            if (!isset($scores[$exercise])) {
-                $scores[$exercise] = ['Beginner' => true];
-            }
-            if (!isset($scores[$exercise]['Beginner'])) {
-                $scores[$exercise]['Beginner'] = true;
+            $scores[$exercise] = [
+                'Beginner' => [
+                    'unlocked' => true,
+                    'perfect_count' => 0
+                ],
+                'Intermediate' => [
+                    'unlocked' => false,
+                    'perfect_count' => 0
+                ],
+                'Advanced' => [
+                    'unlocked' => false,
+                    'perfect_count' => 0
+                ]
+            ];
+        }
+
+        // Update perfect scores counts
+        foreach ($perfectScores as $score) {
+            if (isset($scores[$score->exercise][$score->difficulty])) {
+                $scores[$score->exercise][$score->difficulty]['perfect_count'] = $score->perfect_count;
+                
+                // Update unlocked status based on previous difficulty's perfect scores
+                if ($score->difficulty === 'Beginner' && $score->perfect_count >= 3) {
+                    $scores[$score->exercise]['Intermediate']['unlocked'] = true;
+                }
+                if ($score->difficulty === 'Intermediate' && $score->perfect_count >= 3) {
+                    $scores[$score->exercise]['Advanced']['unlocked'] = true;
+                }
             }
         }
 

@@ -77,7 +77,7 @@
                                         @foreach (['Beginner', 'Intermediate', 'Advanced'] as $difficulty)
                                             @php
                                                 $prevDifficulty = $difficulty === 'Intermediate' ? 'Beginner' : ($difficulty === 'Advanced' ? 'Intermediate' : null);
-                                                $isUnlocked = $prevDifficulty ? ($scores[$workout['name']][$prevDifficulty] ?? false) : true;
+                                                $isUnlocked = $scores[$workout['name']][$difficulty]['unlocked'] ?? false;
                                             @endphp
                                             <button type="button" 
                                                     class="difficulty-btn border-2 py-2 px-4 rounded-lg transition-transform transform hover:scale-105 
@@ -87,9 +87,11 @@
                                                     {{ $isUnlocked ? '' : 'opacity-50 cursor-not-allowed' }}"
                                                     data-workout="{{ $workout['name'] }}"
                                                     data-difficulty="{{ $difficulty }}"
-                                                    @if (!$isUnlocked) title="Score a 100 in {{ $prevDifficulty }} at least 3 times to unlock {{ $difficulty }}." @endif
+                                                    @if (!$isUnlocked) 
+                                                        title="Score a 100 in {{ $prevDifficulty }} at least 3 times to unlock {{ $difficulty }}. Current perfect scores: {{ $scores[$workout['name']][$prevDifficulty]['perfect_count'] ?? 0 }}/3" 
+                                                    @endif
                                                     {{ $isUnlocked ? '' : 'disabled' }}>
-                                                {{ $difficulty }}
+                                                    {{ $difficulty }}
                                             </button>
                                         @endforeach
                                     </div>
@@ -173,6 +175,108 @@
     </main>
 
     <script>
+        const workouts = @json($workouts);
+        let selectedWorkout = null;
+        let selectedDifficulty = null;
+
+        const workoutInput = document.getElementById('workoutInput');
+        const difficultyInput = document.getElementById('difficultyInput');
+        const setsInput = document.getElementById('setsInput');
+        const repsInput = document.getElementById('repsInput');
+        const durationInput = document.getElementById('durationInput');
+        const taskInput = document.getElementById('taskInput');
+        const continueBtn = document.getElementById('continueBtn');
+
+        // Reset all workout descriptions to default
+        function resetDescriptions() {
+            document.querySelectorAll('.workout-description').forEach(desc => {
+                const workout = workouts.find(w => w.name === desc.closest('.workout-item').dataset.workout);
+                if (workout) {
+                    desc.innerText = workout.default_description;
+                }
+            });
+        }
+
+        // Reset all button styles
+        function resetButtonStyles() {
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white');
+            });
+        }
+
+        // Fetch workout norms function
+        async function fetchWorkoutNorms(workout, difficulty) {
+            try {
+                const response = await fetch(`/api/workout-norms?workout=${workout}&difficulty=${difficulty}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching workout norms:', error);
+                return null;
+            }
+        }
+
+        document.querySelectorAll('.difficulty-btn').forEach(button => {
+            button.addEventListener('click', async function() {
+                if (this.classList.contains('cursor-not-allowed')) return;
+
+                // Reset all styles and descriptions
+                resetButtonStyles();
+                resetDescriptions();
+
+                // Add styles to clicked button
+                this.classList.add('text-white');
+                if (this.classList.contains('border-green-500')) {
+                    this.classList.add('bg-green-500');
+                } else if (this.classList.contains('border-yellow-500')) {
+                    this.classList.add('bg-yellow-500');
+                } else if (this.classList.contains('border-red-500')) {
+                    this.classList.add('bg-red-500');
+                }
+
+                selectedWorkout = this.dataset.workout;
+                selectedDifficulty = this.dataset.difficulty;
+
+                // Find the workout and update its description
+                const workout = workouts.find(w => w.name === selectedWorkout);
+                if (workout && workout.norm_descriptions && workout.norm_descriptions[selectedDifficulty]) {
+                    const descriptionElement = document.querySelector(
+                        `.workout-item[data-workout="${selectedWorkout}"] .workout-description`
+                    );
+                    if (descriptionElement) {
+                        descriptionElement.innerText = workout.norm_descriptions[selectedDifficulty];
+                    }
+                }
+
+                // Update form inputs
+                workoutInput.value = selectedWorkout;
+                difficultyInput.value = selectedDifficulty;
+                
+                // Enable continue button
+                continueBtn.classList.remove('bg-gray-400', 'text-gray-700', 'cursor-not-allowed');
+                continueBtn.classList.add('bg-green-600', 'text-white');
+                continueBtn.disabled = false;
+
+                // Fetch workout norms
+                const normData = await fetchWorkoutNorms(selectedWorkout, selectedDifficulty);
+                if (normData) {
+                    // Update hidden inputs with norm data
+                    setsInput.value = normData.sets || '';
+                    repsInput.value = normData.reps || '';
+                    durationInput.value = normData.duration || '';
+                    
+                    // Update task input
+                    if (selectedWorkout === 'Plank') {
+                        taskInput.value = `Hold the plank position for ${normData.duration} seconds`;
+                    } else {
+                        taskInput.value = `Complete ${normData.sets} sets of ${normData.reps} repetitions`;
+                    }
+                }
+            });
+        });
+
         document.addEventListener("DOMContentLoaded", function () {
             let selectedWorkout = "{{ $selectedWorkout }}";
             let selectedDifficulty = "{{ $selectedDifficulty }}";
@@ -229,78 +333,6 @@
             function updateTable() {
                 window.location.href = `{{ route('Workout') }}?workout=${selectedWorkout}&difficulty=${selectedDifficulty}`;
             }
-        });
-
-        const workouts = @json($workouts);
-        let selectedWorkout = null;
-        let selectedDifficulty = null;
-
-        const workoutInput = document.getElementById('workoutInput');
-        const difficultyInput = document.getElementById('difficultyInput');
-        const setsInput = document.getElementById('setsInput');
-        const repsInput = document.getElementById('repsInput');
-        const durationInput = document.getElementById('durationInput');
-        const taskInput = document.getElementById('taskInput');
-        const continueBtn = document.getElementById('continueBtn');
-
-        // Reset all workout descriptions to default
-        function resetDescriptions() {
-            document.querySelectorAll('.workout-description').forEach(desc => {
-                const workout = workouts.find(w => w.name === desc.closest('.workout-item').dataset.workout);
-                if (workout) {
-                    desc.innerText = workout.default_description;
-                }
-            });
-        }
-
-        // Reset all button styles
-        function resetButtonStyles() {
-            document.querySelectorAll('.difficulty-btn').forEach(btn => {
-                btn.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white');
-            });
-        }
-
-        document.querySelectorAll('.difficulty-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                if (this.classList.contains('cursor-not-allowed')) return;
-
-                // Reset all styles and descriptions
-                resetButtonStyles();
-                resetDescriptions();
-
-                // Add styles to clicked button
-                this.classList.add('text-white');
-                if (this.classList.contains('border-green-500')) {
-                    this.classList.add('bg-green-500');
-                } else if (this.classList.contains('border-yellow-500')) {
-                    this.classList.add('bg-yellow-500');
-                } else if (this.classList.contains('border-red-500')) {
-                    this.classList.add('bg-red-500'); // Changed from bg-red-700 to bg-red-500
-                }
-
-                selectedWorkout = this.dataset.workout;
-                selectedDifficulty = this.dataset.difficulty;
-
-                // Find the workout and update its description
-                const workout = workouts.find(w => w.name === selectedWorkout);
-                if (workout && workout.norm_descriptions && workout.norm_descriptions[selectedDifficulty]) {
-                    const descriptionElement = document.querySelector(
-                        `.workout-item[data-workout="${selectedWorkout}"] .workout-description`
-                    );
-                    if (descriptionElement) {
-                        descriptionElement.innerText = workout.norm_descriptions[selectedDifficulty];
-                    }
-                }
-
-                // Update form inputs
-                workoutInput.value = selectedWorkout;
-                difficultyInput.value = selectedDifficulty;
-                
-                // Enable continue button
-                continueBtn.classList.remove('bg-gray-400', 'text-gray-700', 'cursor-not-allowed');
-                continueBtn.classList.add('bg-green-600', 'text-white');
-                continueBtn.disabled = false;
-            });
         });
     </script>
 </body>

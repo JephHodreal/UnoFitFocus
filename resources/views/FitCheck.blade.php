@@ -114,7 +114,7 @@
                         {{ __('Waiting for Camera:') }}
                     </div>
             
-                    <!-- Reps -->
+                    {{-- <!-- Reps -->
                     <div id="script-output1" class="text-left text-2xl font-semibold">
                         {{ __('Reps:') }}
                     </div>
@@ -135,6 +135,24 @@
                     </div>
             
                     <!-- Posture Feedback -->
+                    <div id="script-output5" class="text-left text-2xl font-semibold bg-gray-200 p-2 rounded-md shadow-sm h-16 whitespace-normal overflow-y-auto">
+                        {{ __('Posture Feedback') }}
+                    </div> --}}
+
+                    @if($workout !== 'Plank')
+                        <div id="script-output1" class="text-left text-2xl font-semibold">
+                            {{ __('Reps:') }} 0/{{ $reps }}
+                        </div>
+                        <div id="script-output2" class="text-left text-2xl font-semibold">
+                            {{ __('Sets:') }} 0/{{ $sets }}
+                        </div>
+                    @endif
+                    <div id="script-output3" class="text-left text-2xl font-semibold">
+                        {{ $workout === 'Plank' ? __('Time: 0/'.$duration.' sec') : __('Stage:') }}
+                    </div>
+                    <div id="script-output4" class="text-left text-2xl font-semibold">
+                        {{ __('Score:') }}
+                    </div>
                     <div id="script-output5" class="text-left text-2xl font-semibold bg-gray-200 p-2 rounded-md shadow-sm h-16 whitespace-normal overflow-y-auto">
                         {{ __('Posture Feedback') }}
                     </div>
@@ -260,8 +278,8 @@
         const scriptOutput5 = document.getElementById('script-output5');
         const modalResult = document.getElementById('modalResult');
         let isCameraActive = false;
-        const workout = "{{ $workout }}";
-        const difficulty = "{{$difficulty}}";
+        //const workout = "{{ $workout }}";
+        //const difficulty = "{{$difficulty}}";
         let isModalShown = false;
         let timer = document.getElementById('timer');
         let countdownInterval;
@@ -272,6 +290,12 @@
         const downSound = new Audio('{{ asset('sounds/down_sound.MP3') }}');
         const upSound = new Audio('{{ asset('sounds/up_sound.MP3') }}');
         const dingSound = new Audio('{{ asset('sounds/ding_sound.MP3') }}');
+
+        const workout = "{{ $workout }}";
+        const difficulty = "{{ $difficulty }}";
+        const targetReps = {{ $reps ?? 'null' }};
+        const targetSets = {{ $sets ?? 'null' }};
+        const targetDuration = {{ $duration ?? 'null' }};
 
         // Function to show modal
         function showModal() {
@@ -525,7 +549,26 @@
             }
         }, 1000);
 
-        // Function to send workout type to Flask backend
+        // // Function to send workout type to Flask backend
+        // function setWorkout(workoutType, difficulty) {
+        //     fetch('http://127.0.0.1:5000/set_workout', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        //         },
+        //         body: JSON.stringify({ workout: workoutType, difficulty: difficulty }),
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log('Workout set:', data);
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error:', error);
+        //     });
+        // }
+
+        // Send workout configuration to Flask
         function setWorkout(workoutType, difficulty) {
             fetch('http://127.0.0.1:5000/set_workout', {
                 method: 'POST',
@@ -533,15 +576,17 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 },
-                body: JSON.stringify({ workout: workoutType, difficulty: difficulty }),
+                body: JSON.stringify({ 
+                    workout: workoutType, 
+                    difficulty: difficulty,
+                    reps: targetReps,
+                    sets: targetSets,
+                    duration: targetDuration
+                }),
             })
             .then(response => response.json())
-            .then(data => {
-                console.log('Workout set:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+            .then(data => console.log('Workout set:', data))
+            .catch(error => console.error('Error:', error));
         }
 
         // Call the function to send the workout to Flask when the page is loaded

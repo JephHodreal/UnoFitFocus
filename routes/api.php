@@ -11,4 +11,15 @@ Route::post('/check-posture', function (Request $request) {
 
     return $response->json();
 });
+
+Route::get('/workout-norms', function (Request $request) {
+    $norm = WorkoutNorm::where('exercise_type', $request->workout)
+        ->where('difficulty_level', $request->difficulty)
+        ->where('gender', $request->input('gender', 'any'))
+        ->where('fitness_level', $request->input('fitness_level', 'beginner'))
+        // You could also add age_range and weight_range if needed
+        ->first();
+    
+    return response()->json($norm);
+});
 ?>
