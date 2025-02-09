@@ -455,9 +455,13 @@ def set_workout():
     new_workout = data.get("workout", "")
     difficulty = data.get("difficulty", "")
     # Store the target values from the request
-    target_reps = data.get("reps")
-    target_sets = data.get("sets")
-    target_duration = data.get("duration")
+    # target_reps = data.get("reps")
+    # target_sets = data.get("sets")
+    # target_duration = data.get("duration")
+
+    target_reps = int(data.get("reps", 0))  # Convert to int
+    target_sets = int(data.get("sets", 0))  # Convert to int
+    target_duration = int(data.get("duration", 0))  # Convert to int
     # Initialize sets string using the target_sets from FitCheck
     sets = f"0/{target_sets}"
     if new_workout != workout:

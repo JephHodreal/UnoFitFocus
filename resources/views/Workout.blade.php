@@ -271,7 +271,7 @@
                     if (selectedWorkout === 'Plank') {
                         taskInput.value = `Hold the plank position for ${normData.duration} seconds`;
                     } else {
-                        taskInput.value = `Complete ${normData.sets} sets of ${normData.reps} repetitions`;
+                        taskInput.value = `Complete ${normData.sets} sets of ${normData.reps} repetitions in the standard position`;
                     }
                 }
 

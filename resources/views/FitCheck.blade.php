@@ -206,10 +206,10 @@
                     <!-- Buttons for Retry and Back to Workout Selection -->
                     <div class="flex justify-between mt-6">
                         <button id="retry-button" class="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100">
-                            Retry
+                            {{ __('Retry') }}
                         </button>
                         <a href="{{ route('Workout') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                            Back to Workout Selection
+                            {{ __('Back to Workout Selection') }}
                         </a>
                     </div>
 
@@ -225,20 +225,134 @@
         <div class="modal-content bg-white rounded-lg p-6 relative max-w-md mx-auto">
             <button id="close-modal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-2xl">&times;</button>
             <div class="modal-slide">
-                <h2 class="text-xl font-bold">Let's get started on your FitCheck!</h2>
-                <p>This page uses human pose estimation to verify the correctness of your posture during bodyweight workouts.</p>
+                <h2 class="text-xl font-bold">{{ __("Let's get started on your FitCheck!") }}</h2>
+                <p>{{ __('This page uses human pose estimation to verify the correctness of your posture during bodyweight workouts.') }}</p>
             </div>
             <div class="modal-slide hidden">
-                <img src="placeholder-image.jpg" alt="FitCheck Page" class="w-full rounded"/>
-                <p>Here is the description of the camera view and other controls.</p>
+                <h2 class="text-xl font-bold">{{ __('FitCheck Guide') }}</h2>
+                <img src="../assets/images/help1.PNG" alt="FitCheck Guide: Upper Section" class="w-full rounded transform scale-90"/>
+                <ul class="list-disc pl-5 text-sm">
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Back to Workout Selection:') }}</span>
+                      {{ __('Returns you to the Workout Selection. This will <b>not</b> save your workout session.') }}
+                    </li>
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Help:') }}</span>
+                      {{ __('A help guide to walk you through the FitCheck.') }}
+                    </li>
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Selected Workout and Difficulty Level:')}}</span>
+                      {{ __('Your selected workout and difficulty level.') }}
+                    </li>
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Objective:') }}</span>
+                      {{ __('The number of sets and reps (for push-ups and squats) or seconds (for planks) you must do to complete the workout.') }}
+                    </li>
+                    <li>
+                      <span class="font-semibold">{{ __('Timer:') }}</span>
+                      {{ __('You are given ten (10) minutes to fulfill the objective.') }}
+                    </li>
+                </ul>
             </div>
             <div class="modal-slide hidden">
-                <h2 class="text-xl font-bold">If you need help, click this question mark here.</h2>
-                <img src="placeholder-image.jpg" alt="Help Icon Location" class="w-full rounded"/>
+                <h2 class="text-xl font-bold">{{ __('FitCheck Guide') }}</h2>
+                <img src="../assets/images/help2.PNG" alt="FitCheck Guide: Middle Section" class="w-full rounded transform scale-90"/>
+                <ul class="list-disc pl-5 text-sm">
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Prediction:') }}</span>
+                      {{ __("FitFocus's prediction on whether your current posture is correct or incorrect.") }}
+                    </li>
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Reps and Sets:')}}</span>
+                      {{ __('The number of repetitions and sets you have completed regardless of its correctness. This is replaced with time for plank workouts.') }}
+                    </li>
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Stage:') }}</span>
+                      {{ __('An indicator on the status of your rep during a push-up or squat, describing whether you are up or down.') }}
+                    </li>
+                    <li>
+                      <span class="font-semibold">{{ __('Score:') }}</span>
+                      {{ __('Your current score based on how many correct reps you have done (for push-ups & squats) or how long you hold the correct posture (planks).') }}
+                    </li>
+                </ul>
             </div>
             <div class="modal-slide hidden">
-                <h2 class="text-xl font-bold">Reminder:</h2>
-                <p>Don't forget to do warm-up and cooldown exercises before and after your workout.</p>
+                <h2 class="text-xl font-bold">{{ __('FitCheck Guide') }}</h2>
+                <img src="../assets/images/help3.PNG" alt="FitCheck Guide: Lower Section" class="w-full rounded transform scale-90"/>
+                <ul class="list-disc pl-5 text-sm">
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Live Camera Feed:') }}</span>
+                      {{ __('A mirrored view of the camera feed with your calculated body angles to assist you in reaching the correct posture.') }}
+                    </li>
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Posture Indicator:') }}</span>
+                      {{ __("A visual indicator on whether your current posture is correct or incorrect.") }}
+                    </li>
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('End Workout Button:')}}</span>
+                      {{ __('A button on the bottom of the page to manually end your workout. This will save your session to your workout history.') }}
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-slide hidden">
+                <h2 class="text-xl font-bold mb-4">{{ __('Visual and Auditory Indicators') }}</h2>
+                <p class="mb-4">
+                    {{ __('The visual indicator is located to the right of the camera feed and below the score. This indicator will flash') }} 
+                    <span class="text-green-500 font-semibold">{{ __('green') }}</span> {{ __('if your posture is correct,') }} 
+                    <span class="text-red-500 font-semibold">{{ __('red') }}</span> {{ __('if it is incorrect, and ') }}
+                    <span class="text-gray-500 font-semibold">{{ __('gray') }}</span> {{ __('if there is no posture detected.') }}
+                </p>
+
+                <div class="flex space-x-4 mb-4">
+                    <div class="flex items-center justify-center w-32 h-12 bg-green-500 text-white font-bold rounded-lg">
+                        {{ __('Correct Posture') }}
+                    </div>
+                    <div class="flex items-center justify-center w-32 h-12 bg-red-500 text-white font-bold rounded-lg">
+                        {{ __('Incorrect Posture') }}
+                    </div>
+                    <div class="flex items-center justify-center w-32 h-12 bg-gray-500 text-white font-bold rounded-lg">
+                        {{ __('No Posture Detected') }}
+                    </div>
+                </div>
+
+                <p class="mb-4">
+                    {{ __('There are also auditory indicators present. A ding will indicate correct posture while a buzzer sound will indicate incorrect posture. 
+                    Press the buttons below to preview the sounds.') }}
+                </p>
+                <div class="flex space-x-4">
+                    <div onclick="playHelpSound('correct')" class="cursor-pointer flex items-center justify-center w-32 h-12 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600">
+                        {{ __('Correct Sound') }}
+                    </div>
+                    <div onclick="playHelpSound('incorrect')" class="cursor-pointer flex items-center justify-center w-32 h-12 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600">
+                        {{ __('Incorrect Sound') }}
+                    </div>
+                </div>
+
+                <audio id="correct-sound" preload="auto">
+                    <source src="{{ asset('sounds/correct_sound.MP3') }}" type="audio/mpeg">
+                </audio>
+                <audio id="incorrect-sound" preload="auto">
+                    <source src="{{ asset('sounds/error_sound.MP3') }}" type="audio/mpeg">
+                </audio>
+
+                <script>
+                    function playHelpSound(type) {
+                        let sound = document.getElementById(type + "-sound");
+                        if (sound) {
+                            try {
+                                sound.pause(); // Stop any previous play
+                                sound.currentTime = 0; // Reset to start
+                                sound.play(); // Play the sound
+                            } catch (error) {
+                                console.error("Error playing sound:", error);
+                            }
+                        }
+                    }
+                </script>
+            </div>
+            <div class="modal-slide hidden">
+                <h2 class="text-xl font-bold">{{ __('Reminder:') }}</h2>
+                <p>{{ __("Don't forget to do warm-up and cooldown exercises before and after your workout.") }}</p>
             </div>
 
             <!-- Navigation buttons for slides -->
@@ -253,6 +367,8 @@
             <!-- Slide indicator dots -->
             <div class="flex justify-center mt-4">
                 <span class="dot w-3 h-3 rounded-full bg-blue-500 mx-1"></span>
+                <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
+                <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
                 <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
                 <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
                 <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
