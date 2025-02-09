@@ -274,6 +274,52 @@
                         taskInput.value = `Complete ${normData.sets} sets of ${normData.reps} repetitions`;
                     }
                 }
+
+
+                // CLAUDE
+                // // Update workout description
+                // const workout = workouts.find(w => w.name === selectedWorkout);
+                //     if (workout && workout.norm_descriptions && workout.norm_descriptions[selectedDifficulty]) {
+                //         const descriptionElement = document.querySelector(
+                //             `.workout-item[data-workout="${selectedWorkout}"] .workout-description`
+                //         );
+                //         if (descriptionElement) {
+                //             descriptionElement.innerText = workout.norm_descriptions[selectedDifficulty];
+                //         }
+                //     }
+
+                // // Update form inputs
+                // workoutInput.value = selectedWorkout;
+                // difficultyInput.value = selectedDifficulty;
+
+                // // Enable continue button
+                // continueBtn.classList.remove('bg-gray-400', 'text-gray-700', 'cursor-not-allowed');
+                // continueBtn.classList.add('bg-green-600', 'text-white');
+                // continueBtn.disabled = false;
+
+                // try {
+                //     // Fetch workout norms
+                //     const response = await fetch(`/api/workout-norms?workout=${selectedWorkout}&difficulty=${selectedDifficulty}`);
+                //     if (!response.ok) throw new Error('Failed to fetch norms');
+                    
+                //     const normData = await response.json();
+                    
+                //     // Update hidden inputs with norm data
+                //     setsInput.value = normData.sets || '';
+                //     repsInput.value = normData.reps || '';
+                //     durationInput.value = normData.duration || '';
+                    
+                //     // Update task input based on workout type
+                //     if (selectedWorkout === 'Plank') {
+                //         taskInput.value = `Hold the plank position for ${normData.duration} seconds`;
+                //     } else {
+                //         taskInput.value = `Complete ${normData.sets} sets of ${normData.reps} repetitions`;
+                //     }
+
+                // } catch (error) {
+                //     console.error('Error fetching workout norms:', error);
+                //     // Handle error appropriately
+                // }
             });
         });
 

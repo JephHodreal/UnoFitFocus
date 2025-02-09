@@ -74,6 +74,7 @@ class FitCheckController extends Controller
         //     'duration' => $norm->duration
         // ]);
 
+        // YESSSSSSSSSSS
         $workout = $request->input('workout');
         $difficulty = $request->input('difficulty');
         

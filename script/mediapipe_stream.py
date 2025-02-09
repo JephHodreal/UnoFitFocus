@@ -38,6 +38,9 @@ overall_start_time = None
 # Add a global variable to store the workout type
 workout = ""  # Initial value; replace with an actual workout type when received
 difficulty = "" # Initial value; replace with an actual difficulty when received
+target_reps = None
+target_sets = None
+target_duration = None
 
 with open('script/model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
@@ -122,7 +125,7 @@ def calculate_angle(a, b, c):
 def workout_tracker(workout, difficulty, workout_angles, model):
 
     # Variables to track workout
-    global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction, modalScore1, modalScore2, overall_start_time, signal
+    global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction, modalScore1, modalScore2, overall_start_time, signal, target_reps, target_sets, target_duration
 
     signal = None
 
@@ -132,21 +135,21 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         raw_score = 0
         return reps, sets, stage, total_time, score, modalScore1, modalScore2
     
-    if difficulty in ["Beginner"]:
-        difficulty = "Standard"
-        target_reps = 12
-        target_sets = 3
-        target_time = 60
-    elif difficulty in ["Intermediate"]:
-        difficulty = "Standard"
-        target_reps = 20
-        target_sets = 3
-        target_time = 30
-    elif difficulty in ["Advanced"]:
-        difficulty = "Standard"
-        target_reps = 30
-        target_sets = 3
-        target_time = 60
+    # if difficulty in ["Beginner"]:
+    #     difficulty = "Standard"
+    #     target_reps = 12
+    #     target_sets = 3
+    #     target_time = 60
+    # elif difficulty in ["Intermediate"]:
+    #     difficulty = "Standard"
+    #     target_reps = 20
+    #     target_sets = 3
+    #     target_time = 30
+    # elif difficulty in ["Advanced"]:
+    #     difficulty = "Standard"
+    #     target_reps = 30
+    #     target_sets = 3
+    #     target_time = 60
 
     input_data = [workout.lower().replace("-", ""), difficulty.lower()] + list(workout_angles.values())
     input_data = np.array(input_data).reshape(1, -1)
@@ -201,21 +204,21 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         if overall_start_time is not None:
             overall_elapsed_time = time.time() - overall_start_time
             # Check if target time for overall timer is met
-            if overall_elapsed_time >= target_time:
+            if overall_elapsed_time >= target_duration:
                 stage = "completed"
         else:
             overall_elapsed_time = 0
 
         # Display times
-        if elapsed_time >= target_time:
-            elapsed_time = target_time
-        raw_score = (elapsed_time / target_time) * 100
+        if elapsed_time >= target_duration:
+            elapsed_time = target_duration
+        raw_score = (elapsed_time / target_duration) * 100
 
         if stage != "completed":
             total_time = f"{overall_elapsed_time:.2f}"
             score = f"{raw_score:.2f}"
         else:
-            total_time = f"{target_time: .2f}"
+            total_time = f"{target_duration: .2f}"
             score = f"{raw_score:.2f}"
 
     # Track for Push-Up
@@ -289,7 +292,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
                 #signal = "up_sound"
 
     if workout in ["Plank"]:
-        modalScore2 = f"{total_time}/{target_time}"
+        modalScore2 = f"{total_time}/{target_duration}"
         modalScore2 = score
     elif workout in ["Push-Up", "Squat"]:
         score = f"{raw_score}/{(target_reps * target_sets)} {(raw_score / (target_reps * target_sets)) * 100: .0f}"
@@ -440,9 +443,8 @@ def get_prediction():
 
 @app.route('/set_workout', methods=['POST'])
 def set_workout():
-    global workout, model, reps, sets, start_time, stage, set_counter, score, difficulty, overall_start_time, raw_score
+    global workout, model, reps, sets, start_time, stage, set_counter, score, difficulty, overall_start_time, raw_score, target_reps, target_sets, target_duration
     reps = 0
-    sets = "0/3"
     set_counter = 0
     raw_score = 0
     score = ""
@@ -452,10 +454,22 @@ def set_workout():
     data = request.get_json()
     new_workout = data.get("workout", "")
     difficulty = data.get("difficulty", "")
+    # Store the target values from the request
+    target_reps = data.get("reps")
+    target_sets = data.get("sets")
+    target_duration = data.get("duration")
+    # Initialize sets string using the target_sets from FitCheck
+    sets = f"0/{target_sets}"
     if new_workout != workout:
         workout = new_workout
         #load_model(workout)
-    return jsonify({"status": "success", "workout": workout})
+    return jsonify({
+        "status": "success", 
+        "workout": workout,
+        "target_reps": target_reps,
+        "target_sets": target_sets,
+        "target_duration": target_duration
+    })
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0", port = 5000, debug=True)

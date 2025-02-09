@@ -45,7 +45,7 @@ class NormsSeeder extends Seeder
             ],
             [ // PUSH-UP INTERMEDIATE, AGE 18-23, WEIGHT 66-85KG
                 'gender' => 'Man', 'age_range' => '18-23', 'weight_range' => '66-85', 'fitness_level' => 'Beginner',
-                'exercise_type' => 'Push-Up', 'difficulty_level' => 'Intermediate', 'sets' => '3', 'reps' => 0, 'duration' => '0',
+                'exercise_type' => 'Push-Up', 'difficulty_level' => 'Intermediate', 'sets' => '3', 'reps' => '6', 'duration' => '0',
             ],
             [ // PUSH-UP INTERMEDIATE, AGE 18-23, WEIGHT 86-200KG
                 'gender' => 'Man', 'age_range' => '18-23', 'weight_range' => '86-200', 'fitness_level' => 'Beginner',
@@ -118,6 +118,18 @@ class NormsSeeder extends Seeder
             [ // SQUAT BEGINNER, AGE 30-34, WEIGHT 0-200KG
                 'gender' => 'Man', 'age_range' => '30-34', 'weight_range' => '0-200', 'fitness_level' => 'Beginner',
                 'exercise_type' => 'Squat', 'difficulty_level' => 'Beginner', 'sets' => '2', 'reps' => '4', 'duration' => '0',
+            ],
+            [ // SQUAT INTERMEDIATE, AGE 18-23, WEIGHT 0-65KG
+                'gender' => 'Man', 'age_range' => '18-23', 'weight_range' => '0-65', 'fitness_level' => 'Beginner',
+                'exercise_type' => 'Squat', 'difficulty_level' => 'Intermediate', 'sets' => '3', 'reps' => '8', 'duration' => '0',
+            ],
+            [ // SQUAT INTERMEDIATE, AGE 18-23, WEIGHT 66-85KG
+                'gender' => 'Man', 'age_range' => '18-23', 'weight_range' => '66-85', 'fitness_level' => 'Beginner',
+                'exercise_type' => 'Squat', 'difficulty_level' => 'Intermediate', 'sets' => '3', 'reps' => '7', 'duration' => '0',
+            ],
+            [ // SQUAT INTERMEDIATE, AGE 18-23, WEIGHT 86-200KG
+                'gender' => 'Man', 'age_range' => '18-23', 'weight_range' => '86-200', 'fitness_level' => 'Beginner',
+                'exercise_type' => 'Squat', 'difficulty_level' => 'Intermediate', 'sets' => '3', 'reps' => '6', 'duration' => '0',
             ],
             [ // SQUAT INTERMEDIATE, AGE 24-29, WEIGHT 0-85KG
                 'gender' => 'Man', 'age_range' => '24-29', 'weight_range' => '0-85', 'fitness_level' => 'Beginner',
