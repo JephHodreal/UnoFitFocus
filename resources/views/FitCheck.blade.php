@@ -234,7 +234,7 @@
                 <ul class="list-disc pl-5 text-sm">
                     <li class="mb-1">
                       <span class="font-semibold">{{ __('Back to Workout Selection:') }}</span>
-                      {{ __('Returns you to the Workout Selection. This will <b>not</b> save your workout session.') }}
+                      {{ __('Returns you to the Workout Selection. This will not save your workout session.') }}
                     </li>
                     <li class="mb-1">
                       <span class="font-semibold">{{ __('Help:') }}</span>
@@ -394,8 +394,6 @@
         const scriptOutput5 = document.getElementById('script-output5');
         const modalResult = document.getElementById('modalResult');
         let isCameraActive = false;
-        //const workout = "{{ $workout }}";
-        //const difficulty = "{{$difficulty}}";
         let isModalShown = false;
         let timer = document.getElementById('timer');
         let countdownInterval;
