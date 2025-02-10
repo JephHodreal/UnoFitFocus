@@ -41,6 +41,7 @@ difficulty = "" # Initial value; replace with an actual difficulty when received
 target_reps = None
 target_sets = None
 target_duration = None
+signal = None
 
 with open('script/model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
@@ -127,13 +128,11 @@ def workout_tracker(workout, difficulty, workout_angles, model):
     # Variables to track workout
     global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction, modalScore1, modalScore2, overall_start_time, signal, target_reps, target_sets, target_duration
 
-    signal = None
-
     if stage == "completed":
         overall_elapsed_time = 0
         elapsed_time = 0
         raw_score = 0
-        return reps, sets, stage, total_time, score, modalScore1, modalScore2
+        return reps, sets, stage, total_time, score, modalScore1, modalScore2, signal
     
     # if difficulty in ["Beginner"]:
     #     difficulty = "Standard"
@@ -150,7 +149,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
     #     target_reps = 30
     #     target_sets = 3
     #     target_time = 60
-
+    difficulty = "Standard" 
     input_data = [workout.lower().replace("-", ""), difficulty.lower()] + list(workout_angles.values())
     input_data = np.array(input_data).reshape(1, -1)
 
@@ -443,7 +442,7 @@ def get_prediction():
 
 @app.route('/set_workout', methods=['POST'])
 def set_workout():
-    global workout, model, reps, sets, start_time, stage, set_counter, score, difficulty, overall_start_time, raw_score, target_reps, target_sets, target_duration
+    global workout, model, reps, sets, start_time, stage, set_counter, score, difficulty, overall_start_time, raw_score, target_reps, target_sets, target_duration, signal
     reps = 0
     set_counter = 0
     raw_score = 0
@@ -454,6 +453,8 @@ def set_workout():
     data = request.get_json()
     new_workout = data.get("workout", "")
     difficulty = data.get("difficulty", "")
+    
+    signal = None
     # Store the target values from the request
     # target_reps = data.get("reps")
     # target_sets = data.get("sets")
