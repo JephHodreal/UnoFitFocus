@@ -52,13 +52,13 @@
         </x-slot>
 
         <!-- Workout Section -->
-        <div class="py-12">
+        <div class="py-12 bg-cover bg-fixed bg-center" style="background-image: url({{ asset('../assets/images/homehero.PNG') }});">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="flex justify-center space-x-4">
+                    <div class="flex justify-center space-x-4 my-4">
                         <button id="tab-strength" class="tab-button active">{{ __('Muscle Strength') }}</button>
                         <button id="tab-endurance" class="tab-button">{{ __('Muscle Endurance') }}</button>
-                        <button id="tab-both" class="tab-button">{{ __('Muscle Strength and Endurance') }}</button>
+                        <button id="tab-both" class="tab-button">{{ __('Hybrid Training') }}</button>
                     </div>
 
                     <hr class="border-t border-gray-500 my-4 w-1/2 mx-auto">
@@ -66,11 +66,16 @@
                     <!-- Tab Content -->
                     <div id="tab-content-strength" class="tab-content active">
                         <h2 class="text-4xl font-bold text-center pt-8 mb-6">{{ __('Muscle Strength') }}</h2>
-                        <p class="text-center text-gray-600 mb-6">
-                            {{ __("Muscular strength relates to your ability to move and lift objects. It's measured by how much force
-                            you can exert and how much weight you can lift for a short period of time. In FitFocus, muscle
-                            strength will test your ability to perform push-ups and squats in the proper form for a specific
-                            number of repetitions.") }}
+                        <p class="text-pretty md:text-balance text-justify text-gray-600 mb-6 mx-8">
+                            {{ __("Muscular strength is the maximal amount of force that a muscle or group of muscles can 
+                            generate at one time. It's measured by how much force you can exert and how much weight you can 
+                            lift for a short period of time. Muscular strength plays a key role in improving physical work 
+                            capacity, allowing individuals to perform tasks more efficiently. This strength enhances one's 
+                            metabolic rate, which aids in maintaining a healthy body weight and reduce the risk of obesity. 
+                            Muscular strength also influences sports performance by improving one's ability to generate force
+                            rapidly and reduce the risk of sports-related injuries since stronger muslces can better absorb 
+                            the impact of physical activities, thereby protecting the body's joints and reducing the likelihood 
+                            of damage. FitFocus will test your muscular strength by having you perform push-ups and squats.") }}
                         </p>
                         @include('components.workouts.pushup')
                         <hr class="border-t border-gray-500 my-4 w-1/2 mx-auto">
@@ -79,12 +84,17 @@
 
                     <div id="tab-content-endurance" class="tab-content hidden">
                         <h2 class="text-4xl font-bold text-center pt-8 mb-6">{{ __('Muscle Endurance') }}</h2>
-                        <p class="text-center text-gray-600 mb-6">
-                            {{ __('Muscular endurance refers to the ability of a muscle to sustain repeated contractions against
-                            resistance for an extended period of time. To increase muscular endurance, you should engage in
-                            activities that work your muscles more than usual such as squats and push-ups. In FitFocus, muscle
-                            endurance will test your ability to perform as many correct push-ups and squats within a limited
-                            amount of time, as well as to hold a plank position for a specified number of seconds.') }}
+                        <p class="text-pretty md:text-balance text-justify text-gray-600 mb-6 mx-8">
+                            {{ __('Muscular endurance refers to the ability to continue contracting a muscle, or group of 
+                            muscles, against resistance, such as weights or bodyweight, over a period of time. Increasing 
+                            the performance of these muscles means they can continue to contract and work against these 
+                            forces. Greater muscular endurance allows one to complete more repetitions of an exercise or 
+                            hold a single position without moving, i.e., your muscles contract without changing length. 
+                            Muscular endurance helps maintain good posture and stability for longer periods, improve the 
+                            aerobic capacity of muscles, improve the ability to carry out daily functional activities, and 
+                            increase athletic performance in endurance-based sports. FitFocus will test your muscular 
+                            endurance by having you perform multiple repetitions and sets of push-ups and squats, as well 
+                            as have you hold a plank position for a specified number of seconds.') }}
                         </p>
                         @include('components.workouts.pushup')
                         <hr class="border-t border-gray-500 my-4 w-1/2 mx-auto">
@@ -94,10 +104,16 @@
                     </div>
 
                     <div id="tab-content-both" class="tab-content hidden">
-                        <h2 class="text-4xl font-bold text-center pt-8 mb-6">{{ __('Muscle Strength and Endurance') }}</h2>
-                        <p class="text-center text-gray-600 mb-6">
-                            {{ __('Muscle strength and endurance combines both health-related fitness components to test your 
-                            ability to maintain your power as you perform push-ups and squats for multiple sets.') }}
+                        <h2 class="text-4xl font-bold text-center pt-8 mb-6">{{ __('Hybrid Training') }}</h2>
+                        <p class="text-pretty md:text-balance text-justify text-gray-600 mb-6 mx-8">
+                            {{ __("Hybrid training is a term used to describe training for two different activities at the 
+                            same time. This combines muscle strength and muscle endurance to improve one's performance in 
+                            both health-related fitness components. This allows for positive crossover between activities 
+                            since moderate amounts of strength and endurance training can be mutually beneficial. For instance, 
+                            endurance training can improve cardiovascular fitness and increase work capacity—which enhances 
+                            muscular strength—while strength training can increase bone density and enhance joint stability—
+                            which enhances muscular endurance. FitFocus provides hybrid training by testing your ability to 
+                            maintain your power as you perform push-ups and squats for multiple sets and repetitions.") }}
                         </p>
                         @include('components.workouts.pushup')
                         <hr class="border-t border-gray-500 my-4 w-1/2 mx-auto">

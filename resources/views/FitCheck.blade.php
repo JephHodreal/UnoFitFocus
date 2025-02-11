@@ -311,7 +311,7 @@
                         {{ __('Incorrect Posture') }}
                     </div>
                     <div class="flex items-center justify-center w-32 h-12 bg-gray-500 text-white font-bold rounded-lg">
-                        {{ __('No Posture Detected') }}
+                        {{ __('No Posture') }}
                     </div>
                 </div>
 

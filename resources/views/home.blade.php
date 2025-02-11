@@ -25,13 +25,13 @@ session_start();
             <div class="py-6">
                 <div class="hero-section bg-cover bg-fixed bg-center text-white text-center flex justify-center items-center" style="background-image: url({{ asset('../assets/images/homehero.PNG') }}); height: 75vh;">
                     <div class="hero-content max-w-3xl mx-auto text-center animate-fadeIn">
-                        <h2 class="text-4xl font-semibold mb-5 tracking-wider font-poppins">Welcome to FitFocus!</h2>
-                        <p class="text-xl font-light mb-7 leading-relaxed font-roboto">Your journey towards a healthier, fitter you starts here.</p>
+                        <h2 class="text-4xl font-semibold mb-5 tracking-wider font-poppins">{{ __('Welcome to FitFocus!') }}</h2>
+                        <p class="text-xl font-light mb-7 leading-relaxed font-roboto">{{ __('Your journey towards a healthier, fitter you starts here.') }}</p>
                         @guest
-                            <a href="{{ route('register') }}" class="text-white bg-gradient-to-r from-pink-500 to-yellow-400 px-8 py-3 rounded-full uppercase font-semibold shadow-lg transition duration-300 ease-in-out hover:bg-gradient-to-l hover:shadow-xl transform hover:-translate-y-1">Get Started</a>
+                            <a href="{{ route('register') }}" class="text-white bg-gradient-to-r from-pink-500 to-yellow-400 px-8 py-3 rounded-full uppercase font-semibold shadow-lg transition duration-300 ease-in-out hover:bg-gradient-to-l hover:shadow-xl transform hover:-translate-y-1">{{ __('Get Started') }}</a>
                         @endguest
                         @auth
-                            <a href="{{ route('Workout') }}" class="text-white bg-gradient-to-r from-pink-500 to-yellow-400 px-8 py-3 rounded-full uppercase font-semibold shadow-lg transition duration-300 ease-in-out hover:bg-gradient-to-l hover:shadow-xl transform hover:-translate-y-1">Get Started</a>
+                            <a href="{{ route('Workout') }}" class="text-white bg-gradient-to-r from-pink-500 to-yellow-400 px-8 py-3 rounded-full uppercase font-semibold shadow-lg transition duration-300 ease-in-out hover:bg-gradient-to-l hover:shadow-xl transform hover:-translate-y-1">{{ __('Get Started') }}</a>
                         @endauth
                     </div>
                 </div>

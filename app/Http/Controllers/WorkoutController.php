@@ -100,30 +100,6 @@ class WorkoutController extends Controller
             ->get()
             ->groupBy('exercise_type');
 
-        // // Update scores calculation for difficulty unlocking
-        // $scores = StatsDashboard::where('fk_user_id', $user->id)
-        //     ->select('exercise', 'difficulty', DB::raw('COUNT(CASE WHEN score = 100 THEN 1 END) as perfect_score_count'))
-        //     ->groupBy('exercise', 'difficulty')
-        //     ->get()
-        //     ->groupBy('exercise')
-        //     ->mapWithKeys(function ($group, $exercise) {
-        //         return [
-        //             $exercise => $group->mapWithKeys(function ($item) {
-        //                 return [$item->difficulty => $item->perfect_score_count >= 3];
-        //             })->all()
-        //         ];
-        //     });
-
-        // // Initialize Beginner difficulty as unlocked for all workouts
-        // foreach (['Push-Up', 'Squat', 'Plank'] as $exercise) {
-        //     if (!isset($scores[$exercise])) {
-        //         $scores[$exercise] = ['Beginner' => true];
-        //     }
-        //     if (!isset($scores[$exercise]['Beginner'])) {
-        //         $scores[$exercise]['Beginner'] = true;
-        //     }
-        // }
-
         // Get perfect scores count for each exercise-difficulty combination
         $perfectScores = DB::table('workout_sessions')
             ->where('fk_user_id', $user->id)
@@ -191,7 +167,6 @@ class WorkoutController extends Controller
         // Check if user has answered the PARQ form
         $hasParqAnswers = DB::table('parq_answers')->where('fk_userparq_id', $user->id)->exists();
 
-        //return view('workout', compact('normTable', 'ages', 'weightRanges', 'highlightedNorms', 'selectedWorkout', 'selectedDifficulty', 'selectedFitnessLevel', 'hasParqAnswers', 'fitnessLevels', 'scores', 'userDetails'));
         return view('workout', compact(
             'workouts', 'norms', 'scores', 'ages', 'weightRanges', 'userNorm', 
             'selectedWorkout', 'selectedDifficulty', 'selectedFitnessLevel', 
