@@ -150,6 +150,80 @@
                     </div>
                 </div>
 
+                <!-- PARQ Information (View-Only Mode) -->
+                <div class="mt-6">
+                    <!-- View Mode -->
+                    <div id="parq-view" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                        <div class="max-w-xl">
+                            <header>
+                                <h2 class="text-lg font-medium text-gray-900">
+                                    {{ __('PARQ Assessment Information') }}
+                                </h2>
+                                <p class="mt-1 text-sm text-gray-600">
+                                    {{ __("View your Physical Activity Readiness Questionnaire (PAR-Q) responses.") }}
+                                </p>
+                            </header>
+                
+                            <div class="mt-6">
+                                <div class="grid grid-cols-1 gap-y-4"> <!--div class="ml-16 grid grid-cols-2 gap-x-8 gap-y-4" -->
+                                    <div class="border-b pb-3">
+                                        <strong class="text-gray-700">Heart Condition:</strong> <span class="mt-1">{{ $userParq->heart_condition ?? 'Not answered' }}</span>
+                                        <p class="mt-1 text-sm text-gray-500">Has your doctor ever said that you have a heart condition and that you should only do physical activity recommended by a doctor?</p>
+                                    </div>
+                
+                                    <div class="border-b pb-3">
+                                        <strong class="text-gray-700">Chest Pain During Physical Activity:</strong>
+                                        <p class="mt-1">{{ $userParq->chest_pain_phys ?? 'Not answered' }}</p>
+                                        <p class="mt-1 text-sm text-gray-500">Do you feel pain in your chest when you do physical activity?</p>
+                                    </div>
+                
+                                    <div class="border-b pb-3">
+                                        <strong class="text-gray-700">Chest Pain When Not Active:</strong>
+                                        <p class="mt-1">{{ $userParq->chest_pain_non_phys ?? 'Not answered' }}</p>
+                                        <p class="mt-1 text-sm text-gray-500">In the past month, have you had chest pain when you were not doing physical activity?</p>
+                                    </div>
+                
+                                    <div class="border-b pb-3">
+                                        <strong class="text-gray-700">Balance Issues:</strong>
+                                        <p class="mt-1">{{ $userParq->balance_loss ?? 'Not answered' }}</p>
+                                        <p class="mt-1 text-sm text-gray-500">Do you lose your balance because of dizziness or do you ever lose consciousness?</p>
+                                    </div>
+                
+                                    <div class="border-b pb-3">
+                                        <strong class="text-gray-700">Bone or Joint Problems:</strong>
+                                        <p class="mt-1">{{ $userParq->bone_joint_problem ?? 'Not answered' }}</p>
+                                        <p class="mt-1 text-sm text-gray-500">Do you have a bone or joint problem that could be worsened by a change in your physical activity?</p>
+                                    </div>
+                
+                                    <div class="border-b pb-3">
+                                        <strong class="text-gray-700">Blood Pressure/Heart Medication:</strong>
+                                        <p class="mt-1">{{ $userParq->drug_prescrip ?? 'Not answered' }}</p>
+                                        <p class="mt-1 text-sm text-gray-500">Is your doctor currently prescribing drugs for your blood pressure or heart condition?</p>
+                                    </div>
+                
+                                    <div class="border-b pb-3">
+                                        <strong class="text-gray-700">Other Health Concerns:</strong>
+                                        <p class="mt-1">{{ $userParq->other_reason ?? 'Not answered' }}</p>
+                                        <p class="mt-1 text-sm text-gray-500">Do you know of any other reason why you should not do physical activity?</p>
+                                    </div>
+                                </div>
+                
+                                <!-- Edit PARQ Button -->
+                                <x-primary-button id="edit-parq-btn" class="mt-6">
+                                    {{ __('Update PARQ Assessment') }}
+                                </x-primary-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PARQ Edit Form (Initially Hidden) -->
+                <div id="parq-edit" class="hidden p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <div class="max-w-xl">
+                        @include('profile.partials.edit-parqs')
+                    </div>
+                </div>
+
                 <!-- Profile Update Form (Edit Mode) - Hidden by default -->
                 <div id="profile-edit" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg" style="display:none;">
                     <div class="max-w-xl">

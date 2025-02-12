@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserDetails;
+use App\Models\PARQInfo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -22,6 +23,7 @@ class ProfileController extends Controller
     {
         $user = $request->user(); // Get the authenticated user
         $userDetails = $user->userDetails;
+        $userParq = PARQInfo::where('fk_userparq_id', $user->id)->first();
 
         // Check if the profile is complete
         $profileIncomplete = UserDetails::where('user_id', $user->id)
@@ -38,6 +40,7 @@ class ProfileController extends Controller
         return view('profile.edit', [
             'user' => $user,
             'userInfo' => $userDetails,
+            'userParq' => $userParq,
             'profileIncomplete' => $profileIncomplete,
         ]);
     }
@@ -75,7 +78,12 @@ class ProfileController extends Controller
         $userDetails->gender = $request->gender;
         $userDetails->fitness_goal = $request->fitness_goal;
         $userDetails->fitness_level = $request->fitness_level;
-    
+        
+        // Calculate BMI
+        $heightInMeters = $request->height / 100;
+        $bmi = $request->weight / ($heightInMeters * $heightInMeters);
+        $user_info->bmi = round($bmi, 2);
+
         // Save the updated user info
         $userDetails->save();
     
