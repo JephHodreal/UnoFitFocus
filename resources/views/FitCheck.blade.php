@@ -220,6 +220,14 @@
         </x-app-layout>
     </main>
 
+    <!-- Add this new modal for enlarged images -->
+    <div id="image-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black bg-opacity-75">
+        <div class="relative max-w-4xl mx-auto p-4">
+            <button id="close-image-modal" class="absolute top-4 right-4 text-slate hover:text-slate-300 text-3xl">&times;</button>
+            <img id="enlarged-image" src="" alt="Enlarged view" class="max-h-[90vh] max-w-full object-contain">
+        </div>
+    </div>
+
     <!-- Help Modal -->
     <div id="modal" class="modal fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
         <div class="modal-content bg-white rounded-lg p-6 relative max-w-md mx-auto">
@@ -376,6 +384,41 @@
         </div>
     </div>
     <script>
+        // Make images clickable and show enlarged version
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageModal = document.getElementById('image-modal');
+            const enlargedImage = document.getElementById('enlarged-image');
+            const closeImageBtn = document.getElementById('close-image-modal');
+            
+            // Get all images in the help modal
+            const modalImages = document.querySelectorAll('.modal-content img');
+            
+            // Add click event to each image
+            modalImages.forEach(img => {
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', function() {
+                    enlargedImage.src = this.src;
+                    enlargedImage.alt = this.alt;
+                    imageModal.classList.remove('hidden');
+                    imageModal.classList.add('flex');
+                });
+            });
+            
+            // Close enlarged image when clicking the close button
+            closeImageBtn.addEventListener('click', function() {
+                imageModal.classList.remove('flex');
+                imageModal.classList.add('hidden');
+            });
+            
+            // Close enlarged image when clicking outside the image
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal) {
+                    imageModal.classList.remove('flex');
+                    imageModal.classList.add('hidden');
+                }
+            });
+        });
+
         const video = document.getElementById('video');
         const startCameraButton = document.getElementById('start-camera');
         const modal = document.getElementById('modal');

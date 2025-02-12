@@ -78,6 +78,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::match(['get', 'post', 'patch'], '/parq/update', [PARQController::class, 'update'])
+    ->middleware(['auth', 'verified'])
+    ->name('parq.update');
+
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
