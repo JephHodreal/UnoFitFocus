@@ -236,24 +236,39 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         if stage == None:
             stage = "rest"
 
-        if (0 < workout_angles["right_elbow_angle"] < 55) and (0 < workout_angles["left_elbow_angle"] < 55):
-            if (prediction == 0):
-                stage = "down"
-                signal = "down_sound"
-            elif (prediction == 1):
-                stage = "You are too low"
-                signal = "error_sound"
-        elif (workout_angles["right_elbow_angle"] > 55) and (workout_angles["left_elbow_angle"] > 55):
-            if stage == "down":
-                stage = "up"
-                reps += 1
-                if (prediction == 0):
-                    raw_score += 1
-                    signal = "correct_sound"
-            if stage == "You are too low":
-                stage = "up"
-                reps += 1
-                #signal = "up_sound"
+        # If key points are missing, assume user is out of frame
+        if workout_angles["right_elbow_angle"] is None or workout_angles["left_elbow_angle"] is None:
+            stage = None  # Reset stage when user is not detected
+            stage = "rest"
+            signal = "no_signal"  # Send a signal to stop sounds
+        else:
+            if stage is None:
+                stage = "rest"
+
+            if (0 < workout_angles["right_elbow_angle"] < 55) and (0 < workout_angles["left_elbow_angle"] < 55):
+                if prediction == 0:
+                    stage = "down"
+                    signal = "down_sound"
+                elif prediction == 1:
+                    stage = "You are too low"
+                    signal = "error_sound"
+
+            elif (workout_angles["right_elbow_angle"] > 55) and (workout_angles["left_elbow_angle"] > 55):
+                if stage == "down":
+                    stage = "up"
+                    reps += 1
+                    if prediction == 0:
+                        raw_score += 1
+                        signal = "correct_sound"
+
+                elif stage == "You are too low":
+                    stage = "up"
+                    reps += 1
+                    signal = "up_sound"
+
+        # Ensure a signal is always sent to indicate no action
+        if signal is None:
+            signal = "no_signal"
 
     # Track for Squat
     elif workout in ["Squat"]:
@@ -271,24 +286,37 @@ def workout_tracker(workout, difficulty, workout_angles, model):
         if stage == None:
             stage = "rest"
 
-        if (0 < workout_angles["right_knee_angle"] < 100) and (0 < workout_angles["left_knee_angle"] < 100):
-            if (prediction == 0):
-                stage = "down"
-                signal = "down_sound"
-            elif (prediction == 1):
-                stage = "You are too low"
-                signal = "error_sound"
-        elif (workout_angles["right_knee_angle"] > 100) and (workout_angles["left_knee_angle"] > 100):
-            if stage == "down":
-                stage = "up"
-                reps += 1
-                if (prediction == 0):
-                    raw_score += 1
-                    signal = "correct_sound"
-            if stage == "You are too low":
-                stage = "up"
-                reps += 1
-                #signal = "up_sound"
+        # If key points are missing, assume user is out of frame
+        if workout_angles["right_knee_angle"] is None or workout_angles["left_knee_angle"] is None:
+            stage = None  # Reset stage when user is not detected
+            stage = "rest"
+            signal = "no_signal"  # Send a signal to stop sounds
+        else:
+            if stage == None:
+                stage = "rest"
+
+            if (0 < workout_angles["right_knee_angle"] < 100) and (0 < workout_angles["left_knee_angle"] < 100):
+                if prediction == 0:
+                    stage = "down"
+                    signal = "down_sound"
+                elif prediction == 1:
+                    stage = "You are too low"
+                    signal = "error_sound"
+            elif (workout_angles["right_knee_angle"] > 100) and (workout_angles["left_knee_angle"] > 100):
+                if stage == "down":
+                    stage = "up"
+                    reps += 1
+                    if prediction == 0:
+                        raw_score += 1
+                        signal = "correct_sound"
+                elif stage == "You are too low":
+                    stage = "up"
+                    reps += 1
+                    signal = "up_sound"
+
+        # Ensure a signal is always sent to indicate no action
+        if signal is None:
+            signal = "no_signal"
 
     if workout in ["Plank"]:
         modalScore2 = f"{total_time}/{target_duration}"

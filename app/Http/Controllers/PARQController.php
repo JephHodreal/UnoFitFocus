@@ -55,6 +55,31 @@ class PARQController extends Controller
 
         $user_parq->save();
 
+        // Check if any answer is 'Yes'
+        $hasHealthCondition = in_array('Yes', [
+            $request->heart_condition,
+            $request->chest_pain_phys,
+            $request->chest_pain_non_phys,
+            $request->balance_loss,
+            $request->bone_joint_problem,
+            $request->drug_prescrip,
+            $request->other_reason,
+        ]);
+
+        // Update UserDetails health_condition
+        $user_info = UserDetails::where('user_id', Auth::id())->first();
+        if ($user_info) {
+            $user_info->update([
+                'health_condition' => $hasHealthCondition ? 'Yes' : 'No'
+            ]);
+        } else {
+            UserDetails::create([
+                'user_id' => Auth::id(),
+                'health_condition' => $hasHealthCondition ? 'Yes' : 'No'
+                // Add any other required fields with default values
+            ]);
+        }
+
         return Redirect::route('profile.edit')->with('status', 'PAR-Q information saved.');
     }
 }

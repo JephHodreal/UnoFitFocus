@@ -638,6 +638,21 @@
 
         // Function to play sound
         function playSound(signal) {
+            // Stop all sounds when no signal is received (user out of frame)
+            if (signal === "no_signal") {
+                errorSound.pause();
+                errorSound.currentTime = 0;
+                correctSound.pause();
+                correctSound.currentTime = 0;
+                downSound.pause();
+                downSound.currentTime = 0;
+                upSound.pause();
+                upSound.currentTime = 0;
+                dingSound.pause();
+                dingSound.currentTime = 0;
+                return;
+            }
+            
             if (signal === "error_sound") {
                 errorSound.play().catch(error => console.error('Error playing error sound:', error));
             } else if (signal === "correct_sound") {

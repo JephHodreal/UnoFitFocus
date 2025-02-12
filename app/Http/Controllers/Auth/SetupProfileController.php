@@ -35,7 +35,6 @@ class SetupProfileController extends Controller
         $user_info->gender = $request->gender;
         $user_info->fitness_goal = $request->fitness_goal;
         $user_info->fitness_level = $request->fitness_level;
-        $user_info->health_condition = $request->health_condition;
 
         // Calculate BMI
         $heightInMeters = $request->height / 100;
