@@ -29,7 +29,7 @@
                     <div class="flex items-center ps-3">
                         <input id="{{ $field }}_yes" type="radio" value="Yes" name="{{ $field }}" 
                             {{ old($field, $userParq->$field ?? '') === 'Yes' ? 'checked' : '' }}
-                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" required>
                         <label for="{{ $field }}_yes" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">{{ __('Yes') }}</label>
                     </div>
                 </li>
@@ -37,7 +37,7 @@
                     <div class="flex items-center ps-3">
                         <input id="{{ $field }}_no" type="radio" value="No" name="{{ $field }}"
                             {{ old($field, $userParq->$field ?? '') === 'No' ? 'checked' : '' }}
-                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" required>
                         <label for="{{ $field }}_no" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">{{ __('No') }}</label>
                     </div>
                 </li>

@@ -296,6 +296,19 @@
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 text-gray-900">
                             <h3 class="text-xl font-bold mb-6">{{ __('Improvement Over Time (Last 30 days)')}} </h3>
+
+                            <div class="mb-4 text-pretty md:text-balance text-justify">
+                                <p>{{ __("This graph shows your performance over the past 30 days for each workout and its 
+                                respective difficulty level. Each point on the line represents the score you achieved during 
+                                a workout session. The rows shows your score (in increments of 10), and the columns shows the 
+                                dates. A rising line indicates improvement, while a plateau or dip may show a need for additional 
+                                focus on specific areas. The lines for each difficulty level represent how you're doing at each 
+                                intensity. The red lines represent the Beginner difficulty level, blue lines represent the 
+                                Intermediate difficulty level, and yellow lines represent the Advanced difficulty level.") }}</p>
+                                <br>
+                                <p>{{ __("Use the drop-down selection below to view your performance for each workout and difficulty 
+                                level.") }}</p>
+                            </div>
             
                             <div class="mb-4">
                                 <label for="graphSelect" class="block text-gray-700 font-medium mb-2">Select Exercise:</label>
@@ -332,6 +345,13 @@
                                     <p class="text-center text-gray-600 mt-2">Plank Improvement</p>
                                 @endif
                             </div>
+
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-xl font-bold">{{ __('Interpretation:') }}
+                                </h3>
+                            </div>
+                            <div id="graphInterpretation" class="space-y-4 mt-4 bg-green-100 p-4 rounded-lg">
+                            </div>
             
                             <script>
                                 document.addEventListener('DOMContentLoaded', function () {
@@ -350,8 +370,19 @@
                                     }
 
                                     toggleGraph();
-                                    graphSelect.addEventListener('change', toggleGraph);
-                            
+                                    //graphSelect.addEventListener('change', toggleGraph);
+                                    graphSelect.addEventListener('change', () => {
+                                        const selectedGraph = graphSelect.value;
+                                        const data = selectedGraph === 'pushUp' ? pushUpData :
+                                                    selectedGraph === 'squat' ? squatData :
+                                                    plankData;
+                                        const exercise = selectedGraph === 'pushUp' ? 'Push-Up' :
+                                                        selectedGraph === 'squat' ? 'Squat' :
+                                                        'Plank';
+                                        toggleGraph(); // Toggle graph visibility
+                                        updateInterpretation(data, exercise); // Update interpretation
+                                    });
+
                                     const chartConfig = (ctx, data, labelColors) => {
                                         if (ctx) {
                                             new Chart(ctx, {
@@ -426,13 +457,83 @@
                                         plankData,
                                         { Beginner: '#ff6384', Intermediate: '#36a2eb', Advanced: '#ffce56' }
                                     );
+                                    // Function to generate interpretation
+                                    function getInterpretation(data, exercise) {
+                                        const beginnerScores = data.Beginner.scores;
+                                        const intermediateScores = data.Intermediate.scores;
+                                        const advancedScores = data.Advanced.scores;
+
+                                        // Check if the user has not tried the workout at all
+                                        const hasNoData = beginnerScores.every(score => score === null) &&
+                                                        intermediateScores.every(score => score === null) &&
+                                                        advancedScores.every(score => score === null);
+
+                                        if (hasNoData) {
+                                            return `You haven't started ${exercise}s yet. Try it out now!`;
+                                        }
+
+                                        // Check if the user hasn't attempted the workout in the last 7 days
+                                        const lastAttemptDate = new Date(Math.max(
+                                            ...beginnerScores.map((score, index) => score !== null ? new Date(data.Beginner.dates[index]) : 0),
+                                            ...intermediateScores.map((score, index) => score !== null ? new Date(data.Intermediate.dates[index]) : 0),
+                                            ...advancedScores.map((score, index) => score !== null ? new Date(data.Advanced.dates[index]) : 0)
+                                        ));
+                                        const daysSinceLastAttempt = Math.floor((new Date() - lastAttemptDate) / (1000 * 60 * 60 * 24));
+
+                                        if (daysSinceLastAttempt > 7) {
+                                            return `Uh oh! You haven't attempted ${exercise}s in a while. Try it out now!`;
+                                        }
+
+                                        // Check for perfect scores
+                                        const perfectScores = {
+                                            Beginner: beginnerScores.filter(score => score === 100).length,
+                                            Intermediate: intermediateScores.filter(score => score === 100).length,
+                                            Advanced: advancedScores.filter(score => score === 100).length
+                                        };
+
+                                        if (perfectScores.Advanced >= 3) {
+                                            return `You've mastered ${exercise}s! Keep on working out to maintain your progress. Excellent work.`;
+                                        } 
+
+                                        // Check if the graph is increasing, decreasing, or stagnant
+                                        const beginnerTrend = beginnerScores.filter(score => score !== null);
+                                        const intermediateTrend = intermediateScores.filter(score => score !== null);
+                                        const advancedTrend = advancedScores.filter(score => score !== null);
+
+                                        const isIncreasing = (trend) => {
+                                            if (trend.length < 2) return false;
+                                            return trend.every((score, index) => index === 0 || score >= trend[index - 1]);
+                                        };
+
+                                        const isDecreasing = (trend) => {
+                                            if (trend.length < 2) return false;
+                                            return trend.every((score, index) => index === 0 || score <= trend[index - 1]);
+                                        };
+
+                                        if (isIncreasing(beginnerTrend) || isIncreasing(intermediateTrend) || isIncreasing(advancedTrend)) {
+                                            return `You're currently improving on your ${exercise}s. Keep up the good work!`;
+                                        } else if (isDecreasing(beginnerTrend) || isDecreasing(intermediateTrend) || isDecreasing(advancedTrend)) {
+                                            return `You're doing a good job! With just a little extra practice on your ${exercise}s, you'll be unstoppable!`;
+                                        } else {
+                                            return `Your performance on ${exercise}s is steady. Keep pushing yourself to improve!`;
+                                        }
+                                    }
+
+                                    // Function to update the interpretation
+                                    function updateInterpretation(data, exercise) {
+                                        const interpretationElement = document.getElementById('graphInterpretation');
+                                        if (interpretationElement) {
+                                            interpretationElement.textContent = getInterpretation(data, exercise);
+                                        }
+                                    }
+
+                                    updateInterpretation(pushUpData, 'Push-Up');
                                 });
                             </script>
                         </div>
                     </div>
                 </div>
             </div>
-
         </x-app-layout>
     </main>
 </body>

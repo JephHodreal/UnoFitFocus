@@ -71,7 +71,7 @@
                                     $profilePicPath = 'uploads/profile_pics/' . $userInfo->profile_pic;
                                     $imageSrc = file_exists(public_path($profilePicPath)) ? asset($profilePicPath) : asset('assets/images/placeholder.png');
                                 @endphp
-                                <img @click="showImageViewer = true" class="rounded-full w-36 h-36 object-cover cursor-pointer" src="{{ $imageSrc }}" alt="Profile picture">
+                                <img @click="showImageViewer = true" class="rounded-full w-36 h-36 aspect-square object-cover cursor-pointer" src="{{ $imageSrc }}" alt="Profile picture">
 
                                 <!-- Pencil Icon for Editing Profile Picture -->
                                 <button class="absolute top-2 right-2 bg-gray-200 p-1 rounded-full hover:bg-gray-300"
@@ -150,6 +150,13 @@
                     </div>
                 </div>
 
+                <!-- Profile Update Form (Edit Mode) - Hidden by default -->
+                <div id="profile-edit" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg" style="display:none;">
+                    <div class="max-w-xl">
+                        @include('profile.partials.update-profile-information-form')
+                    </div>
+                </div>
+
                 <!-- PARQ Information (View-Only Mode) -->
                 <div class="mt-6">
                     <!-- View Mode -->
@@ -167,44 +174,38 @@
                             <div class="mt-6">
                                 <div class="grid grid-cols-1 gap-y-4"> <!--div class="ml-16 grid grid-cols-2 gap-x-8 gap-y-4" -->
                                     <div class="border-b pb-3">
-                                        <strong class="text-gray-700">Heart Condition:</strong> <span class="mt-1">{{ $userParq->heart_condition ?? 'Not answered' }}</span>
-                                        <p class="mt-1 text-sm text-gray-500">Has your doctor ever said that you have a heart condition and that you should only do physical activity recommended by a doctor?</p>
+                                        <strong class="text-gray-700">{{ __('Heart Condition:') }}</strong> <span class="mt-1">{{ $userParq->heart_condition ?? 'Not answered' }}</span>
+                                        <p class="mt-1 text-sm text-gray-500">{{ __('Has your doctor ever said that you have a heart condition and that you should only do physical activity recommended by a doctor?') }}</p>
                                     </div>
                 
                                     <div class="border-b pb-3">
-                                        <strong class="text-gray-700">Chest Pain During Physical Activity:</strong>
-                                        <p class="mt-1">{{ $userParq->chest_pain_phys ?? 'Not answered' }}</p>
-                                        <p class="mt-1 text-sm text-gray-500">Do you feel pain in your chest when you do physical activity?</p>
+                                        <strong class="text-gray-700">{{ __('Chest Pain During Physical Activity:') }}</strong> <span class="mt-1">{{ $userParq->chest_pain_phys ?? 'Not answered' }}</span>
+                                        <p class="mt-1 text-sm text-gray-500">{{ __('Do you feel pain in your chest when you do physical activity?') }}</p>
                                     </div>
                 
                                     <div class="border-b pb-3">
-                                        <strong class="text-gray-700">Chest Pain When Not Active:</strong>
-                                        <p class="mt-1">{{ $userParq->chest_pain_non_phys ?? 'Not answered' }}</p>
-                                        <p class="mt-1 text-sm text-gray-500">In the past month, have you had chest pain when you were not doing physical activity?</p>
+                                        <strong class="text-gray-700">{{ __('Chest Pain When Not Active:') }}</strong> <span class="mt-1">{{ $userParq->chest_pain_non_phys ?? 'Not answered' }}</span>
+                                        <p class="mt-1 text-sm text-gray-500">{{ __('In the past month, have you had chest pain when you were not doing physical activity?') }}</p>
                                     </div>
                 
                                     <div class="border-b pb-3">
-                                        <strong class="text-gray-700">Balance Issues:</strong>
-                                        <p class="mt-1">{{ $userParq->balance_loss ?? 'Not answered' }}</p>
-                                        <p class="mt-1 text-sm text-gray-500">Do you lose your balance because of dizziness or do you ever lose consciousness?</p>
+                                        <strong class="text-gray-700">{{ __('Balance Issues:') }}</strong> <span class="mt-1">{{ $userParq->balance_loss ?? 'Not answered' }}</span>
+                                        <p class="mt-1 text-sm text-gray-500">{{ __('Do you lose your balance because of dizziness or do you ever lose consciousness?') }}</p>
                                     </div>
                 
                                     <div class="border-b pb-3">
-                                        <strong class="text-gray-700">Bone or Joint Problems:</strong>
-                                        <p class="mt-1">{{ $userParq->bone_joint_problem ?? 'Not answered' }}</p>
-                                        <p class="mt-1 text-sm text-gray-500">Do you have a bone or joint problem that could be worsened by a change in your physical activity?</p>
+                                        <strong class="text-gray-700">{{ __('Bone or Joint Problems:') }}</strong> <span class="mt-1">{{ $userParq->bone_joint_problem ?? 'Not answered' }}</span>
+                                        <p class="mt-1 text-sm text-gray-500">{{ __('Do you have a bone or joint problem that could be worsened by a change in your physical activity?') }}</p>
                                     </div>
                 
                                     <div class="border-b pb-3">
-                                        <strong class="text-gray-700">Blood Pressure/Heart Medication:</strong>
-                                        <p class="mt-1">{{ $userParq->drug_prescrip ?? 'Not answered' }}</p>
-                                        <p class="mt-1 text-sm text-gray-500">Is your doctor currently prescribing drugs for your blood pressure or heart condition?</p>
+                                        <strong class="text-gray-700">{{ __('Blood Pressure/Heart Medication:') }}</strong> <span class="mt-1">{{ $userParq->drug_prescrip ?? 'Not answered' }}</span>
+                                        <p class="mt-1 text-sm text-gray-500">{{ __('Is your doctor currently prescribing drugs for your blood pressure or heart condition?') }}</p>
                                     </div>
                 
                                     <div class="border-b pb-3">
-                                        <strong class="text-gray-700">Other Health Concerns:</strong>
-                                        <p class="mt-1">{{ $userParq->other_reason ?? 'Not answered' }}</p>
-                                        <p class="mt-1 text-sm text-gray-500">Do you know of any other reason why you should not do physical activity?</p>
+                                        <strong class="text-gray-700">{{ __('Other Health Concerns:')}}</strong> <span class="mt-1">{{ $userParq->other_reason ?? 'Not answered' }}</span>
+                                        <p class="mt-1 text-sm text-gray-500">{{ __('Do you know of any other reason why you should not do physical activity?') }}</p>
                                     </div>
                                 </div>
                 
@@ -221,13 +222,6 @@
                 <div id="parq-edit" class="hidden p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <div class="max-w-xl">
                         @include('profile.partials.edit-parqs')
-                    </div>
-                </div>
-
-                <!-- Profile Update Form (Edit Mode) - Hidden by default -->
-                <div id="profile-edit" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg" style="display:none;">
-                    <div class="max-w-xl">
-                        @include('profile.partials.update-profile-information-form')
                     </div>
                 </div>
 
