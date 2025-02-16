@@ -121,115 +121,461 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Warmup and Cooldown Section -->
-        <div class="py-5">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- Warm-Up Exercises -->
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 my-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="container mx-auto py-2 px-6">
-                        <h2 class="text-4xl font-bold text-center pt-8 mb-10">{{ __('Warm-Up and Cooldown Exercises') }}</h2>
+                        <h2 class="text-4xl font-bold text-center pt-8 mb-10">{{ __('Warm-Up Exercises') }}</h2>
                         <p class="text-justify text-gray-600 mb-10">
-                            {{ __('It is important to conduct warm-up and cooldown exercises before and after a workout session, 
-                            respectively. Warm-ups increases your heart rate and blood flow to improve oxygen delivery, reduces the 
-                            risk of injuries or strains, and enhances performances. Cooldowns help lower the heart rate and blood flow 
-                            back to resting levels to avoid sudden drops that can lead to dizziness, reduce muscle soreness, and enhances 
-                            recovery from physical exertion. Here are some sample exercises you can do.') }}
+                            {{ __('Warm-ups before workouts are crucial for better performance and injury prevention. It facilitates 
+                            the gradual increase in heart rate and muscle temperature, enhancing blood flow and preparing the body 
+                            for the demands of physical activity. By conducting warm-ups, it helps prepare the cardiovascular system 
+                            by increasing blood flow and oxygen to the muscles, thus allowing the body to perform better during the 
+                            exercise.') }}
                         </p>
-                        <!-- Buttons for Warm-Up and Cooldown -->
-                        <div class="flex justify-between mb-12 space-x-4">
-                            <div class="bg-blue-500 text-white shadow-lg rounded-lg p-6 hover:bg-blue-600 transition-all duration-300 cursor-pointer transform hover:scale-105 flex-1"
-                                @click="$dispatch('open-modal', 'warmup-modal')">
-                                <h3 class="text-2xl font-semibold text-center">{{ __('Warm-Up') }}</h3>
+                        <!-- Carousel Container -->
+                        <div class="relative overflow-hidden mb-16" x-data="carousel()">
+                            <!-- Main Carousel -->
+                            <div class="flex transition-transform duration-700 ease-in-out space-x-2 px-4" 
+                                :style="{ transform: `translateX(calc(-${currentIndex * 33.333}% - ${currentIndex * 8}px))` }">
+                                <!-- Template for repeating slides -->
+                                <template x-for="(exercise, index) in allSlides" :key="index">
+                                    <div class="flex-none w-1/3 min-w-[320px] transition-all duration-500 px-1" 
+                                        :class="{ 
+                                            'grayscale-0': isCenter(index), 
+                                            'grayscale opacity-70 scale-95 cursor-pointer': !isCenter(index) 
+                                        }"
+                                        @click="!isCenter(index) && goToSlide(index)">
+                                        <div @click="isCenter(index) && openModal(exercise.id)" class="relative group">
+                                            <img :src="exercise.carouselImage" :alt="exercise.title" class="w-full h-80 object-cover rounded-lg mx-auto">
+                                            <div class="absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-lg">
+                                                <span class="text-white text-lg font-semibold text-center px-2" x-text="exercise.title"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
                             </div>
-                            <div class="bg-green-500 text-white shadow-lg rounded-lg p-6 hover:bg-green-600 transition-all duration-300 cursor-pointer transform hover:scale-105 flex-1"
-                                @click="$dispatch('open-modal', 'cooldown-modal')">
-                                <h3 class="text-2xl font-semibold text-center">{{ __('Cooldown')}}</h3>
+
+                            <!-- Navigation Arrows -->
+                            <button @click="prev()" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-r-lg shadow-lg transition-all duration-300 z-10">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <button @click="next()" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-l-lg shadow-lg transition-all duration-300 z-10">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+
+                            <!-- Modal -->
+                            <div x-show="isModalOpen" 
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-90"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-90"
+                                class="fixed inset-0 z-50 overflow-y-auto" 
+                                style="display: none;"
+                                @click="closeModal()"
+                                x-init="$watch('isModalOpen', value => {
+                                    if (value) {
+                                        document.body.style.overflow = 'hidden';
+                                    } else {
+                                        document.body.style.overflow = '';
+                                    }
+                                })">
+                                <div class="flex items-center justify-center min-h-screen px-4">
+                                    <div class="fixed inset-0 bg-black opacity-50"></div>
+                                    <div class="relative bg-white rounded-lg max-w-2xl w-full overflow-y-auto max-h-[90vh]" @click.stop>
+                                        <!-- Modal Content -->
+                                        <div class="p-6">
+                                            <button @click="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                            </button>
+                                            
+                                            <h3 class="text-2xl font-bold mb-4" x-text="modalContent.title"></h3>
+                                            <img :src="modalContent.modalImage" :alt="modalContent.title" class="w-full h-96 object-cover rounded-lg mb-4">
+                                            
+                                            <div class="mb-4">
+                                                <h4 class="text-lg font-semibold mb-2">Target Muscles:</h4>
+                                                <p class="text-gray-600" x-text="modalContent.muscles"></p>
+                                            </div>
+                                            
+                                            <div>
+                                                <h4 class="text-lg font-semibold mb-2">Instructions:</h4>
+                                                <p class="text-gray-600 whitespace-pre-line" x-text="modalContent.instructions"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Modals Container -->
-        <div>
-            <!-- Warm-Up Modal -->
-            <x-modal name="warmup-modal" maxWidth="lg" x-show="openModal === 'warmup-modal'">
-                <div x-data="{ currentSlide: 0, exercises: [
-                        { title: 'Jumping Jacks', image: '../assets/images/wu_jumpjack.gif', description: 'A full-body warm-up exercise that increases heart rate and warms up the muscles.', repetitions: '20 repetitions', steps: ['Stand upright with your feet together and hands at your sides.', 'Jump up while spreading your feet wider than shoulder-width apart and lifting your arms overhead.', 'Return to the starting position by jumping back to the initial stance.', 'Repeat the movement for the duration.'] },
-                        { title: 'Arm Circles', image: '../assets/images/wu_armcirc.gif', description: 'Loosens up shoulders and improves arm range motion.', repetitions: '20 repetitions', steps: ['Stand with your feet shoulder-width apart and arms extended out to your sides.', 'Start making small circular motions with your arms.', 'Gradually increase the size of the circles.', 'After completing half the repetitions, reverse the direction.'] },
-                        { title: 'Leg Swings', image: '../assets/images/wu_legswing.gif', description: 'Prepares legs for dynamic movement and stretches the hip muscles.', repetitions: '15 repetitions per leg', steps: ['Stand with your feet shoulder-width apart.', 'Hold onto a support, such as a wall or pole, for balance.', 'Swing one leg forward and backward in a controlled manner.', 'Repeat for the designated repetitions, then switch legs.'] },
-                        { title: 'Hip Rotations', image: '../assets/images/wu_hipcirc.gif', description: 'Improves flexibility in the hips and helps avoid injuries.', repetitions: '10 repetitions per side', steps: ['Stand with your feet shoulder-width apart.', 'Place your hands on your hips and rotate your hips in a circular motion.', 'Complete the designated repetitions in one direction, then switch to the other.'] },
-                        { title: 'High Knees', image: '../assets/images/wu_highknee.gif', description: 'A cardio exercise that activates the quads.', repetitions: '30 seconds', steps: ['Stand upright with your feet hip-width apart.', 'Lift one knee towards your chest, as high as you can.', 'Switch to the other knee quickly, simulating a running motion.', 'Continue alternating knees for the designated time.'] },
-                    ] }">
-                    
-                    <div class="p-6" x-effect>
-                        <div class="flex justify-between items-center mb-4">
-                            <button @click="currentSlide = (currentSlide === 0 ? exercises.length - 1 : currentSlide - 1)">
-                                ← Previous
+            <!-- Cooldown Exercises -->
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 my-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="container mx-auto py-2 px-6">
+                        <h2 class="text-4xl font-bold text-center pt-8 mb-10">{{ __('Cooldown Exercises') }}</h2>
+                        <p class="text-justify text-gray-600 mb-10">
+                            {{ __("Cooldowns helps regulate the body's return to homeostasis or a normal or relaxed state. After a 
+                            workout, the muscles are fully warmed up, making them more receptive to deep stretches, wherein they 
+                            are more flexible and able to hold stretches longer. These exercises help reduce muscle tension and 
+                            soreness, promote flexibility, aid in recovery after the workout, and help lower the heart rate and 
+                            blood flow back to resting levels to avoid sudden drops that can lead to dizziness.") }}
+                        </p>
+                        <!-- Carousel Container -->
+                        <div class="relative overflow-hidden mb-16" x-data="cooldownCarousel()">
+                            <!-- Main Carousel -->
+                            <div class="flex transition-transform duration-700 ease-in-out space-x-2 px-4 carousel-container" 
+                                :style="{ transform: `translateX(calc(-${currentIndex * 33.333}% - ${currentIndex * 8}px))` }">
+                                <!-- Template for repeating slides -->
+                                <template x-for="(exercise, index) in allSlides" :key="index">
+                                    <div class="flex-none w-1/3 min-w-[320px] transition-all duration-500 px-1" 
+                                        :class="{ 
+                                            'grayscale-0': isCenter(index), 
+                                            'grayscale opacity-70 scale-95 cursor-pointer': !isCenter(index) 
+                                        }"
+                                        @click="!isCenter(index) && goToSlide(index)">
+                                        <div @click="isCenter(index) && openModal(exercise.id)" class="relative group">
+                                            <img :src="exercise.carouselImage" :alt="exercise.title" class="w-full h-80 object-cover rounded-lg mx-auto">
+                                            <div class="absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-lg">
+                                                <span class="text-white text-lg font-semibold text-center px-2" x-text="exercise.title"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Navigation Arrows -->
+                            <button @click="prev()" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-r-lg shadow-lg transition-all duration-300 z-10">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
                             </button>
-                            <h2 class="text-2xl font-bold" x-text="exercises[currentSlide].title"></h2>
-                            <button @click="currentSlide = (currentSlide === exercises.length - 1 ? 0 : currentSlide + 1)">
-                                Next →
+                            <button @click="next()" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-l-lg shadow-lg transition-all duration-300 z-10">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </button>
+
+                            <!-- Modal -->
+                            <div x-show="isModalOpen" 
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-90"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-90"
+                                class="fixed inset-0 z-50 overflow-y-auto" 
+                                style="display: none;"
+                                @click="closeModal()"
+                                x-init="$watch('isModalOpen', value => {
+                                    if (value) {
+                                        document.body.style.overflow = 'hidden';
+                                    } else {
+                                        document.body.style.overflow = '';
+                                    }
+                                })">
+                                <div class="flex items-center justify-center min-h-screen px-4">
+                                    <div class="fixed inset-0 bg-black opacity-50"></div>
+                                    <div class="relative bg-white rounded-lg max-w-2xl w-full overflow-y-auto max-h-[90vh]" @click.stop>
+                                        <!-- Modal Content -->
+                                        <div class="p-6">
+                                            <button @click="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                            </button>
+                                            
+                                            <h3 class="text-2xl font-bold mb-4" x-text="modalContent.title"></h3>
+                                            <img :src="modalContent.modalImage" :alt="modalContent.title" class="w-full h-96 object-cover rounded-lg mb-4">
+                                            
+                                            <div class="mb-4">
+                                                <h4 class="text-lg font-semibold mb-2">Target Muscles:</h4>
+                                                <p class="text-gray-600" x-text="modalContent.muscles"></p>
+                                            </div>
+                                            
+                                            <div>
+                                                <h4 class="text-lg font-semibold mb-2">Instructions:</h4>
+                                                <p class="text-gray-600 whitespace-pre-line" x-text="modalContent.instructions"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-            
-                        <img :src="exercises[currentSlide].image" alt="Warm-up exercise" class="object-contain h-96 w-full mb-4">
-                        <p class="text-gray-700 mb-4" x-text="exercises[currentSlide].description"></p>
-                        <p class="text-gray-700 mb-4">Repetitions: <span x-text="exercises[currentSlide].repetitions"></span></p>
-                        
-                        <!-- Step-by-step process -->
-                        <h3 class="text-lg font-semibold mb-2">How to Perform:</h3>
-                        <ol class="list-decimal pl-5 space-y-2">
-                            <template x-for="(step, index) in exercises[currentSlide].steps" :key="`${currentSlide}-${index}`">
-                                <li class="text-gray-700" x-text="`${index + 1}. ${currentSlide}.. ${currentSlide-index}.. ${step}`"></li>
-                            </template>
-                        </ol>
                     </div>
                 </div>
-            </x-modal>
+            </div>
 
-            <!-- Cooldown Modal -->
-            <x-modal name="cooldown-modal" maxWidth="lg" x-show="openModal === 'cooldown-modal'">
-                <div x-data="{ currentSlide: 0, exercises: [
-                        { title: 'Child\'s Pose', description: 'Stretches the back, hips, and thighs.', image: '../assets/images/cd_childpose.gif', repetitions: 'Hold for 30 seconds', steps: ['Kneel on the floor with your toes touching and knees spread apart.', 'Sit back on your heels and lower your torso forward between your thighs.', 'Extend your arms forward and relax your head on the floor.', 'Hold the stretch and breathe deeply.'] },
-                        { title: 'Forward Bend', description: 'Stretches the hamstrings and lower back.', image: '../assets/images/cd_forwbend.gif', repetitions: 'Hold for 30 seconds', steps: ['Stand with your feet hip-width apart.', 'Hinge at your hips and bend forward, reaching for your toes.', 'Keep your legs straight and feel the stretch in your hamstrings.', 'Hold the position and breathe deeply.'] },
-                        { title: 'Quad Stretch', description: 'Stretches the quadriceps muscles, improving flexibility.', image: '../assets/images/cd_quadstr.gif', repetitions: 'Hold for 20 seconds per leg', steps: ['Stand tall and grab your right ankle with your right hand.', 'Pull your heel towards your glutes while keeping your knees together.', 'Hold the stretch and balance yourself.', 'Switch legs and repeat for the designated time.'] },
-                        { title: 'Cat-Cow Stretch', description: 'Warms up the spine.', image: '../assets/images/cd_catcow.gif', repetitions: '10 repetitions', steps: ['Start on your hands and knees in a tabletop position.', 'Arch your back, dropping your belly towards the floor (cow pose).', 'Exhale and round your back, pulling your belly button toward your spine (cat pose).', 'Alternate between the two positions for the designated repetitions.'] },
-                        { title: 'Seated Hamstring Stretch', description: 'Stretches the hamstrings and improves flexibility.', image: '../assets/images/cd_seatham.gif', repetitions: 'Hold for 30 seconds per leg', steps: ['Sit on the floor with your legs extended in front of you.', 'Reach forward and try to touch your toes while keeping your back straight.', 'Hold the stretch and feel the pull in your hamstrings.', 'Switch legs after holding the stretch for the designated time.'] },
-                    ] }">
-                    <div class="p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <button @click="currentSlide = (currentSlide === 0 ? exercises.length - 1 : currentSlide - 1)">
-                                ← Previous
-                            </button>
-                            <h2 class="text-2xl font-bold" x-text="exercises[currentSlide].title"></h2>
-                            <button @click="currentSlide = (currentSlide === exercises.length - 1 ? 0 : currentSlide + 1)">
-                                Next →
-                            </button>
-                        </div>
-
-                        <img :src="exercises[currentSlide].image" alt="Cooldown exercise" class="object-contain h-96 w-full mb-4">
-                        <p class="text-gray-700 mb-4" x-text="exercises[currentSlide].description"></p>
-                        <p class="text-gray-700 mb-4">Repetitions: <span x-text="exercises[currentSlide].repetitions"></span></p>
-                        
-                        <!-- Step-by-step process -->
-                        <h3 class="text-lg font-semibold mb-2">How to Perform:</h3>
-                        <ol class="list-decimal pl-5 space-y-2">
-                            <template x-for="(step, index) in exercises[currentSlide].steps" :key="index">
-                                <li x-text="step" class="text-gray-700"></li>
-                            </template>
-                        </ol>
-                    </div>
-                </div>
-            </x-modal>
         </div>
 
         <!-- Footer -->
         @include('partials.footer')
     </x-guest-layout>  
     <script>
+        function carousel() {
+            return {
+                currentIndex: 0,
+                isModalOpen: false,
+                modalContent: {},
+                exercises: [
+                    {
+                        id: 'lateral-arm',
+                        title: 'Lateral Arm Swings',
+                        carouselImage: '../assets/images/comingsoon.JPG',
+                        modalImage: '../assets/images/comingsoon.JPG',
+                        muscles: 'Shoulders, Upper Back, Chest',
+                        instructions: '1. Stand with feet shoulder-width apart\n2. Keep arms straight and swing them horizontally from side to side\n3. Maintain a controlled motion and gradually increase range\n4. Continue for 30 seconds'
+                    },
+                    {
+                        id: 'arm-circles',
+                        title: 'Arm Circles',
+                        carouselImage: '../assets/images/comingsoon.JPG',
+                        modalImage: '../assets/images/comingsoon.JPG',
+                        muscles: 'Shoulders, Upper Back, Rotator Cuff',
+                        instructions: '1. Stand with feet shoulder-width apart\n2. Extend arms out to sides at shoulder height\n3. Make small circles forward for 15 seconds\n4. Reverse direction for another 15 seconds\n5. Gradually increase circle size'
+                    },
+                    {
+                        id: 'chest-expansions',
+                        title: 'Chest Expansions',
+                        carouselImage: '../assets/images/comingsoon.JPG',
+                        modalImage: '../assets/images/comingsoon.JPG',
+                        muscles: 'Chest, Shoulders, Upper Back',
+                        instructions: '1. Stand tall with feet shoulder-width apart\n2. Clasp hands behind back\n3. Lift chest and squeeze shoulder blades together\n4. Hold for 2-3 seconds\n5. Release and repeat 10 times'
+                    },
+                    {
+                        id: 'spine-rotations',
+                        title: 'Thoracic Spine Rotations',
+                        carouselImage: '../assets/images/comingsoon.JPG',
+                        modalImage: '../assets/images/comingsoon.JPG',
+                        muscles: 'Upper Back, Core, Obliques',
+                        instructions: '1. Stand with feet shoulder-width apart\n2. Place hands behind head\n3. Keep hips stable and rotate upper body to one side\n4. Hold for 2 seconds\n5. Rotate to other side\n6. Repeat 10 times each side'
+                    },
+                    {
+                        id: 'hip-rotations',
+                        title: 'Hip Rotations',
+                        carouselImage: '../assets/images/comingsoon.JPG',
+                        modalImage: '../assets/images/comingsoon.JPG',
+                        muscles: 'Hips, Lower Back, Core',
+                        instructions: '1. Stand with feet shoulder-width apart\n2. Place hands on hips\n3. Make circular motions with hips clockwise\n4. Perform 10 rotations\n5. Repeat counterclockwise'
+                    },
+                    {
+                        id: 'jogging',
+                        title: 'Jogging in Place',
+                        carouselImage: '../assets/images/comingsoon.JPG',
+                        modalImage: '../assets/images/comingsoon.JPG',
+                        muscles: 'Legs, Core, Cardiovascular System',
+                        instructions: '1. Stand in place with good posture\n2. Begin jogging by lifting knees alternatively\n3. Keep landing soft and controlled\n4. Swing arms naturally\n5. Continue for 30-60 seconds'
+                    }
+                ],
+                get allSlides() {
+                    // Create 5 sets of slides for smooth infinite scrolling
+                    return [...this.exercises, ...this.exercises, ...this.exercises, ...this.exercises, ...this.exercises];
+                },
+                init() {
+                    // Start from the middle set of slides
+                    this.currentIndex = this.exercises.length * 2;
+                    
+                    // Add event listener for transition end
+                    const carousel = document.querySelector('.carousel-container');
+                    if (carousel) {
+                        carousel.addEventListener('transitionend', () => this.handleTransitionEnd());
+                    }
+                },
+                handleTransitionEnd() {
+                    // If we've scrolled too far right
+                    if (this.currentIndex >= this.exercises.length * 3) {
+                        // Jump back to the middle set without animation
+                        this.disableTransition();
+                        this.currentIndex = this.exercises.length * 2;
+                        this.enableTransition();
+                    }
+                    // If we've scrolled too far left
+                    else if (this.currentIndex < this.exercises.length) {
+                        // Jump forward to the middle set without animation
+                        this.disableTransition();
+                        this.currentIndex = this.exercises.length * 2;
+                        this.enableTransition();
+                    }
+                },
+                disableTransition() {
+                    const container = document.querySelector('.carousel-container');
+                    if (container) {
+                        container.style.transition = 'none';
+                        // Force reflow
+                        container.offsetHeight;
+                    }
+                },
+                enableTransition() {
+                    const container = document.querySelector('.carousel-container');
+                    if (container) {
+                        container.style.transition = 'transform 700ms ease-in-out';
+                    }
+                },
+                isCenter(index) {
+                    const visibleCenter = this.currentIndex + 1;
+                    return index === visibleCenter;
+                },
+                goToSlide(index) {
+                    const diff = index - (this.currentIndex + 1);
+                    this.currentIndex += diff;
+                },
+                next() {
+                    this.currentIndex++;
+                },
+                prev() {
+                    this.currentIndex--;
+                },
+                openModal(exerciseId) {
+                    const exercise = this.exercises.find(ex => ex.id === exerciseId);
+                    if (exercise) {
+                        this.modalContent = exercise;
+                        this.isModalOpen = true;
+                    }
+                },
+                closeModal() {
+                    this.isModalOpen = false;
+                }
+            }
+        }
+
+        function cooldownCarousel() {
+            return {
+                currentIndex: 0,
+                isModalOpen: false,
+                modalContent: {},
+                exercises: [
+                    {
+                        id: 'triceps-stretch',
+                        title: 'Triceps Stretch',
+                        carouselImage: '../assets/images/comingsoon.JPG',
+                        modalImage: '../assets/images/comingsoon.JPG',
+                        muscles: 'Triceps, Shoulders',
+                        instructions: '1. Stand or sit with proper posture\n2. Raise one arm straight up\n3. Bend your elbow to drop your hand behind your head\n4. Use your other hand to gently pull your elbow back\n5. Hold for 15-30 seconds\n6. Switch arms and repeat\n7. Perform 2-3 sets per arm'
+                    },
+                    {
+                        id: 'shoulder-stretch',
+                        title: 'Shoulder Stretch',
+                        carouselImage: '../assets/images/comingsoon.JPG',
+                        modalImage: '../assets/images/comingsoon.JPG',
+                        muscles: 'Shoulders, Upper Back, Chest',
+                        instructions: '1. Stand with feet shoulder-width apart\n2. Bring one arm across your chest\n3. Use opposite arm to hold above the elbow\n4. Gently pull the arm closer to your chest\n5. Hold for 15-30 seconds\n6. Switch arms and repeat\n7. Perform 2-3 sets per arm'
+                    },
+                    {
+                        id: 'quad-stretch',
+                        title: 'Quadriceps Stretch',
+                        carouselImage: '../assets/images/comingsoon.JPG',
+                        modalImage: '../assets/images/comingsoon.JPG',
+                        muscles: 'Quadriceps, Hip Flexors',
+                        instructions: '1. Stand on one leg, using a wall for balance if needed\n2. Bend your other leg behind you\n3. Hold your foot with the same-side hand\n4. Keep your knees close together\n5. Stand tall and slightly push your hips forward\n6. Hold for 15-30 seconds\n7. Switch legs and repeat\n8. Perform 2-3 sets per leg'
+                    },
+                    {
+                        id: 'hamstring-stretch',
+                        title: 'Hamstring Stretch',
+                        carouselImage: '../assets/images/comingsoon.JPG',
+                        modalImage: '../assets/images/comingsoon.JPG',
+                        muscles: 'Hamstrings, Lower Back',
+                        instructions: '1. Sit on the floor with one leg extended\n2. Bend your other leg so your foot touches your inner thigh\n3. Keep your back straight\n4. Reach for your toes on the extended leg\n5. Hold for 15-30 seconds\n6. Switch legs and repeat\n7. Perform 2-3 sets per leg'
+                    },
+                    {
+                        id: 'childs-pose',
+                        title: "Child's Pose",
+                        carouselImage: '../assets/images/comingsoon.JPG',
+                        modalImage: '../assets/images/comingsoon.JPG',
+                        muscles: 'Back, Shoulders, Hips, Glutes',
+                        instructions: '1. Start on your hands and knees\n2. Sit back on your heels\n3. Extend your arms forward on the ground\n4. Lower your chest toward the ground\n5. Rest your forehead on the mat\n6. Keep your arms extended and palms flat\n7. Hold for 30-60 seconds\n8. Breathe deeply and relax\n9. Perform 2-3 sets'
+                    },
+                    {
+                        id: 'cat-cow',
+                        title: 'Cat-Cow Stretch',
+                        carouselImage: '../assets/images/comingsoon.JPG',
+                        modalImage: '../assets/images/comingsoon.JPG',
+                        muscles: 'Spine, Core, Neck, Back',
+                        instructions: '1. Start on hands and knees in tabletop position\n2. Cat Pose:\n   - Round your spine toward the ceiling\n   - Tuck your chin to chest\n   - Hold for 2-3 seconds\n3. Cow Pose:\n   - Arch your back\n   - Lift your head and tailbone\n   - Hold for 2-3 seconds\n4. Alternate between positions\n5. Perform 10-15 repetitions\n6. Move slowly and coordinate with breathing'
+                    }
+                ],
+                get allSlides() {
+                    // Create 5 sets of slides for smooth infinite scrolling
+                    return [...this.exercises, ...this.exercises, ...this.exercises, ...this.exercises, ...this.exercises];
+                },
+                init() {
+                    // Start from the middle set of slides
+                    this.currentIndex = this.exercises.length * 2;
+                    
+                    // Add event listener for transition end
+                    const carousel = document.querySelector('.carousel-container');
+                    if (carousel) {
+                        carousel.addEventListener('transitionend', () => this.handleTransitionEnd());
+                    }
+                },
+                handleTransitionEnd() {
+                    // If we've scrolled too far right
+                    if (this.currentIndex >= this.exercises.length * 3) {
+                        // Jump back to the middle set without animation
+                        this.disableTransition();
+                        this.currentIndex = this.exercises.length * 2;
+                        this.enableTransition();
+                    }
+                    // If we've scrolled too far left
+                    else if (this.currentIndex < this.exercises.length) {
+                        // Jump forward to the middle set without animation
+                        this.disableTransition();
+                        this.currentIndex = this.exercises.length * 2;
+                        this.enableTransition();
+                    }
+                },
+                disableTransition() {
+                    const container = document.querySelector('.carousel-container');
+                    if (container) {
+                        container.style.transition = 'none';
+                        // Force reflow
+                        container.offsetHeight;
+                    }
+                },
+                enableTransition() {
+                    const container = document.querySelector('.carousel-container');
+                    if (container) {
+                        container.style.transition = 'transform 700ms ease-in-out';
+                    }
+                },
+                isCenter(index) {
+                    const visibleCenter = this.currentIndex + 1;
+                    return index === visibleCenter;
+                },
+                goToSlide(index) {
+                    const diff = index - (this.currentIndex + 1);
+                    this.currentIndex += diff;
+                },
+                next() {
+                    this.currentIndex++;
+                },
+                prev() {
+                    this.currentIndex--;
+                },
+                openModal(exerciseId) {
+                    const exercise = this.exercises.find(ex => ex.id === exerciseId);
+                    if (exercise) {
+                        this.modalContent = exercise;
+                        this.isModalOpen = true;
+                    }
+                },
+                closeModal() {
+                    this.isModalOpen = false;
+                }
+            }
+        }
+
+
+
         document.addEventListener('alpine:init', () => {
             Alpine.data('modalHandler', () => ({
                 openModal: null,

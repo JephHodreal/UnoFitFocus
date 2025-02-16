@@ -167,7 +167,7 @@ class WorkoutController extends Controller
         // Check if user has answered the PARQ form
         $hasParqAnswers = DB::table('parq_answers')->where('fk_userparq_id', $user->id)->exists();
 
-        return view('workout', compact(
+        return view('Workout', compact(
             'workouts', 'norms', 'scores', 'ages', 'weightRanges', 'userNorm', 
             'selectedWorkout', 'selectedDifficulty', 'selectedFitnessLevel', 
             'hasParqAnswers', 'fitnessLevels', 'userDetails', 'normTable', 'highlightedNorms'
