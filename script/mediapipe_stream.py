@@ -506,3 +506,48 @@ def set_workout():
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0", port = 5000, debug=True)
+
+# @app.route('/reset_workout', methods=['POST'])
+# def reset_workout():
+#     global workout, reps, sets, stage, total_time, score, start_time, elapsed_time
+#     global set_counter, overall_start_time, raw_score, modalScore1, modalScore2, signal
+#     global target_reps, target_sets, target_duration
+
+#     # Get the workout parameters from the request
+#     data = request.get_json()
+    
+#     # Store or update the target values
+#     workout = data.get("workout", "")
+#     difficulty = data.get("difficulty", "")
+#     target_reps = int(data.get("reps", 0))
+#     target_sets = int(data.get("sets", 0))
+#     target_duration = int(data.get("duration", 0))
+
+#     # Reset all tracking variables
+#     reps = 0
+#     set_counter = 0
+#     raw_score = 0
+#     stage = None
+#     start_time = None
+#     elapsed_time = 0
+#     overall_start_time = None
+#     signal = None
+    
+#     # Reset display values
+#     sets = f"0/{target_sets}"
+#     total_time = ""
+#     score = "0"
+#     modalScore1 = 0
+#     modalScore2 = 0
+
+#     # Reset latest prediction
+#     latest_prediction["prediction"] = "No data"
+
+#     return jsonify({
+#         "status": "success",
+#         "message": "Workout reset successfully",
+#         "workout": workout,
+#         "target_reps": target_reps,
+#         "target_sets": target_sets,
+#         "target_duration": target_duration
+#     })
