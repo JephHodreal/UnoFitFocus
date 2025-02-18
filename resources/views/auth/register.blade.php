@@ -15,6 +15,7 @@
                 <!-- Form Header -->
                 <h2 class="font-bold text-3xl text-center text-gray-800 mb-2">{{ __('Register') }}</h2>
                 <p class="text-center text-gray-600 mb-6">{{ __('Create an account by filling out the details below') }}</p>
+                <p class="text-right italic text-sm text-gray-500 mb-6"><span class="text-red-500">*</span> {{ __('Required fields') }}</p>
 
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
@@ -22,7 +23,9 @@
                     <!-- First, Middle, and Last Name Fields in One Row -->
                     <div class="flex space-x-4 mb-6">
                         <div class="w-1/3">
-                            <x-input-label for="first_name" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('First Name')" />
+                            <x-input-label for="first_name" class="block text-gray-700 text-sm font-bold mb-2 ml-3">
+                                {{ __('First Name') }} <span class="text-red-500">*</span>
+                            </x-input-label>
                             <x-text-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" placeholder="First Name" required autofocus autocomplete="given-name" />
                             <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
                         </div>
@@ -32,7 +35,9 @@
                             <x-input-error :messages="$errors->get('middle_name')" class="mt-2" />
                         </div>
                         <div class="w-1/3">
-                            <x-input-label for="last_name" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Last Name')" />
+                            <x-input-label for="last_name" class="block text-gray-700 text-sm font-bold mb-2 ml-3">
+                                {{ __('Last Name') }} <span class="text-red-500">*</span>
+                            </x-input-label>
                             <x-text-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" placeholder="Last Name" required autocomplete="family-name" />
                             <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
                         </div>
@@ -40,21 +45,27 @@
 
                     <!-- Email Address -->
                     <div class="mb-6">
-                        <x-input-label for="email" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Email')" />
+                        <x-input-label for="email" class="block text-gray-700 text-sm font-bold mb-2 ml-3">
+                            {{ __('Email') }} <span class="text-red-500">*</span>
+                        </x-input-label>
                         <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" placeholder="Email Address" required autocomplete="username" />
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
                     <!-- Password -->
                     <div class="mb-6">
-                        <x-input-label for="password" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Password')" />
+                        <x-input-label for="password" class="block text-gray-700 text-sm font-bold mb-2 ml-3">
+                            {{ __('Password') }} <span class="text-red-500">*</span>
+                        </x-input-label>
                         <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" placeholder="At least 8 characters, one uppercase letter, one lowercase letter, and one number" required autocomplete="new-password" />
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
                     <!-- Confirm Password -->
                     <div class="mb-6">
-                        <x-input-label for="password_confirmation" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Confirm Password')" />
+                        <x-input-label for="password_confirmation" class="block text-gray-700 text-sm font-bold mb-2 ml-3">
+                            {{ __('Confirm Password') }} <span class="text-red-500">*</span>
+                        </x-input-label>
                         <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" placeholder="Confirm Password" required autocomplete="new-password" />
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                     </div>

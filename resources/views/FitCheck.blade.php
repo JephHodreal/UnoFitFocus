@@ -304,7 +304,7 @@
             </div>
             <div class="modal-slide hidden">
                 <h2 class="text-xl font-bold mb-4">{{ __('Visual and Auditory Indicators') }}</h2>
-                <p class="mb-4">
+                <p class="mb-4 text-pretty md:text-balance text-justify">
                     {{ __('The visual indicator is located to the right of the camera feed and below the score. This indicator will flash') }} 
                     <span class="text-green-500 font-semibold">{{ __('green') }}</span> {{ __('if your posture is correct,') }} 
                     <span class="text-red-500 font-semibold">{{ __('red') }}</span> {{ __('if it is incorrect, and ') }}
@@ -312,22 +312,22 @@
                 </p>
 
                 <div class="flex space-x-4 mb-4">
-                    <div class="flex items-center justify-center w-32 h-12 bg-green-500 text-white font-bold rounded-lg">
+                    <div class="flex items-center text-center justify-center w-32 h-12 bg-green-500 text-white font-bold rounded-lg">
                         {{ __('Correct Posture') }}
                     </div>
-                    <div class="flex items-center justify-center w-32 h-12 bg-red-500 text-white font-bold rounded-lg">
+                    <div class="flex items-center text-center justify-center w-32 h-12 bg-red-500 text-white font-bold rounded-lg">
                         {{ __('Incorrect Posture') }}
                     </div>
-                    <div class="flex items-center justify-center w-32 h-12 bg-gray-500 text-white font-bold rounded-lg">
+                    <div class="flex items-center text-center justify-center w-32 h-12 bg-gray-500 text-white font-bold rounded-lg">
                         {{ __('No Posture') }}
                     </div>
                 </div>
 
-                <p class="mb-4">
+                <p class="mb-4 text-pretty md:text-balance text-justify">
                     {{ __('There are also auditory indicators present. A ding will indicate correct posture while a buzzer sound will indicate incorrect posture. 
                     Press the buttons below to preview the sounds.') }}
                 </p>
-                <div class="flex space-x-4">
+                <div class="flex space-x-4 justify-center">
                     <div onclick="playHelpSound('correct')" class="cursor-pointer flex items-center justify-center w-32 h-12 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600">
                         {{ __('Correct Sound') }}
                     </div>
@@ -360,7 +360,8 @@
             </div>
             <div class="modal-slide hidden">
                 <h2 class="text-xl font-bold">{{ __('Reminder:') }}</h2>
-                <p>{{ __("Don't forget to do warm-up and cooldown exercises before and after your workout.") }}</p>
+                <p>{{ __("Don't forget to do warm-up and cooldown exercises before and after your workout! You can 
+                see some sample warm-ups and cooldowns you can do at the Workout Library.") }}</p>
             </div>
 
             <!-- Navigation buttons for slides -->

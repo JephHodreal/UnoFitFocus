@@ -107,10 +107,11 @@
 
             <!-- Norms Explanation Section -->
             <div class="container mx-auto p-6 bg-gray-100 rounded-lg shadow-md mt-12">
-                <h2 class="text-2xl font-bold text-gray-800">How Are Your Norms Calculated?</h2>
+                <h2 class="text-2xl font-bold text-gray-800">{{ __('How Are Your Norms Calculated?') }}</h2>
                 <p class="text-gray-700 mt-2">
-                    Your norms are based on your <strong>age, weight, and your subjective view of your fitness level</strong>.
-                    These norms help determine the ideal number of sets, repetitions, and durations for your selected workout.
+                    {!! __('Your norms are based on your <strong>age, weight, and your subjective view of your fitness level</strong>.
+                    These norms help determine the ideal number of sets, repetitions, and durations for your selected workout 
+                    and difficulty level.') !!}
                 </p>
             </div>
 
