@@ -23,30 +23,32 @@
                         <form method="POST" action="{{ route('Setup') }}" enctype="multipart/form-data">
                             @csrf
                     
-                            <!-- Age -->
-                            <div class="mb-6 pt-3 rounded bg-gray-200">
-                                <x-input-label for="age" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Age')" />
-                                <x-text-input id="age" class="block mt-1 w-full" type="text" name="age" :value="old('age')" required autocomplete="age" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
-                                <x-input-error :messages="$errors->get('age')" class="mt-2" />
-                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <!-- Age -->
+                                <div class="mb-6 pt-3 rounded bg-gray-200">
+                                    <x-input-label for="age" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Age')" required="true" />
+                                    <x-text-input id="age" class="block mt-1 w-full" type="text" name="age" :value="old('age')" required autocomplete="age" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
+                                    <x-input-error :messages="$errors->get('age')" class="mt-2" />
+                                </div>
 
-                            <!-- Height -->
-                            <div class="mb-6 pt-3 rounded bg-gray-200">
-                                <x-input-label for="height" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Height (in cm)')" />
-                                <x-text-input id="height" class="block mt-1 w-full" type="text" name="height" :value="old('height')" required autocomplete="height" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
-                                <x-input-error :messages="$errors->get('height')" class="mt-2" />
-                            </div>
+                                <!-- Height -->
+                                <div class="mb-6 pt-3 rounded bg-gray-200">
+                                    <x-input-label for="height" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Height (in cm)')" required="true" />
+                                    <x-text-input id="height" class="block mt-1 w-full" type="text" name="height" :value="old('height')" required autocomplete="height" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
+                                    <x-input-error :messages="$errors->get('height')" class="mt-2" />
+                                </div>
 
-                            <!-- Weight -->
-                            <div class="mb-6 pt-3 rounded bg-gray-200">
-                                <x-input-label for="weight" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Weight (in kg)')" />
-                                <x-text-input id="weight" class="block mt-1 w-full" type="text" name="weight" :value="old('weight')" required autocomplete="weight" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
-                                <x-input-error :messages="$errors->get('weight')" class="mt-2" />
+                                <!-- Weight -->
+                                <div class="mb-6 pt-3 rounded bg-gray-200">
+                                    <x-input-label for="weight" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Weight (in kg)')" required="true" />
+                                    <x-text-input id="weight" class="block mt-1 w-full" type="text" name="weight" :value="old('weight')" required autocomplete="weight" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
+                                    <x-input-error :messages="$errors->get('weight')" class="mt-2" />
+                                </div>
                             </div>
 
                             <!-- Gender -->
                             <div class="mb-6 pt-3 rounded bg-gray-200">
-                                <x-input-label for="gender" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('I identify my gender as ...')" />
+                                <x-input-label for="gender" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('I identify my gender as ...')" required="true" />
                                 <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                     <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                         <div class="flex items-center ps-3">
@@ -66,7 +68,7 @@
 
                             <!-- Fitness Goal -->
                             <div class="mb-6 pt-3 rounded bg-gray-200">
-                                <x-input-label for="fitness_goal" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('My current fitness goal is to ...')" />
+                                <x-input-label for="fitness_goal" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('My current fitness goal is to ...')" required="true" />
                                 <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                     <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                         <div class="flex items-center ps-3">
@@ -191,7 +193,7 @@
 
                             <!-- Fitness Level -->
                             <div class="mb-6 pt-3 rounded bg-gray-200">
-                                <x-input-label for="fitness_level" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('What is your current fitness level?')" />
+                                <x-input-label for="fitness_level" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('What is your current fitness level?')" required="true" />
 
                                 <div class="grid grid-cols-3 gap-4 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                     <!-- Beginner -->
@@ -228,7 +230,6 @@
                             <div class="mb-6 pt-3 rounded bg-gray-200">
                                 <x-input-label for="profile_pic" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Upload profile picture')" />
                                 <input class="block mt-1 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="profile_pic" type="file" name="profile_pic">
-                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
                                 <x-input-error :messages="$errors->get('profile_pic')" class="mt-2" />
                             </div>
                     

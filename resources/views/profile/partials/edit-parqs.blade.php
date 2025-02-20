@@ -23,7 +23,7 @@
             'other_reason' => 'Do you know of any other reason why you should not do physical activity?'
         ] as $field => $question)
         <div class="mb-6 pt-3 rounded bg-gray-200">
-            <x-input-label :for="$field" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__($question)" />
+            <x-input-label :for="$field" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__($question)" required="true" />
             <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex">
                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
                     <div class="flex items-center ps-3">

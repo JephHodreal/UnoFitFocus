@@ -20,7 +20,7 @@
             
         <!-- First Name -->
         <div>
-            <x-input-label for="name" :value="__('First Name')" />
+            <x-input-label for="name" :value="__('First Name')" required="true" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $userInfo->first_name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
@@ -34,14 +34,14 @@
 
         <!-- Last Name -->
         <div>
-            <x-input-label for="last_name" :value="__('Last Name')" />
+            <x-input-label for="last_name" :value="__('Last Name')" required="true" />
             <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full" :value="old('last_name', $userInfo->last_name)" required autocomplete="last_name" />
             <x-input-error class="mt-2" :messages="$errors->get('last_name')" />
         </div>
 
         <!-- Email -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('Email')" required="true" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
@@ -66,28 +66,28 @@
 
         <!-- Age -->
         <div>
-            <x-input-label for="age" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Age')" />
+            <x-input-label for="age" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Age')" required="true" />
             <x-text-input id="age" class="block mt-1 w-full" type="text" name="age" :value="old('age', $userInfo->age)" required autocomplete="age" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
             <x-input-error :messages="$errors->get('age')" class="mt-2" />
         </div>
 
         <!-- Height -->
         <div>
-            <x-input-label for="height" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Height (in cm)')" />
+            <x-input-label for="height" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Height (in cm)')" required="true" />
             <x-text-input id="height" class="block mt-1 w-full" type="text" name="height" :value="old('height', $userInfo->height)" required autocomplete="Height" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
             <x-input-error :messages="$errors->get('height')" class="mt-2" />
         </div>
 
         <!-- Weight -->
         <div>
-            <x-input-label for="weight" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Weight (in kg)')" />
+            <x-input-label for="weight" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Weight (in kg)')" required="true" />
             <x-text-input id="weight" class="block mt-1 w-full" type="text" name="weight" :value="old('weight', $userInfo->weight)" required autocomplete="Weight" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
             <x-input-error :messages="$errors->get('weight')" class="mt-2" />
         </div>
 
         <!-- Gender -->
         <div>
-            <x-input-label for="gender" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('I identify my gender as ...')" />
+            <x-input-label for="gender" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('I identify my gender as ...')" required="true" />
             <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                     <div class="flex items-center ps-3">
@@ -107,7 +107,7 @@
 
         <!-- Fitness Goal -->
         <div>
-            <x-input-label for="fitness_goal" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('My current fitness goal is to ...')" />
+            <x-input-label for="fitness_goal" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('My current fitness goal is to ...')" required="true" />
             <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                     <div class="flex items-center ps-3">
@@ -133,7 +133,7 @@
 
         <!-- Fitness Level -->
         <div>
-            <x-input-label for="fitness_level" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('What is your current fitness level?')" />
+            <x-input-label for="fitness_level" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('What is your current fitness level?')" required="true" />
             <div class="grid grid-cols-3 gap-4 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 <!-- Beginner -->
                 <label for="level_beginner" class="flex flex-col items-center text-center py-4 px-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">

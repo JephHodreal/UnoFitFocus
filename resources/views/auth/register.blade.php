@@ -37,8 +37,8 @@
                         <!-- Name Fields -->
                         <div class="flex space-x-4 mb-6">
                             <div class="w-1/3">
-                                <x-input-label for="first_name" class="block text-gray-700 text-sm font-bold mb-2 ml-3">
-                                    {{ __('First Name') }} <span class="text-red-500">*</span>
+                                <x-input-label for="first_name" class="block text-gray-700 text-sm font-bold mb-2 ml-3" required="true">
+                                    {{ __('First Name') }}
                                 </x-input-label>
                                 <x-text-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="given-name" />
                                 <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
@@ -49,8 +49,8 @@
                                 <x-input-error :messages="$errors->get('middle_name')" class="mt-2" />
                             </div>
                             <div class="w-1/3">
-                                <x-input-label for="last_name" class="block text-gray-700 text-sm font-bold mb-2 ml-3">
-                                    {{ __('Last Name') }} <span class="text-red-500">*</span>
+                                <x-input-label for="last_name" class="block text-gray-700 text-sm font-bold mb-2 ml-3" required="true">
+                                    {{ __('Last Name') }}
                                 </x-input-label>
                                 <x-text-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autocomplete="family-name" />
                                 <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
@@ -59,8 +59,8 @@
         
                         <!-- Email -->
                         <div class="mb-6">
-                            <x-input-label for="email" class="block text-gray-700 text-sm font-bold mb-2 ml-3">
-                                {{ __('Email') }} <span class="text-red-500">*</span>
+                            <x-input-label for="email" class="block text-gray-700 text-sm font-bold mb-2 ml-3" required="true">
+                                {{ __('Email') }}
                             </x-input-label>
                             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
@@ -69,8 +69,8 @@
         
                         <!-- Password -->
                         <div class="mb-6">
-                            <x-input-label for="password" class="block text-gray-700 text-sm font-bold mb-2 ml-3">
-                                {{ __('Password') }} <span class="text-red-500">*</span>
+                            <x-input-label for="password" class="block text-gray-700 text-sm font-bold mb-2 ml-3" required="true">
+                                {{ __('Password') }}
                             </x-input-label>
                             <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" 
                                 placeholder="At least 8 characters, one uppercase letter, one lowercase letter, and one number" />
@@ -80,8 +80,8 @@
         
                         <!-- Confirm Password -->
                         <div class="mb-6">
-                            <x-input-label for="password_confirmation" class="block text-gray-700 text-sm font-bold mb-2 ml-3">
-                                {{ __('Confirm Password') }} <span class="text-red-500">*</span>
+                            <x-input-label for="password_confirmation" class="block text-gray-700 text-sm font-bold mb-2 ml-3" required="true">
+                                {{ __('Confirm Password') }}
                             </x-input-label>
                             <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
                             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
@@ -148,8 +148,8 @@
         
                         @foreach($questions as $name => $question)
                         <div class="mb-6 pt-3 rounded bg-gray-200">
-                            <x-input-label for="{{ $name }}" class="block text-gray-700 text-sm font-bold mb-2 ml-3">
-                                {{ __($question) }} <span class="text-red-500">*</span>
+                            <x-input-label for="{{ $name }}" class="block text-gray-700 text-sm font-bold mb-2 ml-3" required="true">
+                                {{ __($question) }}
                             </x-input-label>
                             <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex">
                                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
@@ -176,9 +176,7 @@
                             </p>
                             <div class="mt-4">
                                 <input type="checkbox" id="parq-agreement" name="parq_agreement" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-                                <label for="parq-agreement" class="ml-2 text-sm text-gray-700">
-                                    {{ __('I understand and agree to continue using the application.') }} <span class="text-red-500">*</span>
-                                </label>
+                                <x-input-label for="parq-agreement" class="ml-2 text-sm text-gray-700" required="true">{{ __('I understand and agree to continue using the application.') }}</x-input-label>
                                 <x-input-error :messages="$errors->get('parq_agreement')" class="mt-2" />
                             </div>
                         </div>
