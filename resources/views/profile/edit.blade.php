@@ -66,12 +66,15 @@
                         <!-- Button to enable edit mode -->
                         <div class="flex items-start mt-4">
                             <!-- Profile Picture Section -->
-                            <div class="relative">
+                            <div class="relative w-36 h-36 flex-shrink-0">
                                 @php
                                     $profilePicPath = 'uploads/profile_pics/' . $userInfo->profile_pic;
                                     $imageSrc = file_exists(public_path($profilePicPath)) ? asset($profilePicPath) : asset('assets/images/placeholder.png');
                                 @endphp
-                                <img @click="showImageViewer = true" class="rounded-full w-36 h-36 aspect-square object-cover cursor-pointer" src="{{ $imageSrc }}" alt="Profile picture">
+                                <img @click="showImageViewer = true"
+                                    class="rounded-full w-36 h-36 aspect-square object-cover cursor-pointer"
+                                    src="{{ $imageSrc }}" 
+                                    alt="Profile picture">
 
                                 <!-- Pencil Icon for Editing Profile Picture -->
                                 <button class="absolute top-2 right-2 bg-gray-200 p-1 rounded-full hover:bg-gray-300"
@@ -86,7 +89,7 @@
                             </div>
                         
                             <!-- Profile Details Section with more spacing -->
-                            <div class="ml-16 grid grid-cols-2 gap-x-8 gap-y-4">
+                            <div class="ml-20 grid grid-cols-[auto_minmax(350px,1fr)] gap-x-8 gap-y-4 w-full">
                                 <strong>First Name:</strong> <span>{{ $userInfo->first_name }}</span>
                                 <strong>Middle Name:</strong> <span>{{ $userInfo->middle_name }}</span>
                                 <strong>Last Name:</strong> <span>{{ $userInfo->last_name }}</span>

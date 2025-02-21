@@ -131,7 +131,10 @@
                     <div id="step2" class="hidden">
                         <h2 class="font-bold text-3xl text-center text-gray-800 mb-2">{{ __('PAR-Q Form') }}</h2>
                         <p class="text-center text-gray-600 mb-6">
-                            {{ __('The PAR-Q is a simple self-screening tool used to determine the safety of exercising based on your health history.') }}
+                            {{ __('The PAR-Q is a simple self-screening tool used by fitness trainers and coaches to determine the safety or possible risks 
+                            of exercising based on your health history, current symptoms, and risk factors. It also can help a personal trainer create an 
+                            ideal exercise prescription for a client. All PAR-Q questions are designed to help uncover any potential health risks associated 
+                            with exercise.') }}
                         </p>
         
                         @php
@@ -205,7 +208,7 @@
             const prevButton = document.getElementById('prev-step');
             const parqWarning = document.getElementById('parq-warning');
             const parqAgreement = document.getElementById('parq-agreement');
-            const parqQuestions = document.querySelectorAll('input[type="radio"][value="Yes"]');
+            const parqQuestions = document.querySelectorAll('input[type="radio"]');
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
             const confirmPasswordInput = document.getElementById('password_confirmation');
@@ -304,24 +307,27 @@
             // Real-time validation for confirm password
             confirmPasswordInput.addEventListener('input', validateConfirmPassword);
 
-            // Check if any PAR-Q question is answered with "Yes"
-            parqQuestions.forEach(question => {
-                question.addEventListener('change', function() {
-                    let hasYesAnswer = false;
-                    parqQuestions.forEach(q => {
-                        if (q.checked) {
-                            hasYesAnswer = true;
-                        }
-                    });
+            // Function to check if any question has a "Yes" answer
+            function checkForYesAnswers() {
+                // Get all checked radio inputs
+                const checkedAnswers = document.querySelectorAll('input[type="radio"]:checked');
+                
+                // Check if any of the checked answers is "Yes"
+                const hasYesAnswer = Array.from(checkedAnswers).some(answer => answer.value === "Yes");
+                
+                // Show/hide warning and set checkbox requirement based on answers
+                if (hasYesAnswer) {
+                    parqWarning.classList.remove('hidden');
+                    parqAgreement.required = true;
+                } else {
+                    parqWarning.classList.add('hidden');
+                    parqAgreement.required = false;
+                }
+            }
 
-                    if (hasYesAnswer) {
-                        parqWarning.classList.remove('hidden');
-                        parqAgreement.required = true;
-                    } else {
-                        parqWarning.classList.add('hidden');
-                        parqAgreement.required = false;
-                    }
-                });
+            // Add change event listener to all radio buttons
+            parqQuestions.forEach(question => {
+                question.addEventListener('change', checkForYesAnswers);
             });
         });
     </script>
