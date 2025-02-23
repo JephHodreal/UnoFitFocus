@@ -458,66 +458,178 @@
                                         { Beginner: '#ff6384', Intermediate: '#36a2eb', Advanced: '#ffce56' }
                                     );
                                     // Function to generate interpretation
+                                    // function getInterpretation(data, exercise) {
+                                    //     const beginnerScores = data.Beginner.scores;
+                                    //     const intermediateScores = data.Intermediate.scores;
+                                    //     const advancedScores = data.Advanced.scores;
+
+                                    //     // Check if the user has not tried the workout at all
+                                    //     const hasNoData = beginnerScores.every(score => score === null) &&
+                                    //                     intermediateScores.every(score => score === null) &&
+                                    //                     advancedScores.every(score => score === null);
+
+                                    //     if (hasNoData) {
+                                    //         return `You haven't started ${exercise}s yet. Try it out now!`;
+                                    //     }
+
+                                    //     // Check if the user hasn't attempted the workout in the last 7 days
+                                    //     const lastAttemptDate = new Date(Math.max(
+                                    //         ...beginnerScores.map((score, index) => score !== null ? new Date(data.Beginner.dates[index]) : 0),
+                                    //         ...intermediateScores.map((score, index) => score !== null ? new Date(data.Intermediate.dates[index]) : 0),
+                                    //         ...advancedScores.map((score, index) => score !== null ? new Date(data.Advanced.dates[index]) : 0)
+                                    //     ));
+                                    //     const daysSinceLastAttempt = Math.floor((new Date() - lastAttemptDate) / (1000 * 60 * 60 * 24));
+
+                                    //     if (daysSinceLastAttempt > 7) {
+                                    //         return `Uh oh! You haven't attempted ${exercise}s in a while. Try it out now!`;
+                                    //     }
+
+                                    //     // Check for perfect scores
+                                    //     const perfectScores = {
+                                    //         Beginner: beginnerScores.filter(score => score === 100).length,
+                                    //         Intermediate: intermediateScores.filter(score => score === 100).length,
+                                    //         Advanced: advancedScores.filter(score => score === 100).length
+                                    //     };
+
+                                    //     if (perfectScores.Advanced >= 3) {
+                                    //         return `You've mastered ${exercise}s! Keep on working out to maintain your progress. Excellent work.`;
+                                    //     }
+
+                                    //     // Check if the graph is increasing, decreasing, or stagnant
+                                    //     const beginnerTrend = beginnerScores.filter(score => score !== null);
+                                    //     const intermediateTrend = intermediateScores.filter(score => score !== null);
+                                    //     const advancedTrend = advancedScores.filter(score => score !== null);
+
+                                    //     const isIncreasing = (trend) => {
+                                    //         if (trend.length < 2) return false;
+                                    //         return trend.every((score, index) => index === 0 || score >= trend[index - 1]);
+                                    //     };
+
+                                    //     const isDecreasing = (trend) => {
+                                    //         if (trend.length < 2) return false;
+                                    //         return trend.every((score, index) => index === 0 || score <= trend[index - 1]);
+                                    //     };
+
+                                    //     if (isIncreasing(beginnerTrend) || isIncreasing(intermediateTrend) || isIncreasing(advancedTrend)) {
+                                    //         return `You're currently improving on your ${exercise}s. Keep up the good work!`;
+                                    //     } else if (isDecreasing(beginnerTrend) || isDecreasing(intermediateTrend) || isDecreasing(advancedTrend)) {
+                                    //         return `You're doing a good job! With just a little extra practice on your ${exercise}s, you'll be unstoppable!`;
+                                    //     } else {
+                                    //         return `Your performance on ${exercise}s is steady. Keep pushing yourself to improve!`;
+                                    //     }
+                                    // }
+
                                     function getInterpretation(data, exercise) {
-                                        const beginnerScores = data.Beginner.scores;
-                                        const intermediateScores = data.Intermediate.scores;
-                                        const advancedScores = data.Advanced.scores;
+                                    const beginnerScores = data.Beginner.scores.filter(score => score !== null);
+                                    const intermediateScores = data.Intermediate.scores.filter(score => score !== null);
+                                    const advancedScores = data.Advanced.scores.filter(score => score !== null);
 
-                                        // Check if the user has not tried the workout at all
-                                        const hasNoData = beginnerScores.every(score => score === null) &&
-                                                        intermediateScores.every(score => score === null) &&
-                                                        advancedScores.every(score => score === null);
+                                    // Check if the user has not tried the workout at all
+                                    const hasNoData = beginnerScores.length === 0 && 
+                                                    intermediateScores.length === 0 && 
+                                                    advancedScores.length === 0;
 
-                                        if (hasNoData) {
-                                            return `You haven't started ${exercise}s yet. Try it out now!`;
-                                        }
-
-                                        // Check if the user hasn't attempted the workout in the last 7 days
-                                        const lastAttemptDate = new Date(Math.max(
-                                            ...beginnerScores.map((score, index) => score !== null ? new Date(data.Beginner.dates[index]) : 0),
-                                            ...intermediateScores.map((score, index) => score !== null ? new Date(data.Intermediate.dates[index]) : 0),
-                                            ...advancedScores.map((score, index) => score !== null ? new Date(data.Advanced.dates[index]) : 0)
-                                        ));
-                                        const daysSinceLastAttempt = Math.floor((new Date() - lastAttemptDate) / (1000 * 60 * 60 * 24));
-
-                                        if (daysSinceLastAttempt > 7) {
-                                            return `Uh oh! You haven't attempted ${exercise}s in a while. Try it out now!`;
-                                        }
-
-                                        // Check for perfect scores
-                                        const perfectScores = {
-                                            Beginner: beginnerScores.filter(score => score === 100).length,
-                                            Intermediate: intermediateScores.filter(score => score === 100).length,
-                                            Advanced: advancedScores.filter(score => score === 100).length
-                                        };
-
-                                        if (perfectScores.Advanced >= 3) {
-                                            return `You've mastered ${exercise}s! Keep on working out to maintain your progress. Excellent work.`;
-                                        } 
-
-                                        // Check if the graph is increasing, decreasing, or stagnant
-                                        const beginnerTrend = beginnerScores.filter(score => score !== null);
-                                        const intermediateTrend = intermediateScores.filter(score => score !== null);
-                                        const advancedTrend = advancedScores.filter(score => score !== null);
-
-                                        const isIncreasing = (trend) => {
-                                            if (trend.length < 2) return false;
-                                            return trend.every((score, index) => index === 0 || score >= trend[index - 1]);
-                                        };
-
-                                        const isDecreasing = (trend) => {
-                                            if (trend.length < 2) return false;
-                                            return trend.every((score, index) => index === 0 || score <= trend[index - 1]);
-                                        };
-
-                                        if (isIncreasing(beginnerTrend) || isIncreasing(intermediateTrend) || isIncreasing(advancedTrend)) {
-                                            return `You're currently improving on your ${exercise}s. Keep up the good work!`;
-                                        } else if (isDecreasing(beginnerTrend) || isDecreasing(intermediateTrend) || isDecreasing(advancedTrend)) {
-                                            return `You're doing a good job! With just a little extra practice on your ${exercise}s, you'll be unstoppable!`;
-                                        } else {
-                                            return `Your performance on ${exercise}s is steady. Keep pushing yourself to improve!`;
-                                        }
+                                    if (hasNoData) {
+                                        return `You haven't started ${exercise}s yet. Try it out now!`;
                                     }
+
+                                    // Get unique dates for each difficulty level
+                                    const getUniqueDates = (scores, dates) => {
+                                        return scores.map((score, idx) => dates[idx])
+                                                    .filter((date, idx, arr) => arr.indexOf(date) === idx);
+                                    };
+
+                                    const beginnerDates = getUniqueDates(data.Beginner.scores, data.Beginner.dates);
+                                    const intermediateDates = getUniqueDates(data.Intermediate.scores, data.Intermediate.dates);
+                                    const advancedDates = getUniqueDates(data.Advanced.scores, data.Advanced.dates);
+
+                                    // Check if the user hasn't attempted the workout in the last 7 days
+                                    const lastAttemptDate = new Date(Math.max(
+                                        ...beginnerDates.map(date => new Date(date)),
+                                        ...intermediateDates.map(date => new Date(date)),
+                                        ...advancedDates.map(date => new Date(date))
+                                    ));
+                                    const daysSinceLastAttempt = Math.floor((new Date() - lastAttemptDate) / (1000 * 60 * 60 * 24));
+
+                                    if (daysSinceLastAttempt > 7) {
+                                        return `Uh oh! You haven't attempted ${exercise}s in a while. Try it out now!`;
+                                    }
+
+                                    // Check for perfect scores and mastery
+                                    const isPerfectScore = score => score === 100;
+                                    const hasMastered = scores => scores.filter(isPerfectScore).length >= 3;
+
+                                    if (hasMastered(advancedScores)) {
+                                        return `You've mastered ${exercise}s! Keep on working out to maintain your progress. Excellent work.`;
+                                    }
+
+                                    // Check for level progression recommendations
+                                    if (hasMastered(beginnerScores) && intermediateScores.length === 0) {
+                                        return `You've mastered the Beginner level! Attempt the Intermediate level to see how you'd fare.`;
+                                    }
+
+                                    if (hasMastered(intermediateScores) && advancedScores.length === 0) {
+                                        return `You've mastered the Intermediate level! Attempt the Advanced level to see how you'd fare.`;
+                                    }
+
+                                    // Function to analyze trend for a specific difficulty level
+                                    const analyzeTrend = (scores, dates) => {
+                                        const uniqueDates = getUniqueDates(scores, dates);
+                                        
+                                        // Return early if less than 3 workout days
+                                        if (uniqueDates.length < 3) {
+                                            return 'insufficient';
+                                        }
+
+                                        // Get the last 5 scores (or all if less than 5)
+                                        const recentScores = scores.slice(-5);
+                                        
+                                        // Calculate average difference between consecutive scores
+                                        const differences = recentScores.map((score, idx) => 
+                                            idx === 0 ? 0 : Math.abs(score - recentScores[idx - 1])
+                                        ).slice(1);
+                                        
+                                        const avgDifference = differences.reduce((sum, diff) => sum + diff, 0) / differences.length;
+
+                                        // Define thresholds for trend analysis
+                                        const STEADY_THRESHOLD = 5; // Maximum average difference to be considered steady
+                                        const IMPROVEMENT_THRESHOLD = 4; // Minimum improvement to be considered increasing
+
+                                        if (avgDifference <= STEADY_THRESHOLD) {
+                                            return 'steady';
+                                        }
+
+                                        const isImproving = recentScores.every((score, idx) => 
+                                            idx === 0 || (score - recentScores[idx - 1]) >= -IMPROVEMENT_THRESHOLD
+                                        );
+
+                                        return isImproving ? 'improving' : 'fluctuating';
+                                    };
+
+                                    // Analyze trends for each difficulty level
+                                    const trends = {
+                                        beginner: analyzeTrend(beginnerScores, data.Beginner.dates),
+                                        intermediate: analyzeTrend(intermediateScores, data.Intermediate.dates),
+                                        advanced: analyzeTrend(advancedScores, data.Advanced.dates)
+                                    };
+
+                                    // If user has worked out less than 3 times in all difficulty levels
+                                    if (Object.values(trends).every(trend => trend === 'insufficient')) {
+                                        return "Keep working out to have a more detailed interpretation of your progress!";
+                                    }
+
+                                    // Generate interpretation based on trends
+                                    const hasImprovingTrend = Object.values(trends).some(trend => trend === 'improving');
+                                    const hasSteadyTrend = Object.values(trends).some(trend => trend === 'steady');
+
+                                    if (hasImprovingTrend) {
+                                        return `You're currently improving on your ${exercise}s. Keep up the good work!`;
+                                    } else if (hasSteadyTrend) {
+                                        return `Your performance on ${exercise}s is steady. Keep pushing yourself to improve!`;
+                                    } else {
+                                        return `Uh oh! Your scores are dipping. No worries, with just a little extra practice on your ${exercise}s, you'll get the hang of it!`;
+                                    }
+                                }
 
                                     // Function to update the interpretation
                                     function updateInterpretation(data, exercise) {

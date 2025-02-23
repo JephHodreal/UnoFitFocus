@@ -28,6 +28,18 @@ class WorkoutController extends Controller
             abort(404, 'User details not found.');
         }
 
+        // Check if the profile is complete
+        $profileIncomplete = UserDetails::where('user_id', $user->id)
+        ->where(function ($query) {
+            $query->whereNull('height')
+                  ->orWhereNull('weight')
+                  ->orWhereNull('age')
+                  ->orWhereNull('gender')
+                  ->orWhereNull('fitness_goal')
+                  ->orWhereNull('fitness_level');
+        })
+        ->exists();
+
         // Retrieve user's last selected difficulty from a session or user preferences
         $lastSelectedDifficulty = $request->session()->get('last_selected_difficulty', 'Beginner');
         
@@ -170,7 +182,7 @@ class WorkoutController extends Controller
         return view('Workout', compact(
             'workouts', 'norms', 'scores', 'ages', 'weightRanges', 'userNorm', 
             'selectedWorkout', 'selectedDifficulty', 'selectedFitnessLevel', 
-            'hasParqAnswers', 'fitnessLevels', 'userDetails', 'normTable', 'highlightedNorms'
+            'hasParqAnswers', 'fitnessLevels', 'userDetails', 'normTable', 'highlightedNorms', 'profileIncomplete',
         ));
     }
 

@@ -20,7 +20,7 @@
                 </h2>
             </x-slot>
 
-            {{-- <!-- Check if the user has not answered the PARQ form -->
+            <!-- Check if the user has not answered the PARQ form -->
             @if (!$hasParqAnswers)
                 <div x-data="{ showModal: true }">
                     <div x-show="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-opacity z-50">
@@ -49,7 +49,39 @@
                         </div>
                     </div>
                 </div>
-            @endif --}}
+            @endif
+
+            <!-- Modal if profile is incomplete -->
+            @if($profileIncomplete)
+                <!-- Pop-up Modal -->
+                <div x-data="{ showModal: true }">
+                    <div x-show="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-opacity z-50">
+                        <div class="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto relative" 
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform scale-90"
+                            x-transition:enter-end="opacity-100 transform scale-100"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 transform scale-100"
+                            x-transition:leave-end="opacity-0 transform scale-90">
+
+                            <button @click="showModal = false" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">{{ __('Almost there!') }}</h3>
+                            <p class="text-gray-600 mb-6">{{ __('Complete your profile by adding some additional information.') }}</p>
+                            
+                            <div class="flex justify-center w-full">
+                                <a href="{{ route('Setup') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150'">
+                                    {{ __('Go to Setup') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <div class="py-12">
                 <div class="container mx-auto text-center">
@@ -178,6 +210,7 @@
     <script>
         const workouts = @json($workouts);
         const hasParqAnswers = @json($hasParqAnswers);
+        const profileComplete = @json(!$profileIncomplete);
         let selectedWorkout = null;
         let selectedDifficulty = null;
 
@@ -232,6 +265,12 @@
                 // Check for PARQ answers first
                 if (!hasParqAnswers) {
                     showParqModal();
+                    return;
+                }
+
+                // Check for profile completion second
+                if (!profileComplete) {
+                    showProfileModal();
                     return;
                 }
 
@@ -367,6 +406,33 @@
                     <div class="flex justify-center w-full">
                         <a href="{{ route('parq.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                             Go to PARQ Form
+                        </a>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Add this new function for the profile completion modal
+        function showProfileModal() {
+            // First check if modal already exists
+            if (document.querySelector('#profile-modal')) return;
+
+            const modal = document.createElement('div');
+            modal.id = 'profile-modal';
+            modal.className = 'fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-opacity z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto relative">
+                    <button onclick="this.closest('.fixed').remove()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Almost there!</h3>
+                    <p class="text-gray-600 mb-6">Complete your profile by adding some additional information.</p>
+                    <div class="flex justify-center w-full">
+                        <a href="{{ route('Setup') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            Go to Setup
                         </a>
                     </div>
                 </div>
