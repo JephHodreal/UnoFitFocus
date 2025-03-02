@@ -50,26 +50,298 @@
                     <div class="bg-white p-4 overflow-hidden shadow-sm sm:rounded-lg">
                         <h2 class="text-4xl font-bold text-center pt-8 mb-10">{{ __('How to use FitFocus') }}</h2>
                         <div class="container mx-auto gap-4 flex flex-col lg:flex-row items-center pb-4">
-                            <div class="lg:w-1/2">
-                                <img src="../assets/images/workout.jpg" alt="FitFocus in Action" class="w-full rounded-lg shadow-lg">
-                            </div>
+                            <!-- Text section (now on the left) -->
                             <div class="lg:w-1/2 mb-8 lg:mb-0">
                                 <p class="text-lg text-justify mb-6">{{ __('FitFocus allows you to create your own account to save your workout data, wherein you can view your workout history and see your progress. Through our FitCheck, you would be able to perform bodyweight exercises with the proper posture.') }}</p>
-                                <div class="p-6 rounded-lg">
+                                <div class="p-6 bg-gray-50 rounded-lg shadow-inner">
                                     <h3 class="text-2xl font-semibold mb-4">{{ __('Experience FitFocus by following these steps:') }}</h3>
-                                    <ul class="list-disc list-inside text-left">
-                                        <li>Register for an account and log in</li>
-                                        <li>Visit the FitCheck tab and select your desired workout and difficulty</li>
-                                        <li>Perform the workout in front of your camera and meet the listed objective</li>
-                                        <li>Complete the objective to receive your score</li>
-                                        <li>View your stats and sessions through the Dashboard and Workout History</li>
+                                    <ul class="list-disc list-inside text-left space-y-2">
+                                        <li class="slide-step step-1 transition-all duration-300">Register for an account and log in</li>
+                                        <li class="slide-step step-2 transition-all duration-300">Visit the FitCheck tab and select your desired workout and difficulty</li>
+                                        <li class="slide-step step-3 transition-all duration-300">Perform the workout in front of your camera and meet the listed objective</li>
+                                        <li class="slide-step step-4 transition-all duration-300">Complete the objective to receive your score</li>
+                                        <li class="slide-step step-5 transition-all duration-300">View your stats and sessions through the Dashboard and Workout History</li>
                                     </ul>
+                                </div>
+                            </div>
+                            
+                            <!-- Slideshow (now on the right) -->
+                            <div class="lg:w-1/2 relative">
+                                <div class="slideshow-container relative rounded-lg shadow-lg overflow-hidden h-64 md:h-80">
+                                    <!-- Slides wrapper with horizontal sliding effect -->
+                                    <div class="slides-wrapper flex transition-transform duration-500 h-full">
+                                        <!-- Slide 1 -->
+                                        <div class="slide min-w-full h-full relative">
+                                            <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                                                <img src="../assets/images/feature1.png" alt="Register and Login" class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(1)">
+                                            </div>
+                                            <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
+                                                <p class="font-medium text-lg">Step 1: Register for an account and log in</p>
+                                            </div>
+                                        </div>
+            
+                                        <!-- Slide 2 -->
+                                        <div class="slide min-w-full h-full relative">
+                                            <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                                                <img src="../assets/images/feature2.png" alt="Select Workout" class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(2)">
+                                            </div>
+                                            <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
+                                                <p class="font-medium text-lg">Step 2: Visit the FitCheck tab and select your desired workout</p>
+                                            </div>
+                                        </div>
+            
+                                        <!-- Slide 3 -->
+                                        <div class="slide min-w-full h-full relative">
+                                            <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                                                <img src="../assets/images/feature3.png" alt="Perform Workout" class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(3)">
+                                            </div>
+                                            <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
+                                                <p class="font-medium text-lg">Step 3: Perform the workout in front of your camera</p>
+                                            </div>
+                                        </div>
+            
+                                        <!-- Slide 4 -->
+                                        <div class="slide min-w-full h-full relative">
+                                            <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                                                <img src="../assets/images/comingsoon.jpg" alt="Complete Objective" class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(4)">
+                                            </div>
+                                            <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
+                                                <p class="font-medium text-lg">Step 4: Complete the objective to receive your score</p>
+                                            </div>
+                                        </div>
+            
+                                        <!-- Slide 5 -->
+                                        <div class="slide min-w-full h-full relative">
+                                            <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                                                <img src="../assets/images/comingsoon.jpg" alt="View Stats" class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(5)">
+                                            </div>
+                                            <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
+                                                <p class="font-medium text-lg">Step 5: View your stats and sessions</p>
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <!-- Navigation arrows -->
+                                    <a class="prev absolute top-1/2 left-0 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-3 rounded-r cursor-pointer z-10 transition-all duration-300 hover:scale-110" onclick="plusSlides(-1)">&#10094;</a>
+                                    <a class="next absolute top-1/2 right-0 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-3 rounded-l cursor-pointer z-10 transition-all duration-300 hover:scale-110" onclick="plusSlides(1)">&#10095;</a>
+                                </div>
+            
+                                <!-- Dots/circles -->
+                                <div class="dots-container text-center mt-4">
+                                    <span class="dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentSlide(1)"></span>
+                                    <span class="dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentSlide(2)"></span>
+                                    <span class="dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentSlide(3)"></span>
+                                    <span class="dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentSlide(4)"></span>
+                                    <span class="dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentSlide(5)"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- Modal for enlarged images -->
+            <div id="imageModal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center opacity-0 transition-opacity duration-300">
+                <div class="modal-content max-w-4xl w-full mx-auto relative transform scale-95 transition-transform duration-300">
+                    <span class="close absolute top-4 right-4 text-white text-4xl font-bold cursor-pointer hover:text-gray-300 z-20 transition-transform duration-300 hover:scale-110" onclick="closeModal()">&times;</span>
+                    
+                    <!-- Modal Slides -->
+                    <div class="modal-slides relative overflow-hidden">
+                        <div class="modal-slides-wrapper flex transition-transform duration-500">
+                            <!-- Modal Slide 1 -->
+                            <div class="modal-slide min-w-full">
+                                <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
+                                    <img src="../assets/images/feature1.png" alt="Register and Login" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                </div>
+                                <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
+                                    <p class="font-medium text-xl">Step 1: Register for an account and log in</p>
+                                </div>
+                            </div>
+            
+                            <!-- Modal Slide 2 -->
+                            <div class="modal-slide min-w-full">
+                                <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
+                                    <img src="../assets/images/feature2.png" alt="Select Workout" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                </div>
+                                <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
+                                    <p class="font-medium text-xl">Step 2: Visit the FitCheck tab and select your desired workout</p>
+                                </div>
+                            </div>
+            
+                            <!-- Modal Slide 3 -->
+                            <div class="modal-slide min-w-full">
+                                <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
+                                    <img src="../assets/images/feature3.png" alt="Perform Workout" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                </div>
+                                <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
+                                    <p class="font-medium text-xl">Step 3: Perform the workout in front of your camera</p>
+                                </div>
+                            </div>
+            
+                            <!-- Modal Slide 4 -->
+                            <div class="modal-slide min-w-full">
+                                <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
+                                    <img src="../assets/images/comingsoon.jpg" alt="Complete Objective" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                </div>
+                                <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
+                                    <p class="font-medium text-xl">Step 4: Complete the objective to receive your score</p>
+                                </div>
+                            </div>
+            
+                            <!-- Modal Slide 5 -->
+                            <div class="modal-slide min-w-full">
+                                <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
+                                    <img src="../assets/images/comingsoon.jpg" alt="View Stats" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                </div>
+                                <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
+                                    <p class="font-medium text-xl">Step 5: View your stats and sessions</p>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <!-- Modal Navigation -->
+                        <a class="modal-prev absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-4 rounded cursor-pointer z-10 transition-all duration-300 hover:scale-110" onclick="plusModalSlides(-1)">&#10094;</a>
+                        <a class="modal-next absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-4 rounded cursor-pointer z-10 transition-all duration-300 hover:scale-110" onclick="plusModalSlides(1)">&#10095;</a>
+                    </div>
+                    
+                    <!-- Modal Dots -->
+                    <div class="modal-dots text-center mt-4">
+                        <span class="modal-dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentModalSlide(1)"></span>
+                        <span class="modal-dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentModalSlide(2)"></span>
+                        <span class="modal-dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentModalSlide(3)"></span>
+                        <span class="modal-dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentModalSlide(4)"></span>
+                        <span class="modal-dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentModalSlide(5)"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- JavaScript for slideshow and modal -->
+            <script>
+                let slideIndex = 1;
+                let modalIndex = 1;
+                
+                // Show slides when page loads
+                document.addEventListener('DOMContentLoaded', function() {
+                    showSlides(slideIndex);
+                    highlightStep(slideIndex);
+                });
+                
+                // Next/previous controls
+                function plusSlides(n) {
+                    showSlides(slideIndex += n);
+                    highlightStep(slideIndex);
+                }
+                
+                // Thumbnail controls
+                function currentSlide(n) {
+                    showSlides(slideIndex = n);
+                    highlightStep(slideIndex);
+                }
+                
+                function showSlides(n) {
+                    let slides = document.getElementsByClassName("slide");
+                    let dots = document.getElementsByClassName("dot");
+                    let slidesWrapper = document.querySelector('.slides-wrapper');
+                    
+                    if (n > slides.length) {slideIndex = 1}
+                    if (n < 1) {slideIndex = slides.length}
+                    
+                    // Update active dot
+                    for (let i = 0; i < dots.length; i++) {
+                        dots[i].classList.remove("bg-blue-500");
+                        dots[i].classList.add("bg-gray-300");
+                    }
+                    dots[slideIndex-1].classList.remove("bg-gray-300");
+                    dots[slideIndex-1].classList.add("bg-blue-500");
+                    
+                    // Slide the wrapper to show the current slide
+                    slidesWrapper.style.transform = `translateX(-${(slideIndex - 1) * 100}%)`;
+                }
+                
+                // Highlight corresponding step in the list
+                function highlightStep(n) {
+                    let steps = document.getElementsByClassName("slide-step");
+                    
+                    for (let i = 0; i < steps.length; i++) {
+                        steps[i].classList.remove("font-bold", "text-blue-600");
+                    }
+                    
+                    let activeStep = document.querySelector(`.step-${n}`);
+                    if (activeStep) {
+                        activeStep.classList.add("font-bold", "text-blue-600");
+                    }
+                }
+                
+                // Modal functions
+                function openModal() {
+                    const modal = document.getElementById("imageModal");
+                    modal.classList.remove("hidden");
+                    
+                    // Use setTimeout to create a smooth transition
+                    setTimeout(() => {
+                        modal.classList.remove("opacity-0");
+                        modal.classList.add("opacity-100");
+                        
+                        const modalContent = modal.querySelector(".modal-content");
+                        modalContent.classList.remove("scale-95");
+                        modalContent.classList.add("scale-100");
+                    }, 50);
+                    
+                    currentModalSlide(slideIndex);
+                }
+                
+                function closeModal() {
+                    const modal = document.getElementById("imageModal");
+                    const modalContent = modal.querySelector(".modal-content");
+                    
+                    modal.classList.remove("opacity-100");
+                    modal.classList.add("opacity-0");
+                    modalContent.classList.remove("scale-100");
+                    modalContent.classList.add("scale-95");
+                    
+                    // Use setTimeout to wait for animation to complete before hiding
+                    setTimeout(() => {
+                        modal.classList.add("hidden");
+                    }, 300);
+                }
+                
+                function plusModalSlides(n) {
+                    showModalSlides(modalIndex += n);
+                }
+                
+                function currentModalSlide(n) {
+                    showModalSlides(modalIndex = n);
+                }
+                
+                function showModalSlides(n) {
+                    let slides = document.getElementsByClassName("modal-slide");
+                    let dots = document.getElementsByClassName("modal-dot");
+                    let slidesWrapper = document.querySelector('.modal-slides-wrapper');
+                    
+                    if (n > slides.length) {modalIndex = 1}
+                    if (n < 1) {modalIndex = slides.length}
+                    
+                    // Update active dot
+                    for (let i = 0; i < dots.length; i++) {
+                        dots[i].classList.remove("bg-blue-500");
+                        dots[i].classList.add("bg-gray-300");
+                    }
+                    
+                    dots[modalIndex-1].classList.remove("bg-gray-300");
+                    dots[modalIndex-1].classList.add("bg-blue-500");
+                    
+                    // Slide the wrapper to show the current slide
+                    slidesWrapper.style.transform = `translateX(-${(modalIndex - 1) * 100}%)`;
+                }
+                
+                // Close modal when clicking outside the image
+                window.onclick = function(event) {
+                    let modal = document.getElementById("imageModal");
+                    if (event.target == modal) {
+                        closeModal();
+                    }
+                }
+            </script>
 
             <!-- Developers Section -->
             <div class="py-8">
