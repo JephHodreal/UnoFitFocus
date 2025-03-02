@@ -76,27 +76,35 @@
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white px-6 py-10 overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="container mx-auto text-center">
-                            <h2 class="text-3xl font-bold mb-12">Meet the Developers</h2>
+                            <h2 class="text-3xl font-bold mb-12">{{ __('Meet the Developers') }}</h2>
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                 <div class="developer-card text-center hover:scale-105 transition-transform duration-300 border-2 shadow-lg hover:shadow-xl rounded-lg p-6 bg-white">
-                                    <img src="../assets/images/ResearcherJeph.png" alt="Developer 1" class="w-32 h-32 rounded-full mx-auto mb-4">
-                                    <h3 class="text-xl font-semibold">Jeph Hodreal</h3>
-                                    <p class="text-gray-600">Lead Developer & Project Manager</p>
+                                    <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full relative">
+                                        <img src="../assets/images/ResearcherJeph.png" alt="Developer 1" class="absolute top-0 left-0 w-full h-full object-cover">
+                                    </div>
+                                    <h3 class="text-xl font-semibold">{{ __('Jeph Hodreal') }}</h3>
+                                    <p class="text-gray-600">{{ __('Lead Developer & Project Manager') }}</p>
                                 </div>
                                 <div class="developer-card text-center hover:scale-105 transition-transform duration-300 border-2 shadow-lg hover:shadow-xl rounded-lg p-6 bg-white">
-                                    <img src="../assets/images/ResearcherMags.png" alt="Developer 2" class="w-32 h-32 rounded-full mx-auto mb-4">
-                                    <h3 class="text-xl font-semibold">Magallanes Jr. Butuhan</h3>
-                                    <p class="text-gray-600">Machine Learning Engineer & Backend Developer</p>
+                                    <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full relative">
+                                        <img src="../assets/images/ResearcherMags.png" alt="Developer 2" class="absolute top-0 left-0 w-full h-full object-cover">
+                                    </div>
+                                    <h3 class="text-xl font-semibold">{{ __('Magallanes Jr. Butuhan') }}</h3>
+                                    <p class="text-gray-600">{{ __('Machine Learning Engineer & Backend Developer') }}</p>
                                 </div>
                                 <div class="developer-card text-center hover:scale-105 transition-transform duration-300 border-2 shadow-lg hover:shadow-xl rounded-lg p-6 bg-white">
-                                    <img src="../assets/images/ResearcherPrincess.jpg" alt="Developer 3" class="w-32 h-32 rounded-full mx-auto mb-4">
-                                    <h3 class="text-xl font-semibold">Princess Martinez</h3>
-                                    <p class="text-gray-600">Dataset Collector & Researcher</p>
+                                    <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full relative">
+                                        <img src="../assets/images/ResearcherPrincess.jpg" alt="Developer 3" class="absolute top-0 left-0 w-full h-full object-cover">
+                                    </div>
+                                    <h3 class="text-xl font-semibold">{{ __('Princess Martinez') }}</h3>
+                                    <p class="text-gray-600">{{ __('Dataset Collector & Researcher') }}</p>
                                 </div>
                                 <div class="developer-card text-center hover:scale-105 transition-transform duration-300 border-2 shadow-lg hover:shadow-xl rounded-lg p-6 bg-white">
-                                    <img src="../assets/images/ResearcherMonique.PNG" alt="Developer 4" class="w-32 h-32 rounded-full mx-auto mb-4">
-                                    <h3 class="text-xl font-semibold">Monique Burilla</h3>
-                                    <p class="text-gray-600">Researcher & Documentation Specialist</p>
+                                    <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full relative">
+                                        <img src="../assets/images/ResearcherMonique.PNG" alt="Developer 4" class="absolute top-0 left-0 w-full h-full object-cover">
+                                    </div>
+                                    <h3 class="text-xl font-semibold">{{ __('Monique Burilla') }}</h3>
+                                    <p class="text-gray-600">{{ __('Researcher & Documentation Specialist') }}</p>
                                 </div>
                             </div>
                         </div>

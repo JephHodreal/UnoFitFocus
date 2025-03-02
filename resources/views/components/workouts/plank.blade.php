@@ -4,7 +4,7 @@
         <h2 class="text-2xl font-bold flex items-center gap-2">
             {{ __('Plank') }}
             <span class="flex items-center gap-2 px-3 py-1 bg-yellow-200 text-yellow-800 text-sm rounded-full relative group">
-                <img src="../assets/images/abs.PNG" alt="Abs Icon" class="h-4 w-4" />
+                <img src="../assets/images/abs.png" alt="Abs Icon" class="h-4 w-4" />
                 {{ __('Core') }}
                 <span
                     class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
@@ -30,14 +30,14 @@
 
     <!-- GIF Column -->
     <div class="md:w-1/2 flex justify-center md:justify-end mt-6 md:mt-0">
-        <img src="../assets/images/pl_standard.gif" alt="Plank GIF" class="object-contain h-96 w-full md:w-auto rounded-lg">
+        <img src="../assets/images/workout-library/prev-plank.png" alt="Plank Position" class="object-contain h-96 w-full md:w-auto rounded-lg">
     </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 py-8">
     <div class="aspect-w-16 aspect-h-9 relative rounded-lg shadow-lg overflow-hidden">
-        <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/pvIjsG5Svck" title="Plank Video 1" allowfullscreen></iframe>
+        <img src="../assets/images/workout-library/plank-1.gif" alt="Getting into Plank Position" class="object-contain h-96 w-full md:w-auto rounded-lg">
     </div>
     <div class="aspect-w-16 aspect-h-9 relative rounded-lg shadow-lg overflow-hidden">
-        <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/t7Vjprc8BCY" title="Plank Video 2" allowfullscreen></iframe>
+        <img src="../assets/images/workout-library/plank-2.gif" alt="Performing Plank" class="object-contain h-96 w-full md:w-auto rounded-lg">
     </div>
 </div>
