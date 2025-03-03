@@ -40,19 +40,19 @@
                                 <x-input-label for="first_name" class="block text-gray-700 text-sm font-bold mb-2 ml-3" required="true">
                                     {{ __('First Name') }}
                                 </x-input-label>
-                                <x-text-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="given-name" />
+                                <x-text-input id="first_name" class="block mt-1 w-full" type="text" placeholder="First Name" name="first_name" :value="old('first_name')" required autofocus autocomplete="given-name" />
                                 <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
                             </div>
                             <div class="w-1/3">
                                 <x-input-label for="middle_name" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Middle Name')" />
-                                <x-text-input id="middle_name" class="block mt-1 w-full" type="text" name="middle_name" :value="old('middle_name')" autocomplete="additional-name" />
+                                <x-text-input id="middle_name" class="block mt-1 w-full" type="text" placeholder="Middle Name" name="middle_name" :value="old('middle_name')" autocomplete="additional-name" />
                                 <x-input-error :messages="$errors->get('middle_name')" class="mt-2" />
                             </div>
                             <div class="w-1/3">
                                 <x-input-label for="last_name" class="block text-gray-700 text-sm font-bold mb-2 ml-3" required="true">
                                     {{ __('Last Name') }}
                                 </x-input-label>
-                                <x-text-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autocomplete="family-name" />
+                                <x-text-input id="last_name" class="block mt-1 w-full" type="text" placeholder="Last Name" name="last_name" :value="old('last_name')" required autocomplete="family-name" />
                                 <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
                             </div>
                         </div>
@@ -62,9 +62,9 @@
                             <x-input-label for="email" class="block text-gray-700 text-sm font-bold mb-2 ml-3" required="true">
                                 {{ __('Email') }}
                             </x-input-label>
-                            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+                            <x-text-input id="email" class="block mt-1 w-full" type="email" placeholder="Email Address" name="email" :value="old('email')" required autocomplete="username" />
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                            <p id="email-error" class="text-red-500 text-sm mt-2 hidden">Please enter a valid email address.</p>
+                            <p id="email-error" class="text-red-500 text-sm mt-2 hidden">{{ __('Please enter a valid email address.') }}</p>
                         </div>
         
                         <!-- Password -->
@@ -75,7 +75,7 @@
                             <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" 
                                 placeholder="At least 8 characters, one uppercase letter, one lowercase letter, and one number" />
                             <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                            <p id="password-error" class="text-red-500 text-sm mt-2 hidden">Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, and one number.</p>
+                            <p id="password-error" class="text-red-500 text-sm mt-2 hidden">{{ __('Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, and one number.') }}</p>
                         </div>
         
                         <!-- Confirm Password -->
@@ -83,7 +83,7 @@
                             <x-input-label for="password_confirmation" class="block text-gray-700 text-sm font-bold mb-2 ml-3" required="true">
                                 {{ __('Confirm Password') }}
                             </x-input-label>
-                            <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+                            <x-text-input id="password_confirmation" class="block mt-1 w-full" placeholder="Confirm Password" type="password" name="password_confirmation" required autocomplete="new-password" />
                             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                             <p id="confirm-password-error" class="text-red-500 text-sm mt-2 hidden">Passwords do not match.</p>
                         </div>
