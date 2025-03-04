@@ -125,6 +125,13 @@
                                 </a>
                             </p>
                         </div>
+
+                        <!-- Already Registered Link -->
+                        <div class="text-center italic mt-4">
+                            <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                                {{ __('Already have an account? Login here') }}
+                            </a>
+                        </div>
                     </div>
         
                     <!-- Step 2: PARQ Form -->
@@ -177,9 +184,12 @@
                             <p class="font-medium">
                                 {{ __('You answered "Yes" to at least one of the questions in the PAR-Q form. FitFocus will involve your participation in undergoing physical activity. Do you wish to proceed?') }}
                             </p>
-                            <div class="mt-4">
+                            <p class="font-light">
+                                {{ __('Don\'t worry! You can still try out the workouts even if you answered Yes to the above questions.') }}
+                            </p>
+                            <div class="mt-4 flex items-center">
                                 <input type="checkbox" id="parq-agreement" name="parq_agreement" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-                                <x-input-label for="parq-agreement" class="ml-2 text-sm text-gray-700" required="true">{{ __('I understand and agree to continue using the application.') }}</x-input-label>
+                                <x-input-label for="parq-agreement" class="ml-2 text-sm text-gray-700" required="true">{{ __('I understand and agree to continue using FitFocus.') }}</x-input-label>
                                 <x-input-error :messages="$errors->get('parq_agreement')" class="mt-2" />
                             </div>
                         </div>

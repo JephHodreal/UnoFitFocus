@@ -21,23 +21,35 @@
             </x-slot>
 
             <!-- About Section -->
-            <div class="py-12">
+            <div class="py-8">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white p-4 overflow-hidden shadow-sm sm:rounded-lg">
-                        <h2 class="text-4xl font-bold text-center pt-8 mb-10">{{ __('What We Do') }}</h2>
-                        <div class="container mx-auto gap-4 flex flex-col lg:flex-row items-center pb-4">
-                            <div class="lg:w-1/2 mb-8 lg:mb-0">
-                                <p class="text-lg text-justify mb-6">FitFocus uses advanced technology to analyze your posture in real time during key bodyweight exercises like push-ups, squats, and planks. Our goal is to help you perfect your form, reduce injury risks, and maximize workout efficiency.</p>
-                                <div class="p-6 rounded-lg">
-                                    <h3 class="text-2xl font-semibold mb-4">Key Features</h3>
-                                    <ul class="list-disc list-inside text-left">
-                                        <li>Real-time posture estimation</li>
-                                        <li>Personalized workout experience</li>
-                                    </ul>
+                    <div class="bg-cover bg-fixed bg-center text-white" style="background-image: url('../assets/images/favicon.png'); background-color: rgba(0,0,0,0.6); background-blend-mode: darken;">
+                        <div class="container mx-auto px-4 py-16">
+                            <h2 class="text-4xl font-bold text-center pt-8 mb-10 text-white">{{ __('What We Do') }}</h2>
+                            <p class="text-lg text-justify mb-8 max-w-4xl mx-auto text-white">{{ __('FitFocus uses advanced technology to analyze your posture in real time during key bodyweight exercises like push-ups, squats, and planks. Our goal is to help you perfect your form, reduce injury risks, and maximize workout efficiency.') }}</p>
+                            
+                            <h3 class="text-2xl font-semibold text-center mb-8 text-white">{{ __('Key Features') }}</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div class="bg-white/20 p-6 rounded-lg text-center transition-all duration-300 hover:bg-white/30 hover:shadow-lg">
+                                    <div class="text-xl font-bold mb-2 text-white">{{ __('Real-time Posture') }}</div>
+                                    <p class="text-sm text-gray-200">{{ __('Placeholder text for detailed description of real-time posture estimation.') }}</p>
                                 </div>
-                            </div>
-                            <div class="lg:w-1/2">
-                                <img src="../assets/images/workout.jpg" alt="FitFocus in Action" class="w-full rounded-lg shadow-lg">
+                                
+                                <div class="bg-white/20 p-6 rounded-lg text-center transition-all duration-300 hover:bg-white/30 hover:shadow-lg">
+                                    <div class="text-xl font-bold mb-2 text-white">{{ __('Personalized Experience') }}</div>
+                                    <p class="text-sm text-gray-200">{{ __('Placeholder text for detailed description of personalized workout experience.') }}</p>
+                                </div>
+                                
+                                <div class="bg-white/20 p-6 rounded-lg text-center transition-all duration-300 hover:bg-white/30 hover:shadow-lg">
+                                    <div class="text-xl font-bold mb-2 text-white">{{ __('Progress Tracking') }}</div>
+                                    <p class="text-sm text-gray-200">{{ __('Placeholder text for detailed description of workout progress monitoring.') }}</p>
+                                </div>
+                                
+                                <div class="bg-white/20 p-6 rounded-lg text-center transition-all duration-300 hover:bg-white/30 hover:shadow-lg">
+                                    <div class="text-xl font-bold mb-2 text-white">{{ __('Workout Library') }}</div>
+                                    <p class="text-sm text-gray-200">{{ __('Placeholder text for detailed description of dedicated workout library.') }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -48,75 +60,108 @@
             <div class="py-4">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white p-4 overflow-hidden shadow-sm sm:rounded-lg">
-                        <h2 class="text-4xl font-bold text-center pt-8 mb-10">{{ __('How to use FitFocus') }}</h2>
+                        <h2 class="text-4xl font-bold text-center pt-8 mb-10">{{ __('How to work out using FitFocus') }}</h2>
                         <div class="container mx-auto gap-4 flex flex-col lg:flex-row items-center pb-4">
                             <!-- Text section (now on the left) -->
                             <div class="lg:w-1/2 mb-8 lg:mb-0">
-                                <p class="text-lg text-justify mb-6">{{ __('FitFocus allows you to create your own account to save your workout data, wherein you can view your workout history and see your progress. Through our FitCheck, you would be able to perform bodyweight exercises with the proper posture.') }}</p>
-                                <div class="p-6 bg-gray-50 rounded-lg shadow-inner">
+                                <p class="text-lg text-justify mb-2 pl-6">{{ __('FitFocus allows you to create your own account to save your workout data, wherein you can view your workout history and see your progress. Through our FitCheck, you would be able to perform bodyweight exercises with the proper posture.') }}</p>
+                                <div class="p-6">
                                     <h3 class="text-2xl font-semibold mb-4">{{ __('Experience FitFocus by following these steps:') }}</h3>
                                     <ul class="list-disc list-inside text-left space-y-2">
-                                        <li class="slide-step step-1 transition-all duration-300">Register for an account and log in</li>
-                                        <li class="slide-step step-2 transition-all duration-300">Visit the FitCheck tab and select your desired workout and difficulty</li>
-                                        <li class="slide-step step-3 transition-all duration-300">Perform the workout in front of your camera and meet the listed objective</li>
-                                        <li class="slide-step step-4 transition-all duration-300">Complete the objective to receive your score</li>
-                                        <li class="slide-step step-5 transition-all duration-300">View your stats and sessions through the Dashboard and Workout History</li>
+                                        <li class="slide-step step-1 transition-all duration-300">{{ __('Register for an account by providing your login details') }}</li>
+                                        <li class="slide-step step-2 transition-all duration-300">{{ __('Answer the Physical Activity Readiness Questionnaire') }}</li>
+                                        <li class="slide-step step-3 transition-all duration-300">{{ __('After logging in, finish setting up your account by providing your user profile') }}</li>
+                                        <li class="slide-step step-4 transition-all duration-300">{{ __('Learn about different workouts and exercises in our Workout Library') }}</li>
+                                        <li class="slide-step step-5 transition-all duration-300">{{ __('Visit the FitCheck tab and select your desired workout and difficulty level') }}</li>
+                                        <li class="slide-step step-6 transition-all duration-300">{{ __('Experience real-time posture checking while performing your workout') }}</li>
+                                        <li class="slide-step step-7 transition-all duration-300">{{ __('Complete the listed objective to receive your score') }}</li>
+                                        <li class="slide-step step-8 transition-all duration-300">{{ __('View your workout progress in your Dashboard') }}</li>
                                     </ul>
                                 </div>
                             </div>
                             
                             <!-- Slideshow (now on the right) -->
                             <div class="lg:w-1/2 relative">
-                                <div class="slideshow-container relative rounded-lg shadow-lg overflow-hidden h-64 md:h-80">
+                                <div class="slideshow-container relative rounded-lg shadow-lg overflow-hidden h-80 md:h-96 lg:h-[500px]">
                                     <!-- Slides wrapper with horizontal sliding effect -->
                                     <div class="slides-wrapper flex transition-transform duration-500 h-full">
                                         <!-- Slide 1 -->
                                         <div class="slide min-w-full h-full relative">
                                             <div class="w-full h-full flex items-center justify-center bg-gray-100">
-                                                <img src="../assets/images/feature1.png" alt="Register and Login" class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(1)">
+                                                <img src="../assets/images/AboutUs-Step1.png" alt="Create an account by filling out the registration form and entering your name, email, and password." class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(1)">
                                             </div>
                                             <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
-                                                <p class="font-medium text-lg">Step 1: Register for an account and log in</p>
+                                                <p class="font-medium text-lg">{{ __('Step 1: Register for an account by providing your login details') }}</p>
                                             </div>
                                         </div>
             
                                         <!-- Slide 2 -->
                                         <div class="slide min-w-full h-full relative">
                                             <div class="w-full h-full flex items-center justify-center bg-gray-100">
-                                                <img src="../assets/images/feature2.png" alt="Select Workout" class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(2)">
+                                                <img src="../assets/images/AboutUs-Step2.png" alt="Answer the seven-question form to reflect on how ready you are for physical activity." class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(2)">
                                             </div>
                                             <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
-                                                <p class="font-medium text-lg">Step 2: Visit the FitCheck tab and select your desired workout</p>
+                                                <p class="font-medium text-lg">{{ __('Step 2: Answer the Physical Activity Readiness Questionnaire') }}</p>
                                             </div>
                                         </div>
             
                                         <!-- Slide 3 -->
                                         <div class="slide min-w-full h-full relative">
                                             <div class="w-full h-full flex items-center justify-center bg-gray-100">
-                                                <img src="../assets/images/feature3.png" alt="Perform Workout" class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(3)">
+                                                <img src="../assets/images/AboutUs-Step3.png" alt="Provide your user profile by entering your age, weight, height, and other information." class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(3)">
                                             </div>
                                             <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
-                                                <p class="font-medium text-lg">Step 3: Perform the workout in front of your camera</p>
+                                                <p class="font-medium text-lg">{{ __('Step 3: After logging in, finish setting up your account by providing your user profile') }}</p>
                                             </div>
                                         </div>
             
                                         <!-- Slide 4 -->
                                         <div class="slide min-w-full h-full relative">
                                             <div class="w-full h-full flex items-center justify-center bg-gray-100">
-                                                <img src="../assets/images/comingsoon.jpg" alt="Complete Objective" class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(4)">
+                                                <img src="../assets/images/AboutUs-Step4.png" alt="Read about different workouts and exercises in the Workout Library." class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(4)">
                                             </div>
                                             <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
-                                                <p class="font-medium text-lg">Step 4: Complete the objective to receive your score</p>
+                                                <p class="font-medium text-lg">{{ __('Step 4: Learn about different workouts and exercises in our Workout Library') }}</p>
                                             </div>
                                         </div>
             
                                         <!-- Slide 5 -->
                                         <div class="slide min-w-full h-full relative">
                                             <div class="w-full h-full flex items-center justify-center bg-gray-100">
-                                                <img src="../assets/images/comingsoon.jpg" alt="View Stats" class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(5)">
+                                                <img src="../assets/images/AboutUs-Step5.png" alt="Select a workout and difficulty level in the FitCheck." class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(5)">
                                             </div>
                                             <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
-                                                <p class="font-medium text-lg">Step 5: View your stats and sessions</p>
+                                                <p class="font-medium text-lg">{{ __('Step 5: Visit the FitCheck tab and select your desired workout and difficulty level') }}</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Slide 6 -->
+                                        <div class="slide min-w-full h-full relative">
+                                            <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                                                <img src="../assets/images/AboutUs-Step6.png" alt="Perform your workout and experience real-time posture checking and feedback." class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(6)">
+                                            </div>
+                                            <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
+                                                <p class="font-medium text-lg">{{ __('Step 6: Experience real-time posture checking while performing your workout') }}</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Slide 7 -->
+                                        <div class="slide min-w-full h-full relative">
+                                            <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                                                <img src="../assets/images/AboutUs-Step7.png" alt="Complete the task displayed to get your score." class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(7)">
+                                            </div>
+                                            <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
+                                                <p class="font-medium text-lg">{{ __('Step 7: Complete the listed objective to receive your score') }}</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Slide 8 -->
+                                        <div class="slide min-w-full h-full relative">
+                                            <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                                                <img src="../assets/images/AboutUs-Step8.png" alt="Take a look at your workout stats in the Dashboard." class="max-w-full max-h-full object-contain cursor-pointer" onclick="openModal();currentSlide(8)">
+                                            </div>
+                                            <div class="slide-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-4 absolute bottom-0 w-full">
+                                                <p class="font-medium text-lg">{{ __('Step 8: View your workout progress in your Dashboard') }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -133,6 +178,9 @@
                                     <span class="dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentSlide(3)"></span>
                                     <span class="dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentSlide(4)"></span>
                                     <span class="dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentSlide(5)"></span>
+                                    <span class="dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentSlide(6)"></span>
+                                    <span class="dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentSlide(7)"></span>
+                                    <span class="dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentSlide(8)"></span>
                                 </div>
                             </div>
                         </div>
@@ -151,50 +199,80 @@
                             <!-- Modal Slide 1 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/feature1.png" alt="Register and Login" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step1.png" alt="Create an account by filling out the registration form and entering your name, email, and password." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
-                                    <p class="font-medium text-xl">Step 1: Register for an account and log in</p>
+                                    <p class="font-medium text-xl">{{ __('Step 1: Register for an account by providing your login details') }}</p>
                                 </div>
                             </div>
             
                             <!-- Modal Slide 2 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/feature2.png" alt="Select Workout" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step2.png" alt="Answer the seven-question form to reflect on how ready you are for physical activity." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
-                                    <p class="font-medium text-xl">Step 2: Visit the FitCheck tab and select your desired workout</p>
+                                    <p class="font-medium text-xl">{{ __('Step 2: Answer the Physical Activity Readiness Questionnaire') }}</p>
                                 </div>
                             </div>
             
                             <!-- Modal Slide 3 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/feature3.png" alt="Perform Workout" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step3.png" alt="Provide your user profile by entering your age, weight, height, and other information." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
-                                    <p class="font-medium text-xl">Step 3: Perform the workout in front of your camera</p>
+                                    <p class="font-medium text-xl">{{ __('Step 3: After logging in, finish setting up your account by providing your user profile') }}</p>
                                 </div>
                             </div>
             
                             <!-- Modal Slide 4 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/comingsoon.jpg" alt="Complete Objective" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step4.png" alt="Read about different workouts and exercises in the Workout Library." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
-                                    <p class="font-medium text-xl">Step 4: Complete the objective to receive your score</p>
+                                    <p class="font-medium text-xl">{{ __('Step 4: Learn about different workouts and exercises in our Workout Library') }}</p>
                                 </div>
                             </div>
             
                             <!-- Modal Slide 5 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/comingsoon.jpg" alt="View Stats" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step5.png" alt="Select a workout and difficulty level in the FitCheck." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
-                                    <p class="font-medium text-xl">Step 5: View your stats and sessions</p>
+                                    <p class="font-medium text-xl">{{ __('Step 5: Visit the FitCheck tab and select your desired workout and difficulty level') }}</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Modal Slide 6 -->
+                            <div class="modal-slide min-w-full">
+                                <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
+                                    <img src="../assets/images/AboutUs-Step6.png" alt="Perform your workout and experience real-time posture checking and feedback." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                </div>
+                                <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
+                                    <p class="font-medium text-xl">{{ __('Step 6: Experience real-time posture checking while performing your workout') }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Modal Slide 7 -->
+                            <div class="modal-slide min-w-full">
+                                <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
+                                    <img src="../assets/images/AboutUs-Step7.png" alt="Complete the task displayed to get your score." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                </div>
+                                <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
+                                    <p class="font-medium text-xl">{{ __('Step 7: Complete the listed objective to receive your score') }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Modal Slide 8 -->
+                            <div class="modal-slide min-w-full">
+                                <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
+                                    <img src="../assets/images/AboutUs-Step8.png" alt="Take a look at your workout stats in the Dashboard." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                </div>
+                                <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
+                                    <p class="font-medium text-xl">{{ __('Step 8: View your workout progress in your Dashboard') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -211,6 +289,9 @@
                         <span class="modal-dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentModalSlide(3)"></span>
                         <span class="modal-dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentModalSlide(4)"></span>
                         <span class="modal-dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentModalSlide(5)"></span>
+                        <span class="modal-dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentModalSlide(6)"></span>
+                        <span class="modal-dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentModalSlide(7)"></span>
+                        <span class="modal-dot bg-gray-300 hover:bg-blue-500 cursor-pointer h-3 w-3 rounded-full inline-block mx-1 transition-all duration-300" onclick="currentModalSlide(8)"></span>
                     </div>
                 </div>
             </div>

@@ -123,6 +123,7 @@
                                 const expectedWeightContainer = document.getElementById("expectedWeightContainer");
                                 const expectedWeightText = document.getElementById("expectedWeightText");
                                 const weightStatusText = document.getElementById("weightStatusText");
+                                const fitnessGoalInputs = document.querySelectorAll('input[name="fitness_goal"]');
 
                                 function cmToInchesOver5Feet(heightCm) {
                                     const totalInches = heightCm / 2.54;
@@ -211,14 +212,21 @@
                                                 weightStatusText.classList.add("text-green-500");
                                                 weightStatusText.classList.remove("text-orange-500", "text-red-500");
                                             }
-                                        } else {
-                                            expectedWeightContainer.classList.add("hidden");
-                                        }
+                                        } //else {
+                                           // expectedWeightContainer.classList.add("hidden");
+                                        //}
                                     }
                                 }
 
                                 // Event listeners
-                                fitnessGoalInput.addEventListener("change", updateWeightGoal);
+                                //fitnessGoalInput.addEventListener("change", updateWeightGoal);
+                                fitnessGoalInputs.forEach(input => input.addEventListener("change", function() {
+                                    // Hide weight container for all other fitness goals
+                                    if (!fitnessGoalInput.checked) {
+                                        expectedWeightContainer.classList.add("hidden");
+                                    }
+                                    updateWeightGoal();
+                                }));
                                 heightInput.addEventListener("input", updateWeightGoal);
                                 weightInput.addEventListener("input", updateWeightGoal);
                                 genderInputs.forEach(input => input.addEventListener("change", updateWeightGoal));
