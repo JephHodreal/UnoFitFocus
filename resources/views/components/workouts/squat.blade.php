@@ -1,7 +1,7 @@
 <div class="flex flex-col md:flex-row items-center rounded-lg p-8 space-y-4 md:space-y-0">
     <!-- GIF Column -->
     <div class="md:w-1/2 flex justify-center md:justify-start">
-        <img src="../assets/images/workout-library/prev-squat.png" alt="Squat Position" class="object-contain h-96 w-full md:w-auto rounded-lg">
+        <img src="../assets/images/workout-library/prev-squat.PNG" alt="Squat Position" class="object-contain h-96 w-full md:w-auto rounded-lg">
     </div>
 
     <!-- Information Column -->

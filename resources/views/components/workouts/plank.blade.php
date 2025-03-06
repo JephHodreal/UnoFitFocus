@@ -30,7 +30,7 @@
 
     <!-- GIF Column -->
     <div class="md:w-1/2 flex justify-center md:justify-end mt-6 md:mt-0">
-        <img src="../assets/images/workout-library/prev-plank.png" alt="Plank Position" class="object-contain h-96 w-full md:w-auto rounded-lg">
+        <img src="../assets/images/workout-library/prev-plank.PNG" alt="Plank Position" class="object-contain h-96 w-full md:w-auto rounded-lg">
     </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 py-8">

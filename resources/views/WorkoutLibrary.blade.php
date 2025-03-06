@@ -331,7 +331,7 @@
                     {
                         id: 'lateral-arm',
                         title: 'Lateral Arm Swings',
-                        carouselImage: '../assets/images/workout-library/prev-lateral-arm-swing.png',
+                        carouselImage: '../assets/images/workout-library/prev-lateral-arm-swing.PNG',
                         modalImage: '../assets/images/workout-library/wu-lateral-arm-swing.gif',
                         muscles: 'Shoulders, Upper Back, Chest',
                         instructions: '1. Stand with feet shoulder-width apart\n2. Keep arms straight and swing them horizontally from side to side\n3. Maintain a controlled motion and gradually increase range\n4. Continue for 30 seconds'
@@ -339,7 +339,7 @@
                     {
                         id: 'arm-circles',
                         title: 'Arm Circles',
-                        carouselImage: '../assets/images/workout-library/prev-arm-circles.png',
+                        carouselImage: '../assets/images/workout-library/prev-arm-circles.PNG',
                         modalImage: '../assets/images/workout-library/wu-arm-circles.gif',
                         muscles: 'Shoulders, Upper Back, Rotator Cuff',
                         instructions: '1. Stand with feet shoulder-width apart\n2. Extend arms out to sides at shoulder height\n3. Make small circles forward for 15 seconds\n4. Reverse direction for another 15 seconds\n5. Gradually increase circle size'
@@ -347,7 +347,7 @@
                     {
                         id: 'chest-expansions',
                         title: 'Chest Expansions',
-                        carouselImage: '../assets/images/workout-library/prev-chest-expansion.png',
+                        carouselImage: '../assets/images/workout-library/prev-chest-expansion.PNG',
                         modalImage: '../assets/images/workout-library/wu-chest-expansion.gif',
                         muscles: 'Chest, Shoulders, Upper Back',
                         instructions: '1. Stand tall with feet shoulder-width apart\n2. Clasp hands behind back\n3. Lift chest and squeeze shoulder blades together\n4. Hold for 2-3 seconds\n5. Release and repeat 10 times'
@@ -355,7 +355,7 @@
                     {
                         id: 'spine-rotations',
                         title: 'Thoracic Spine Rotations',
-                        carouselImage: '../assets/images/workout-library/prev-thoracic-spine-rotation.png',
+                        carouselImage: '../assets/images/workout-library/prev-thoracic-spine-rotation.PNG',
                         modalImage: '../assets/images/workout-library/wu-thoracic-spine-rotation.gif',
                         muscles: 'Upper Back, Core, Obliques',
                         instructions: '1. Stand with feet shoulder-width apart\n2. Place hands behind head\n3. Keep hips stable and rotate upper body to one side\n4. Hold for 2 seconds\n5. Rotate to other side\n6. Repeat 10 times each side'
@@ -363,7 +363,7 @@
                     {
                         id: 'hip-rotations',
                         title: 'Hip Rotations',
-                        carouselImage: '../assets/images/workout-library/prev-hip-rotations.png',
+                        carouselImage: '../assets/images/workout-library/prev-hip-rotations.PNG',
                         modalImage: '../assets/images/workout-library/wu-hip-rotations.gif',
                         muscles: 'Hips, Lower Back, Core',
                         instructions: '1. Stand with feet shoulder-width apart\n2. Place hands on hips\n3. Make circular motions with hips clockwise\n4. Perform 10 rotations\n5. Repeat counterclockwise'
@@ -371,7 +371,7 @@
                     {
                         id: 'jogging',
                         title: 'Jogging in Place',
-                        carouselImage: '../assets/images/workout-library/prev-jogging-in-place.png',
+                        carouselImage: '../assets/images/workout-library/prev-jogging-in-place.PNG',
                         modalImage: '../assets/images/workout-library/wu-jogging-in-place.gif',
                         muscles: 'Legs, Core, Cardiovascular System',
                         instructions: '1. Stand in place with good posture\n2. Begin jogging by lifting knees alternatively\n3. Keep landing soft and controlled\n4. Swing arms naturally\n5. Continue for 30-60 seconds'
@@ -457,7 +457,7 @@
                     {
                         id: 'triceps-stretch',
                         title: 'Triceps Stretch',
-                        carouselImage: '../assets/images/workout-library/prev-triceps-stretch.png',
+                        carouselImage: '../assets/images/workout-library/prev-triceps-stretch.PNG',
                         modalImage: '../assets/images/workout-library/cd-triceps-stretch.gif',
                         muscles: 'Triceps, Shoulders',
                         instructions: '1. Stand or sit with proper posture\n2. Raise one arm straight up\n3. Bend your elbow to drop your hand behind your head\n4. Use your other hand to gently pull your elbow back\n5. Hold for 15-30 seconds\n6. Switch arms and repeat\n7. Perform 2-3 sets per arm'
@@ -465,7 +465,7 @@
                     {
                         id: 'shoulder-stretch',
                         title: 'Shoulder Stretch',
-                        carouselImage: '../assets/images/workout-library/prev-shoulder-stretch.png',
+                        carouselImage: '../assets/images/workout-library/prev-shoulder-stretch.PNG',
                         modalImage: '../assets/images/workout-library/cd-shoulder-stretch.gif',
                         muscles: 'Shoulders, Upper Back, Chest',
                         instructions: '1. Stand with feet shoulder-width apart\n2. Bring one arm across your chest\n3. Use opposite arm to hold above the elbow\n4. Gently pull the arm closer to your chest\n5. Hold for 15-30 seconds\n6. Switch arms and repeat\n7. Perform 2-3 sets per arm'
@@ -473,7 +473,7 @@
                     {
                         id: 'quad-stretch',
                         title: 'Quadriceps Stretch',
-                        carouselImage: '../assets/images/workout-library/prev-quadriceps-stretch.png',
+                        carouselImage: '../assets/images/workout-library/prev-quadriceps-stretch.PNG',
                         modalImage: '../assets/images/workout-library/cd-quadriceps-stretch.gif',
                         muscles: 'Quadriceps, Hip Flexors',
                         instructions: '1. Stand on one leg, using a wall for balance if needed\n2. Bend your other leg behind you\n3. Hold your foot with the same-side hand\n4. Keep your knees close together\n5. Stand tall and slightly push your hips forward\n6. Hold for 15-30 seconds\n7. Switch legs and repeat\n8. Perform 2-3 sets per leg'
@@ -481,7 +481,7 @@
                     {
                         id: 'knee-hugs',
                         title: 'Knee Hugs',
-                        carouselImage: '../assets/images/workout-library/prev-knee-hugs.png',
+                        carouselImage: '../assets/images/workout-library/prev-knee-hugs.PNG',
                         modalImage: '../assets/images/workout-library/cd-knee-hugs.gif',
                         muscles: 'Hamstrings, Lower Back',
                         instructions: '1. Sit on the floor with one leg extended\n2. Bend your other leg so your foot touches your inner thigh\n3. Keep your back straight\n4. Reach for your toes on the extended leg\n5. Hold for 15-30 seconds\n6. Switch legs and repeat\n7. Perform 2-3 sets per leg'
@@ -489,7 +489,7 @@
                     {
                         id: 'childs-pose',
                         title: "Child's Pose",
-                        carouselImage: '../assets/images/workout-library/prev-childs-pose.png',
+                        carouselImage: '../assets/images/workout-library/prev-childs-pose.PNG',
                         modalImage: '../assets/images/workout-library/cd-childs-pose.gif',
                         muscles: 'Back, Shoulders, Hips, Glutes',
                         instructions: '1. Start on your hands and knees\n2. Sit back on your heels\n3. Extend your arms forward on the ground\n4. Lower your chest toward the ground\n5. Rest your forehead on the mat\n6. Keep your arms extended and palms flat\n7. Hold for 30-60 seconds\n8. Breathe deeply and relax\n9. Perform 2-3 sets'
@@ -497,7 +497,7 @@
                     {
                         id: 'cat-cow',
                         title: 'Cat-Cow Stretch',
-                        carouselImage: '../assets/images/workout-library/prev-cat-cow-stretch.png',
+                        carouselImage: '../assets/images/workout-library/prev-cat-cow-stretch.PNG',
                         modalImage: '../assets/images/workout-library/cd-cat-cow-stretch.gif',
                         muscles: 'Spine, Core, Neck, Back',
                         instructions: '1. Start on hands and knees in tabletop position\n2. Cat Pose:\n   - Round your spine toward the ceiling\n   - Tuck your chin to chest\n   - Hold for 2-3 seconds\n3. Cow Pose:\n   - Arch your back\n   - Lift your head and tailbone\n   - Hold for 2-3 seconds\n4. Alternate between positions\n5. Perform 10-15 repetitions\n6. Move slowly and coordinate with breathing'
