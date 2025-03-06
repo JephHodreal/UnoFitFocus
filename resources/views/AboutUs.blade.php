@@ -199,7 +199,7 @@
                             <!-- Modal Slide 1 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/AboutUs-Step1.png" alt="Create an account by filling out the registration form and entering your name, email, and password." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step1.PNG" alt="Create an account by filling out the registration form and entering your name, email, and password." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
                                     <p class="font-medium text-xl">{{ __('Step 1: Register for an account by providing your login details') }}</p>
@@ -209,7 +209,7 @@
                             <!-- Modal Slide 2 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/AboutUs-Step2.png" alt="Answer the seven-question form to reflect on how ready you are for physical activity." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step2.PNG" alt="Answer the seven-question form to reflect on how ready you are for physical activity." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
                                     <p class="font-medium text-xl">{{ __('Step 2: Answer the Physical Activity Readiness Questionnaire') }}</p>
@@ -219,7 +219,7 @@
                             <!-- Modal Slide 3 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/AboutUs-Step3.png" alt="Provide your user profile by entering your age, weight, height, and other information." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step3.PNG" alt="Provide your user profile by entering your age, weight, height, and other information." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
                                     <p class="font-medium text-xl">{{ __('Step 3: After logging in, finish setting up your account by providing your user profile') }}</p>
@@ -229,7 +229,7 @@
                             <!-- Modal Slide 4 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/AboutUs-Step4.png" alt="Read about different workouts and exercises in the Workout Library." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step4.PNG" alt="Read about different workouts and exercises in the Workout Library." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
                                     <p class="font-medium text-xl">{{ __('Step 4: Learn about different workouts and exercises in our Workout Library') }}</p>
@@ -239,7 +239,7 @@
                             <!-- Modal Slide 5 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/AboutUs-Step5.png" alt="Select a workout and difficulty level in the FitCheck." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step5.PNG" alt="Select a workout and difficulty level in the FitCheck." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
                                     <p class="font-medium text-xl">{{ __('Step 5: Visit the FitCheck tab and select your desired workout and difficulty level') }}</p>
@@ -249,7 +249,7 @@
                             <!-- Modal Slide 6 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/AboutUs-Step6.png" alt="Perform your workout and experience real-time posture checking and feedback." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step6.PNG" alt="Perform your workout and experience real-time posture checking and feedback." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
                                     <p class="font-medium text-xl">{{ __('Step 6: Experience real-time posture checking while performing your workout') }}</p>
@@ -259,7 +259,7 @@
                             <!-- Modal Slide 7 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/AboutUs-Step7.png" alt="Complete the task displayed to get your score." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step7.PNG" alt="Complete the task displayed to get your score." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
                                     <p class="font-medium text-xl">{{ __('Step 7: Complete the listed objective to receive your score') }}</p>
@@ -269,7 +269,7 @@
                             <!-- Modal Slide 8 -->
                             <div class="modal-slide min-w-full">
                                 <div class="fixed-size-container w-full h-96 lg:h-[32rem] relative overflow-hidden">
-                                    <img src="../assets/images/AboutUs-Step8.png" alt="Take a look at your workout stats in the Dashboard." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
+                                    <img src="../assets/images/AboutUs-Step8.PNG" alt="Take a look at your workout stats in the Dashboard." class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain">
                                 </div>
                                 <div class="modal-caption bg-gradient-to-t from-black to-transparent bg-opacity-75 text-white p-6 absolute bottom-0 w-full">
                                     <p class="font-medium text-xl">{{ __('Step 8: View your workout progress in your Dashboard') }}</p>
