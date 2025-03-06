@@ -158,19 +158,19 @@ class WorkoutController extends Controller
         $workouts = [
             [
                 'name' => 'Push-Up',
-                'image' => 'pu_standard.jpg',
+                'image' => 'prev-pushup.png',
                 'default_description' => 'Perform a standard push-up with proper form.',
                 'norm_descriptions' => $this->generateNormDescriptions($workoutNorms['Push-Up'] ?? collect(), $userDetails)
             ],
             [
                 'name' => 'Squat',
-                'image' => 'sq_standard.jpg',
+                'image' => 'prev-squat.png',
                 'default_description' => 'Perform a full-depth squat, ensuring your thighs are parallel to the floor.',
                 'norm_descriptions' => $this->generateNormDescriptions($workoutNorms['Squat'] ?? collect(), $userDetails)
             ],
             [
                 'name' => 'Plank',
-                'image' => 'pl_standard.jpg',
+                'image' => 'prev-plank.png',
                 'default_description' => 'Hold a plank position with a straight back and engaged core.',
                 'norm_descriptions' => $this->generateNormDescriptions($workoutNorms['Plank'] ?? collect(), $userDetails)
             ]

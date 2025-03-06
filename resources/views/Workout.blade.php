@@ -98,7 +98,7 @@
             
                         @foreach ($workouts as $workout)
                             <div class="flex items-center border rounded-lg p-6 mb-6 bg-white shadow-md workout-item" data-workout="{{ $workout['name'] }}">
-                                <img src="{{ asset('assets/images/' . $workout['image']) }}" alt="{{ $workout['name'] }}" class="w-48 h-48 object-cover rounded-lg">
+                                <img src="{{ asset('assets/images/workout-library/' . $workout['image']) }}" alt="{{ $workout['name'] }}" class="w-48 h-48 object-cover rounded-lg">
                                 <div class="ml-6 text-left">
                                     <h2 class="text-2xl font-bold text-gray-800">{{ $workout['name'] }}</h2>
                                     <p class="text-gray-600 mt-2 workout-description" data-default-description="{{ $workout['default_description'] }}">
