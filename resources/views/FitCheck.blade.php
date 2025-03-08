@@ -303,6 +303,24 @@
                 </ul>
             </div>
             <div class="modal-slide hidden">
+                <h2 class="text-xl font-bold mb-4">{{ __('Scoring') }}</h2>
+                <p class="mb-4 text-pretty md:text-balance text-justify">
+                    {{ __('Your score is based on your rate of accomplishment of the displayed objective in the proper posture.')}}
+                </p>
+                <p class="mb-4 text-pretty md:text-balance text-justify">
+                    {{ __('For push-ups and planks, your score is calculated by taking the number of repetitions you were able to perform 
+                    in the correct posture and dividing it by the total number of repetitions (which are the repetitions multiplied 
+                    by the number of sets) you need to do as stated in the objective.') }}
+                </p>
+                <p class="mb-4 text-pretty md:text-balance text-justify">
+                    {{ __('For planks, your score is calculated by taking the number of seconds you were able to hold the correct posture 
+                    and dividing it by the total number of seconds you need to do as stated in the objective.') }}
+                </p>
+                <p class="mb-4 text-pretty md:text-balance text-justify">
+                    {{ __('The highest score that you can receive is 100. ') }}
+                </p>
+            </div>
+            <div class="modal-slide hidden">
                 <h2 class="text-xl font-bold mb-4">{{ __('Visual and Auditory Indicators') }}</h2>
                 <p class="mb-4 text-pretty md:text-balance text-justify">
                     {{ __('The visual indicator is located to the right of the camera feed and below the score. This indicator will flash') }} 
@@ -337,10 +355,10 @@
                 </div>
 
                 <audio id="correct-sound" preload="auto">
-                    <source src="{{ asset('sounds/correct_sound.MP3') }}" type="audio/mpeg">
+                    <source src="{{ asset('sounds/correct_sound.mp3') }}" type="audio/mpeg">
                 </audio>
                 <audio id="incorrect-sound" preload="auto">
-                    <source src="{{ asset('sounds/error_sound.MP3') }}" type="audio/mpeg">
+                    <source src="{{ asset('sounds/error_sound.mp3') }}" type="audio/mpeg">
                 </audio>
 
                 <script>
@@ -376,6 +394,7 @@
             <!-- Slide indicator dots -->
             <div class="flex justify-center mt-4">
                 <span class="dot w-3 h-3 rounded-full bg-blue-500 mx-1"></span>
+                <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
                 <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
                 <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
                 <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
@@ -443,11 +462,11 @@
         let countdownInterval;
         let isFetching = true;
         timer.style.color = 'green';
-        const errorSound = new Audio('{{ asset('sounds/error_sound.MP3') }}');
-        const correctSound = new Audio('{{ asset('sounds/correct_sound.MP3') }}');
-        const downSound = new Audio('{{ asset('sounds/down_sound.MP3') }}');
-        const upSound = new Audio('{{ asset('sounds/up_sound.MP3') }}');
-        const dingSound = new Audio('{{ asset('sounds/ding_sound.MP3') }}');
+        const errorSound = new Audio('{{ asset('sounds/error_sound.mp3') }}');
+        const correctSound = new Audio('{{ asset('sounds/correct_sound.mp3') }}');
+        const downSound = new Audio('{{ asset('sounds/down_sound.mp3') }}');
+        const upSound = new Audio('{{ asset('sounds/up_sound.mp3') }}');
+        const dingSound = new Audio('{{ asset('sounds/ding_sound.mp3') }}');
 
         const workout = "{{ $workout }}";
         const difficulty = "{{ $difficulty }}";

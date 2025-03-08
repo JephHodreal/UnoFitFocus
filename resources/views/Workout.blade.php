@@ -312,7 +312,7 @@
                 continueBtn.disabled = false;
 
                 // Fetch workout norms
-                const normData = await fetchWorkoutNorms(selectedWorkout, selectedDifficulty);
+                const normData = await fetchWorkoutNorms(workoutInput, difficultyInput);
                 if (normData) {
                     // Update hidden inputs with norm data
                     setsInput.value = normData.sets || '';
