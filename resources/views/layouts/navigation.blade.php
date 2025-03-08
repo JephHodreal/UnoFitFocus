@@ -78,7 +78,7 @@
                             {{ __('About Us') }}
                         </x-nav-link>
                         <x-nav-link :href="route('Workout')" :active="request()->routeIs('Workout')">
-                            {{ __('Workout Selection') }}
+                            {{ __('FitCheck') }}
                         </x-nav-link>
                     </div>
                 </div>
