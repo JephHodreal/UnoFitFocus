@@ -97,7 +97,7 @@ class FitCheckController extends Controller
         if ($workout === 'Plank') {
             return "Hold the plank position for {$duration} seconds";
         } else {
-            return "Complete {$sets} sets of {$reps} repetitions";
+            return "Complete {$sets} sets of {$reps} repetitions for a total of " .($sets * $reps). " {$workout}s.";
         }
     }
 

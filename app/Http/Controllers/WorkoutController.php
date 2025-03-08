@@ -198,8 +198,8 @@ class WorkoutController extends Controller
 
             if ($norm) {
                 $descriptions[$difficulty] = $norm->exercise_type === 'Plank'
-                    ? "Hold a plank for {$norm->duration} seconds."
-                    : "Perform {$norm->sets} sets of {$norm->reps} repetitions for a total of " . 
+                    ? "Hold the plank position for {$norm->duration} seconds."
+                    : "Complete {$norm->sets} sets of {$norm->reps} repetitions for a total of " . 
                       ($norm->sets * $norm->reps) . " {$norm->exercise_type}s.";
             } else {
                 $descriptions[$difficulty] = "No specific requirements found for your profile.";
