@@ -57,24 +57,6 @@
                         @endif
                     </div>
 
-                    <!-- Divider Line with 'OR' -->
-                    <div class="relative mt-6">
-                        <div class="absolute inset-0 flex items-center">
-                            <div class="w-full border-t border-gray-300"></div>
-                        </div>
-                        <div class="relative flex justify-center text-sm">
-                            <span class="px-2 bg-white text-gray-500">OR</span>
-                        </div>
-                    </div>
-
-                    <!-- Login with Google Button -->
-                    <div class="flex justify-center mt-4">
-                        <a href="{{ route('google.login') }}" class="w-1/2 max-w-sm mx-auto px-4 py-2 border flex gap-2 items-center justify-center bg-white border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 text-center">
-                            <img class="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
-                            <span>{{ __('Login with Google') }}</span>
-                        </a>
-                    </div>
-
                     <!-- Sign Up -->
                     <div class="text-center mt-4 italic w-3/4 mx-auto text-sm text-gray-600">
                         <p>

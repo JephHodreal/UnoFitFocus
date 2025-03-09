@@ -48,19 +48,19 @@ class AuthenticatedSessionController extends Controller
         }
         
         // If password is incorrect and they have a Google account, suggest Google login
-        if ($user->google_id) {
-            // Store the exact email and google_id in the session
-            $request->session()->put('google_login_email', $request->email);
-            $request->session()->put('expected_google_id', $user->google_id);
+        // if ($user->google_id) {
+        //     // Store the exact email and google_id in the session
+        //     $request->session()->put('google_login_email', $request->email);
+        //     $request->session()->put('expected_google_id', $user->google_id);
             
-            return redirect()->route('google.login')
-                ->with('message', 'This account uses Google authentication. Please sign in with Google.');
-        }
+        //     return redirect()->route('google.login')
+        //         ->with('message', 'This account uses Google authentication. Please sign in with Google.');
+        // }
         
         // If we get here, the user exists but provided an incorrect password
         // and they don't have a Google account
         return back()->withErrors([
-            'email' => 'The provided credentials are incorrect.',
+            'email' => 'The provided details are incorrect. Please double-check your email and password.',
         ]);
     }
 
