@@ -85,7 +85,7 @@
                             </x-input-label>
                             <x-text-input id="password_confirmation" class="block mt-1 w-full" placeholder="Confirm Password" type="password" name="password_confirmation" required autocomplete="new-password" />
                             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                            <p id="confirm-password-error" class="text-red-500 text-sm mt-2 hidden">Passwords do not match.</p>
+                            <p id="confirm-password-error" class="text-red-500 text-sm mt-2 hidden">{{ __('Passwords do not match.') }}</p>
                         </div>
         
                         <!-- Navigation Buttons -->

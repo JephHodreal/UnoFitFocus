@@ -15,7 +15,7 @@
                         {{ __('Forgot your password?') }}
                     </h2>
                     <h2 class="text-x2 text-gray-800 leading-tight">
-                        {{ __('Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+                        {{ __('Just let us know your email address and we will email you a password reset link that will allow you to create a new one.') }}
                     </h2>
                 </x-slot>
                 <div class="w-1/2 lg:max-w-4xl sm:max-w-md px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
