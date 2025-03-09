@@ -190,8 +190,8 @@
                                             fitnessGoalLabel.textContent = "Lose Weight";
                                             fitnessGoalInput.value = "Lose Weight";
                                         } else {
-                                            fitnessGoalLabel.textContent = "Gain/Lose Weight";
-                                            fitnessGoalInput.value = "Gain/Lose Weight";
+                                            fitnessGoalLabel.textContent = "Maintain Weight";
+                                            fitnessGoalInput.value = "Maintain Weight";
                                         }
 
                                         // Show weight range information

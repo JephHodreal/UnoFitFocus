@@ -251,7 +251,17 @@
             }
 
             // Event listeners
-            fitnessGoalInput.addEventListener("change", updateWeightGoal);
+            const fitnessGoalInputs = document.querySelectorAll('input[name="fitness_goal"]');
+
+            // Add event listeners to all fitness goal inputs
+            fitnessGoalInputs.forEach(input => input.addEventListener("change", function() {
+                // Hide weight container for all other fitness goals
+                if (!fitnessGoalInput.checked) {
+                    expectedWeightContainer.classList.add("hidden");
+                }
+                updateWeightGoal();
+            }));
+            
             heightInput.addEventListener("input", updateWeightGoal);
             weightInput.addEventListener("input", updateWeightGoal);
             genderInputs.forEach(input => input.addEventListener("change", updateWeightGoal));
