@@ -136,7 +136,22 @@
                                         <th class="px-4 py-2 text-left">Difficulty</th>
                                         <th class="px-4 py-2 text-left">Last Attempt</th>
                                         <th class="px-4 py-2 text-left">High Score</th>
-                                        <th class="px-4 py-2 text-left">Status</th>
+                                        <th class="px-4 py-2 text-left relative group">
+                                            Status
+                                            <span class="ml-1 cursor-help text-gray-500">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                            </span>
+                                            <div class="absolute z-10 hidden group-hover:block bg-white border border-gray-200 rounded-md shadow-lg p-2 w-64 text-sm text-gray-700 mt-1 right-0">
+                                                <p class="font-medium mb-1">Status Explanations:</p>
+                                                <ul class="list-disc pl-5">
+                                                    <li class="mb-1"><span class="font-semibold">Pending</span> - You have yet to try this workout at this difficulty level</li>
+                                                    <li class="mb-1"><span class="font-semibold">In Progress</span> - You have tried this workout at this difficulty level and are still working on achieving the perfect score</li>
+                                                    <li><span class="font-semibold">Completed</span> - You have achieved the perfect score of 100 for this workout at this difficulty level</li>
+                                                </ul>
+                                            </div>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -150,12 +165,23 @@
                                                     {{ $stat['highScore'] !== 'N/A' ? $stat['highScore'] . '%' : $stat['highScore'] }}
                                                 </td>
                                                 <td class="px-4 py-2">
-                                                    <span class="flex justify-center items-center px-2 text-xs leading-5 font-semibold rounded-full 
-                                                        bg-{{ $stat['highScore'] === 'N/A' ? 'red' : ($stat['highScore'] == 100 ? 'green' : ($stat['highScore'] > 0 ? 'yellow' : 'red')) }}-100 
-                                                        text-{{ $stat['highScore'] === 'N/A' ? 'red' : ($stat['highScore'] == 100 ? 'green' : ($stat['highScore'] > 0 ? 'yellow' : 'red')) }}-800 
-                                                        w-1/2 h-5">
-                                                        {{ $stat['highScore'] === 'N/A' ? 'Pending' : ($stat['highScore'] == 100 ? 'Completed' : ($stat['highScore'] > 0 ? 'In Progress' : 'Pending')) }}
-                                                    </span>
+                                                    <div class="relative group">
+                                                        <span class="flex justify-center items-center px-2 text-xs leading-5 font-semibold rounded-full 
+                                                            bg-{{ $stat['highScore'] === 'N/A' ? 'red' : ($stat['highScore'] == 100 ? 'green' : ($stat['highScore'] > 0 ? 'yellow' : 'red')) }}-100 
+                                                            text-{{ $stat['highScore'] === 'N/A' ? 'red' : ($stat['highScore'] == 100 ? 'green' : ($stat['highScore'] > 0 ? 'yellow' : 'red')) }}-800 
+                                                            w-1/2 h-5">
+                                                            {{ $stat['highScore'] === 'N/A' ? 'Pending' : ($stat['highScore'] == 100 ? 'Completed' : ($stat['highScore'] > 0 ? 'In Progress' : 'Pending')) }}
+                                                        </span>
+                                                        <div class="absolute z-10 hidden group-hover:block bg-white border border-gray-200 rounded-md shadow-lg p-2 w-64 text-sm text-gray-700 mt-1 right-0">
+                                                            @if($stat['highScore'] === 'N/A' || $stat['highScore'] === 0)
+                                                                <p>You have yet to try this workout at this difficulty level</p>
+                                                            @elseif($stat['highScore'] == 100)
+                                                                <p>You have achieved the perfect score of 100 for this workout at this difficulty level</p>
+                                                            @else
+                                                                <p>You have tried this workout at this difficulty level and are still working on achieving the perfect score</p>
+                                                            @endif
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach

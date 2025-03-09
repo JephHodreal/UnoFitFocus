@@ -33,10 +33,10 @@
     </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 py-8">
-    <div class="aspect-w-16 aspect-h-9 relative rounded-lg shadow-lg overflow-hidden">
-        <img src="../assets/images/workout-library/pushup-1.gif" alt="Push-Up Starting Position" class="object-contain h-96 w-full md:w-auto rounded-lg">
+    <div class="relative rounded-lg shadow-lg overflow-hidden">
+        <img src="../assets/images/workout-library/pushup-1.gif" alt="Push-Up Starting Position" class="w-full rounded-lg">
     </div>
-    <div class="aspect-w-16 aspect-h-9 relative rounded-lg shadow-lg overflow-hidden">
-        <img src="../assets/images/workout-library/pushup-2.gif" alt="Performing Push-Up" class="object-contain h-96 w-full md:w-auto rounded-lg">
+    <div class="relative rounded-lg shadow-lg overflow-hidden">
+        <img src="../assets/images/workout-library/pushup-2.gif" alt="Performing Push-Up" class="w-full rounded-lg">
     </div>
 </div>

@@ -34,10 +34,10 @@
     </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 py-8">
-    <div class="aspect-w-16 aspect-h-9 relative rounded-lg shadow-lg overflow-hidden">
-        <img src="../assets/images/workout-library/plank-1.gif" alt="Getting into Plank Position" class="object-contain h-96 w-full md:w-auto rounded-lg">
+    <div class="relative rounded-lg shadow-lg overflow-hidden">
+        <img src="../assets/images/workout-library/plank-1.gif" alt="Getting into Plank Position" class="w-full rounded-lg">
     </div>
-    <div class="aspect-w-16 aspect-h-9 relative rounded-lg shadow-lg overflow-hidden">
-        <img src="../assets/images/workout-library/plank-2.gif" alt="Performing Plank" class="object-contain h-96 w-full md:w-auto rounded-lg">
+    <div class="relative rounded-lg shadow-lg overflow-hidden">
+        <img src="../assets/images/workout-library/plank-2.gif" alt="Performing Plank" class="w-full rounded-lg">
     </div>
 </div>

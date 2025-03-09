@@ -189,7 +189,7 @@
                                 })">
                                 <div class="flex items-center justify-center min-h-screen px-4">
                                     <div class="fixed inset-0 bg-black opacity-50"></div>
-                                    <div class="relative bg-white rounded-lg max-w-2xl w-full overflow-y-auto max-h-[90vh]" @click.stop>
+                                    <div class="relative bg-white rounded-lg max-w-4xl w-full overflow-y-auto max-h-[90vh]" @click.stop>
                                         <!-- Modal Content -->
                                         <div class="p-6">
                                             <button @click="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
@@ -199,7 +199,9 @@
                                             </button>
                                             
                                             <h3 class="text-2xl font-bold mb-4" x-text="modalContent.title"></h3>
-                                            <img :src="modalContent.modalImage" :alt="modalContent.title" class="w-full h-96 object-cover rounded-lg mb-4">
+                                            <div class="flex justify-center items-center mb-4 w-full">
+                                                <img :src="modalContent.modalImage" :alt="modalContent.title" class="rounded-lg max-h-[60vh] object-contain mx-auto">
+                                            </div>
                                             
                                             <div class="mb-4">
                                                 <h4 class="text-lg font-semibold mb-2">Target Muscles:</h4>
@@ -286,7 +288,7 @@
                                 })">
                                 <div class="flex items-center justify-center min-h-screen px-4">
                                     <div class="fixed inset-0 bg-black opacity-50"></div>
-                                    <div class="relative bg-white rounded-lg max-w-2xl w-full overflow-y-auto max-h-[90vh]" @click.stop>
+                                    <div class="relative bg-white rounded-lg max-w-4xl w-full overflow-y-auto max-h-[90vh]" @click.stop>
                                         <!-- Modal Content -->
                                         <div class="p-6">
                                             <button @click="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
@@ -296,7 +298,9 @@
                                             </button>
                                             
                                             <h3 class="text-2xl font-bold mb-4" x-text="modalContent.title"></h3>
-                                            <img :src="modalContent.modalImage" :alt="modalContent.title" class="w-full h-96 object-cover rounded-lg mb-4">
+                                            <div class="flex justify-center items-center mb-4 w-full">
+                                                <img :src="modalContent.modalImage" :alt="modalContent.title" class="rounded-lg max-h-[60vh] object-contain mx-auto">
+                                            </div>
                                             
                                             <div class="mb-4">
                                                 <h4 class="text-lg font-semibold mb-2">Target Muscles:</h4>
@@ -598,6 +602,180 @@
                 tab.classList.add('active');
                 contents[index].classList.remove('hidden');
             });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Only target actual GIF files
+            const gifs = document.querySelectorAll('img[src$=".gif"], img[src$=".GIF"]');
+            
+            gifs.forEach(function(gif) {
+                // Store the original animated GIF source
+                const originalSrc = gif.src;
+                
+                // Create a unique ID for this GIF
+                const gifId = 'gif-' + Math.random().toString(36).substr(2, 9);
+                gif.id = gifId;
+                
+                // Create a container for positioning
+                const container = document.createElement('div');
+                container.classList.add('gif-container');
+                container.style.position = 'relative';
+                container.style.display = 'inline-block';
+                container.style.overflow = 'hidden';
+                container.style.borderRadius = 'inherit'; // Maintain any border radius from the image
+                
+                // We'll use a canvas to "pause" the GIF by showing a static frame
+                const canvas = document.createElement('canvas');
+                canvas.id = gifId + '-canvas';
+                canvas.style.position = 'absolute';
+                canvas.style.top = '0';
+                canvas.style.left = '0';
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                
+                // Add a stylish play button overlay
+                const playButton = document.createElement('div');
+                playButton.classList.add('gif-play-button');
+                playButton.style.position = 'absolute';
+                playButton.style.top = '50%';
+                playButton.style.left = '50%';
+                playButton.style.transform = 'translate(-50%, -50%)';
+                playButton.style.width = '60px';
+                playButton.style.height = '60px';
+                playButton.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+                playButton.style.borderRadius = '50%';
+                playButton.style.display = 'flex';
+                playButton.style.justifyContent = 'center';
+                playButton.style.alignItems = 'center';
+                playButton.style.cursor = 'pointer';
+                playButton.style.transition = 'opacity 0.3s ease';
+                playButton.style.zIndex = '2'; // Ensure it's above other elements
+                
+                // Create the play/pause icon
+                const icon = document.createElement('div');
+                // Initially set to play icon since GIFs will be paused by default
+                icon.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                    <polygon points="5,3 19,12 5,21"/>
+                </svg>
+                `;
+                playButton.appendChild(icon);
+                
+                // Add hover effect
+                container.addEventListener('mouseenter', function() {
+                    playButton.style.opacity = '1';
+                });
+                
+                container.addEventListener('mouseleave', function() {
+                    playButton.style.opacity = '0.7';
+                });
+                
+                // Set up the click handler
+                let isPlaying = false; // GIFs are paused by default now
+                
+                container.addEventListener('click', function(e) {
+                    if (isPlaying) {
+                        // Pause: Capture current frame and display it
+                        captureFrame(gif, canvas);
+                        canvas.style.display = 'block';
+                        gif.style.visibility = 'hidden';
+                        isPlaying = false;
+                        
+                        // Change to play icon
+                        icon.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                            <polygon points="5,3 19,12 5,21"/>
+                        </svg>
+                        `;
+                        
+                        // Update status
+                        statusBar.textContent = 'Click to play';
+                    } else {
+                        // Play: Show original animated GIF
+                        canvas.style.display = 'none';
+                        gif.style.visibility = 'visible';
+                        isPlaying = true;
+                        
+                        // Change to pause icon
+                        icon.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                            <rect x="6" y="4" width="4" height="16"/>
+                            <rect x="14" y="4" width="4" height="16"/>
+                        </svg>
+                        `;
+                        
+                        // Update status
+                        statusBar.textContent = 'Click to pause';
+                    }
+                });
+                
+                // Add a bottom status bar with text
+                const statusBar = document.createElement('div');
+                statusBar.classList.add('gif-status');
+                statusBar.style.position = 'absolute';
+                statusBar.style.bottom = '0';
+                statusBar.style.left = '0';
+                statusBar.style.right = '0';
+                statusBar.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+                statusBar.style.color = 'white';
+                statusBar.style.padding = '5px 10px';
+                statusBar.style.fontSize = '12px';
+                statusBar.style.textAlign = 'center';
+                statusBar.style.transform = 'translateY(100%)';
+                statusBar.style.transition = 'transform 0.3s ease';
+                statusBar.style.zIndex = '2'; // Ensure it's above other elements
+                statusBar.textContent = 'Click to play'; // Updated for initial paused state
+                
+                // Show status on hover
+                container.addEventListener('mouseenter', function() {
+                    statusBar.style.transform = 'translateY(0)';
+                });
+                
+                container.addEventListener('mouseleave', function() {
+                    statusBar.style.transform = 'translateY(100%)';
+                });
+                
+                // Make the image fill the container
+                gif.style.display = 'block';
+                gif.style.width = '100%';
+                gif.style.height = '100%';
+                gif.style.objectFit = 'cover';
+                
+                // Insert the new elements into the DOM
+                gif.parentNode.insertBefore(container, gif);
+                container.appendChild(gif);
+                container.appendChild(canvas);
+                container.appendChild(playButton);
+                container.appendChild(statusBar);
+                
+                // Add a subtle animation hint initially
+                setTimeout(() => {
+                    playButton.style.opacity = '0.7';
+                }, 1000);
+                
+                // Load the GIF to initialize and get its dimensions
+                const img = new Image();
+                img.onload = function() {
+                    canvas.width = img.naturalWidth;
+                    canvas.height = img.naturalHeight;
+                    
+                    // Initialize the paused state immediately after GIF loads
+                    captureFrame(gif, canvas);
+                    canvas.style.display = 'block';
+                    gif.style.visibility = 'hidden';
+                };
+                img.src = originalSrc;
+            });
+            
+            // Function to capture a frame from a playing GIF
+            function captureFrame(gif, canvas) {
+                const ctx = canvas.getContext('2d');
+                // Match canvas dimensions to the GIF
+                canvas.width = gif.naturalWidth || gif.width;
+                canvas.height = gif.naturalHeight || gif.height;
+                // Draw the current frame
+                ctx.drawImage(gif, 0, 0, canvas.width, canvas.height);
+            }
         });
     </script>
 </body>

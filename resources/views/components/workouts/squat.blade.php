@@ -34,10 +34,10 @@
     </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 py-8">
-    <div class="relative aspect-w-16 aspect-h-9 rounded-lg shadow-lg overflow-hidden">
-        <img src="../assets/images/workout-library/squat-1.gif" alt="Squat Front View" class="object-contain h-96 w-full md:w-auto rounded-lg">
+    <div class="relative rounded-lg shadow-lg overflow-hidden">
+        <img src="../assets/images/workout-library/squat-1.gif" alt="Squat Front View" class="w-full rounded-lg">
     </div>
-    <div class="relative aspect-w-16 aspect-h-9 rounded-lg shadow-lg overflow-hidden">
-        <img src="../assets/images/workout-library/squat-2.gif" alt="Squat Side View" class="object-contain h-96 w-full md:w-auto rounded-lg">
+    <div class="relative rounded-lg shadow-lg overflow-hidden">
+        <img src="../assets/images/workout-library/squat-2.gif" alt="Squat Side View" class="w-full rounded-lg">
     </div>
 </div>
