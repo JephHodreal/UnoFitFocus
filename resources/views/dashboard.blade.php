@@ -34,7 +34,7 @@
             @if($profileIncomplete)
                 <!-- Pop-up Modal -->
                 <div x-data="{ showModal: true }">
-                    <div x-show="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-opacity">
+                    <div x-show="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 z-50 bg-opacity-50 transition-opacity">
                         <div class="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto relative" 
                             x-transition:enter="transition ease-out duration-300"
                             x-transition:enter-start="opacity-0 transform scale-90"
