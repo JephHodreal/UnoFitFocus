@@ -32,7 +32,7 @@ class HistoryController extends Controller
         }
 
         // Paginate the filtered results (25 per page)
-        $workouts = $query->orderBy('date_performed', 'desc')->paginate(25);
+        $workouts = $query->orderBy('created_at', 'desc')->paginate(25);
 
         // Pass the data to the view along with the current filters
         return view('WorkoutHistory', compact('workouts', 'exerciseFilter', 'difficultyFilter'));

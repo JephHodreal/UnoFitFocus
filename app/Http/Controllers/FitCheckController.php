@@ -106,18 +106,26 @@ class FitCheckController extends Controller
         Log::info('Request Method:', [$request->method()]);
         Log::info('Request Data:', $request->all());
         // Validate the request data
-        $validatedData = $request->validate([
-            'exercise' => 'required|string|max:255',
-            'difficulty' => 'required|string|max:255',
-            'score' => 'required|integer|min:0|max:100', // Score must be an integer between 0 and 100
-        ]);
+        // $validatedData = $request->validate([
+        //     'exercise' => 'required|string|max:255',
+        //     'difficulty' => 'required|string|max:255',
+        //     'score' => 'required|integer|min:0|max:100', // Score must be an integer between 0 and 100
+        // ]);
 
-        // Save data into the workout_sessions table
+        // // Save data into the workout_sessions table
+        // StatsDashboard::create([
+        //     'fk_user_id' => Auth::id(), // Get authenticated user's ID
+        //     'exercise' => $validatedData['exercise'],
+        //     'difficulty' => $validatedData['difficulty'],
+        //     'score' => $validatedData['score'], // Score rounded up
+        //     'date_performed' => Carbon::now()->toDateString(), // Current date
+        // ]);
+
         StatsDashboard::create([
             'fk_user_id' => Auth::id(), // Get authenticated user's ID
-            'exercise' => $validatedData['exercise'],
-            'difficulty' => $validatedData['difficulty'],
-            'score' => $validatedData['score'], // Score rounded up
+            'exercise' => $request->exercise,
+            'difficulty' => $request->difficulty,
+            'score' => $request->score,
             'date_performed' => Carbon::now()->toDateString(), // Current date
         ]);
 

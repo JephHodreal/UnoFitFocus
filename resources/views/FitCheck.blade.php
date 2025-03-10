@@ -473,6 +473,7 @@
         const targetReps = {{ $reps ?? 'null' }};
         const targetSets = {{ $sets ?? 'null' }};
         const targetDuration = {{ $duration ?? 'null' }};
+        let finalScore;
 
         // Function to show modal
         function showModal() {
@@ -536,13 +537,27 @@
             modalResult.textContent = scriptOutput4.textContent.split('Score: ')[1].trim() // Display final score in modal
             isModalShown = true; // Prevent re-triggering the modals
 
-            let finalScore;
+            //let finalScore;
 
             if (workout === "Push-Up" || workout === "Squat") {
                 // For Push-Up or Squat, extract the percentage part
-                const scoreText = scriptOutput4.textContent.split('Score: ')[1].trim().split(' '); // Extract text after "Score: "
-                const secondScore = scoreText[2]; // Get the second score
-                finalScore = parseInt(secondScore.split('/')[0]);
+                // const scoreText = scriptOutput4.textContent.split('Score: ')[1].trim().split(' '); // Extract text after "Score: "
+                // const secondScore = scoreText[2]; // Get the second score
+                // finalScore = parseInt(secondScore.split('/')[0]);
+                // const scoreText = scriptOutput4.textContent.split('Score: ')[1].trim();
+                // finalScore = parseInt(scoreText.split('/')[0]);
+
+
+                // const scoreText = scriptOutput4.textContent.split('Score: ')[1].trim();
+                // const [score, total] = scoreText.split('/').map(Number); // Convert both parts to numbers
+                // finalScore = (score / total) * 100;
+
+                const scoreText = scriptOutput4.textContent.split('Score: ')[1].trim();
+                const finalScore1 = parseInt(scoreText.split('/')[0]);
+                const finalScore2 = parseInt(scoreText.split('/')[1]);
+
+                finalScore = (finalScore1 / finalScore2) * 100;
+
             } else {
                 // For plank, extract the single value
                 finalScore = parseInt(scriptOutput4.textContent.split('Score: ')[1].trim());
@@ -684,8 +699,18 @@
                         scriptOutput3.textContent = `Stage:  ${data.stage}`;
                         //const roundedScore = Math.ceil(data.score);
                         //scriptOutput4.textContent = `Score:  ${roundedScore}/100`;
+                        // scriptOutput4.textContent = `Score:  ${data.score}/100`;
+                        // updateProgressBar(data.score);
+
                         scriptOutput4.textContent = `Score:  ${data.score}/100`;
-                        updateProgressBar(data.score);
+                        // const scoreValue = parseInt(data.score);
+                        // updateProgressBar(scoreValue);
+                        const scoreText = scriptOutput4.textContent.split('Score: ')[1].trim();
+                        const finalScore1 = parseInt(scoreText.split('/')[0]);
+                        const finalScore2 = parseInt(scoreText.split('/')[1]);
+
+                        finalScore = (finalScore1 / finalScore2) * 100;
+                        updateProgressBar(finalScore);
                     }
                     if (data.stage === "completed" && !isModalShown){
                         stop_prediction();
@@ -854,118 +879,6 @@
                 isModalShown = false;
             }
         });
-
-        // // Function to reset workout state
-        // function resetWorkoutState() {
-        //     // Reset workout state variables
-        //     isFetching = false;
-        //     isModalShown = false;
-
-        //     // Reset display elements
-        //     timer.textContent = 'Timer: 10:00';
-        //     timer.style.color = 'green';
-
-        //     // Reset output displays
-        //     scriptOutput.textContent = 'Waiting for Camera';
-        //     if (workout === "Plank") {
-        //         scriptOutput1.style.display = 'none';
-        //         scriptOutput2.style.display = 'none';
-        //         scriptOutput3.textContent = "Time: 0/" + targetDuration + " sec";
-        //     } else {
-        //         scriptOutput1.textContent = "Reps: 0/" + targetReps;
-        //         scriptOutput2.textContent = "Sets: 0/" + targetSets;
-        //         scriptOutput3.textContent = "Stage: ";
-        //     }
-        //     scriptOutput4.textContent = "Score: ";
-        //     scriptOutput5.textContent = "Posture Feedback";
-        //     scriptOutput5.style.backgroundColor = "white";
-        //     scriptOutput5.style.color = "black";
-
-        //     // Reset progress bar
-        //     const progressBar = document.getElementById('progress-bar');
-        //     progressBar.style.width = '0%';
-        // }
-
-        // // Function to restart workout
-        // function restartWorkout() {
-        //     // Reset all states
-        //     isFetching = false;
-        //     isModalShown = false;
-
-        //     // Clear any existing intervals
-        //     if (countdownInterval) {
-        //         clearInterval(countdownInterval);
-        //     }
-
-        //     // Reset workout state and displays
-        //     resetWorkoutState();
-
-        //     // Hide results modal
-        //     resultsModal.classList.add('hidden');
-
-        //     // Reset video feed
-        //     video.src = "http://127.0.0.1:5000/delay_feed";
-        //     video.style.display = 'block';
-
-        //     // Restart Flask session with same parameters
-        //     fetch('http://127.0.0.1:5000/reset_workout', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        //         },
-        //         body: JSON.stringify({ 
-        //             workout: workout, 
-        //             difficulty: difficulty,
-        //             reps: targetReps,
-        //             sets: targetSets,
-        //             duration: targetDuration
-        //         }),
-        //     })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         console.log('Workout reset:', data);
-
-        //         // Start countdown for new session
-        //         let countdown = 10;
-        //         const countdownDisplay = document.createElement('div');
-        //         countdownDisplay.style.position = 'absolute';
-        //         countdownDisplay.style.top = '50%';
-        //         countdownDisplay.style.left = '50%';
-        //         countdownDisplay.style.transform = 'translate(-50%, -50%)';
-        //         countdownDisplay.style.fontSize = '2rem';
-        //         countdownDisplay.style.color = 'red';
-        //         countdownDisplay.style.textAlign = 'center';
-        //         countdownDisplay.style.zIndex = '20';
-
-        //         const overlay = document.createElement('div');
-        //         overlay.style.position = 'absolute';
-        //         overlay.style.top = '0';
-        //         overlay.style.left = '0';
-        //         overlay.style.width = '100%';
-        //         overlay.style.height = '100%';
-        //         overlay.style.backgroundColor = 'black';
-        //         overlay.style.opacity = '0.25';
-        //         overlay.style.zIndex = '10';
-
-        //         video.parentElement.appendChild(overlay);
-        //         video.parentElement.appendChild(countdownDisplay);
-
-        //         const newCountdownInterval = setInterval(() => {
-        //             countdownDisplay.textContent = `Starting in ${countdown} seconds...`;
-        //             countdown -= 1;
-        //             if (countdown < 0) {
-        //                 clearInterval(newCountdownInterval);
-        //                 video.parentElement.removeChild(overlay);
-        //                 video.parentElement.removeChild(countdownDisplay);
-        //                 video.src = "http://127.0.0.1:5000/video_feed";
-        //                 isFetching = true;
-        //                 startTimer(600); // Start the timer with 10 minutes (600 seconds)
-        //             }
-        //         }, 1000);
-        //     })
-        //     .catch(error => console.error('Error resetting workout:', error));
-        // }
 
         function restartWorkout() {
             // Reload the page to reset everything
