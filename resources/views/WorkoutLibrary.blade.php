@@ -488,7 +488,7 @@
                         carouselImage: '../assets/images/workout-library/prev-knee-hugs.PNG',
                         modalImage: '../assets/images/workout-library/cd-knee-hugs.gif',
                         muscles: 'Hamstrings, Lower Back',
-                        instructions: '1. Sit on the floor with one leg extended\n2. Bend your other leg so your foot touches your inner thigh\n3. Keep your back straight\n4. Reach for your toes on the extended leg\n5. Hold for 15-30 seconds\n6. Switch legs and repeat\n7. Perform 2-3 sets per leg'
+                        instructions: '1. Stand tall with your feet hip-width apart and arms at your sides. Maintain a neutral spine and engage your core.\n2. Lift your right knee toward your chest. Wrap your hands around your knee or shin and gently pull it closer to your chest. Avoid rounding your back.\n3. Keep your standing leg slightly bent and maintain your balance. Engage your core and focus on a fixed point to help with stability.\n4. Hold the stretch for 1-2 seconds, feeling the stretch in your glutes and hamstrings.\n5. Gently lower your leg and repeat the movement with your left leg.\n6. Alternate legs for the desired number of repetitions (typically 8-10 per leg).'
                     },
                     {
                         id: 'childs-pose',
