@@ -248,10 +248,10 @@ def workout_tracker(workout, difficulty, workout_angles, model):
             if (0 < workout_angles["right_elbow_angle"] < 55) and (0 < workout_angles["left_elbow_angle"] < 55):
                 if prediction == 0:
                     stage = "down"
-                    signal = "down_sound"
+                    #signal = "down_sound"
                 elif prediction == 1:
                     stage = "You are too low"
-                    signal = "error_sound"
+                    #signal = "error_sound"
 
             elif (workout_angles["right_elbow_angle"] > 55) and (workout_angles["left_elbow_angle"] > 55):
                 if stage == "down":
@@ -264,7 +264,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
                 elif stage == "You are too low":
                     stage = "up"
                     reps += 1
-                    signal = "up_sound"
+                    signal = "error_sound"
 
         # Ensure a signal is always sent to indicate no action
         if signal is None:
@@ -298,10 +298,11 @@ def workout_tracker(workout, difficulty, workout_angles, model):
             if (0 < workout_angles["right_knee_angle"] < 100) and (0 < workout_angles["left_knee_angle"] < 100):
                 if prediction == 0:
                     stage = "down"
-                    signal = "down_sound"
+                    #signal = "down_sound"
                 elif prediction == 1:
                     stage = "You are too low"
-                    signal = "error_sound"
+                    #signal = "error_sound"
+                    
             elif (workout_angles["right_knee_angle"] > 100) and (workout_angles["left_knee_angle"] > 100):
                 if stage == "down":
                     stage = "up"
@@ -312,7 +313,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
                 elif stage == "You are too low":
                     stage = "up"
                     reps += 1
-                    signal = "up_sound"
+                    signal = "error_sound"
 
         # Ensure a signal is always sent to indicate no action
         if signal is None:

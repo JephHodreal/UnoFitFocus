@@ -462,11 +462,13 @@
         let countdownInterval;
         let isFetching = true;
         timer.style.color = 'green';
+
         const errorSound = new Audio('{{ asset('sounds/error_sound.mp3') }}');
         const correctSound = new Audio('{{ asset('sounds/correct_sound.mp3') }}');
         const downSound = new Audio('{{ asset('sounds/down_sound.mp3') }}');
         const upSound = new Audio('{{ asset('sounds/up_sound.mp3') }}');
         const dingSound = new Audio('{{ asset('sounds/ding_sound.mp3') }}');
+        let lastSignal = null;
 
         const workout = "{{ $workout }}";
         const difficulty = "{{ $difficulty }}";
@@ -692,8 +694,9 @@
                         clearInterval(countdownInterval); // Stop the timer
                         timer.textContent = 'Workout Complete!';
                     }
-                    if (data.signal) {
+                    if (data.signal && data.signal !== lastSignal) {
                         playSound(data.signal);
+                        lastSignal = data.signal; // Update last played signal
                     }
                 })
                 .catch(error => console.error('Error fetching prediction:', error));
