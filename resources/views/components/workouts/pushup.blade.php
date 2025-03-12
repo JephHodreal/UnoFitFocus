@@ -22,9 +22,11 @@
         </ul>
         <p class="text-gray-700 font-bold">{{ __('Process:') }}</p>
         <ol class="list-decimal list-inside text-gray-700">
-            <li>{{ __('Start in a plank position with your hands under your shoulders.') }}</li>
-            <li>{{ __('Lower your body until your chest nearly touches the floor.') }}</li>
-            <li>{{ __('Push through your palms to raise your body back to the starting position.') }}</li>
+            <li>{{ __('Start down on all fours in a high plank position, with your palms flat on the floor and positioned slightly wider than the shoulders.') }}</li>
+            <li>{{ __('Extend your legs so they form a straight line with your back, keeping your head in line with your spine and balancing your weight on the balls of your feet.') }}</li>
+            <li>{{ __('Lower yourself by bending your elbows, breathing in as you do, and stopping with your chest just above the ground. Your elbows should be at a 45 degree angle relative to the torso.') }}</li>
+            <li>{{ __('Breathe out as you push your hands firmly against the floor, maintaining the straight line of your back while lifting your body up until your arms are straight.') }}</li>
+            <li>{{ __('Repeat the process.') }}</li>
         </ol>
     </div>
     <!-- GIF Column -->

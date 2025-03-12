@@ -27,9 +27,11 @@
         </ul>
         <p class="text-gray-700 font-bold">{{ __('Process:') }}</p>
         <ol class="list-decimal list-inside text-gray-700">
-            <li>{{ __('Stand with your feet shoulder-width apart.') }}</li>
-            <li>{{ __('Lower your hips as if sitting back into a chair.') }}</li>
+            <li>{{ __('Stand with your back straight and feet shoulder-width apart.') }}</li>
+            <li>{{ __('Keeping your heels and toes on the ground, inhale as you push your hips back and bend your knees as if you are sitting back into a chair.') }}</li>
+            <li>{{ __('Lower yourself until your knees reach a 90-degree angle. Continue to keep your back straight and in a neutral position.') }}</li>
             <li>{{ __('Push through your heels to return to the starting position.') }}</li>
+            <li>{{ __('Repeat the process.') }}</li>
         </ol>
     </div>
 </div>

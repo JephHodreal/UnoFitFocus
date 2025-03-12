@@ -22,8 +22,9 @@
         </ul>
         <p class="text-gray-700 font-bold">{{ __('Process:') }}</p>
         <ol class="list-decimal list-inside text-gray-700">
-            <li>{{ __('Start in a forearm plank position with your elbows under your shoulders.')}}</li>
-            <li>{{ __('Keep your body in a straight line from head to toes.')}}</li>
+            <li>{{ __('Balance on your forearms and your toes, keeping your elbows directly underneath your shoulders.')}}</li>
+            <li>{{ __('Engage your abs and your torso to rise up onto your toes, keeping your hips and stomach off the ground.')}}</li>
+            <li>{{ __('Keep your body in a straight line from the head to your toes by squeezing your legs and glutes.')}}</li>
             <li>{{ __('Hold the position as long as possible without dropping your hips.')}}</li>
         </ol>
     </div>
