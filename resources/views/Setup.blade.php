@@ -34,14 +34,14 @@
                                 <!-- Height -->
                                 <div class="mb-6 pt-3 rounded bg-gray-200">
                                     <x-input-label for="height" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Height (in cm)')" required="true" />
-                                    <x-text-input id="height" class="block mt-1 w-full" type="text" name="height" :value="old('height')" required autocomplete="height" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
+                                    <x-text-input id="height" class="block mt-1 w-full" type="text" name="height" :value="old('height')" required autocomplete="height" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" />
                                     <x-input-error :messages="$errors->get('height')" class="mt-2" />
                                 </div>
 
                                 <!-- Weight -->
                                 <div class="mb-6 pt-3 rounded bg-gray-200">
                                     <x-input-label for="weight" class="block text-gray-700 text-sm font-bold mb-2 ml-3" :value="__('Weight (in kg)')" required="true" />
-                                    <x-text-input id="weight" class="block mt-1 w-full" type="text" name="weight" :value="old('weight')" required autocomplete="weight" oninput="this.value = this.value.replace(/[^0-9/]/g, '')" />
+                                    <x-text-input id="weight" class="block mt-1 w-full" type="text" name="weight" :value="old('weight')" required autocomplete="weight" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" />
                                     <x-input-error :messages="$errors->get('weight')" class="mt-2" />
                                 </div>
                             </div>
