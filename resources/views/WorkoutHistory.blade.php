@@ -68,7 +68,7 @@
                                         <td class="px-6 py-4">{{ $index + 1 + ($workouts->currentPage() - 1) * $workouts->perPage() }}</td>
                                         <td class="px-6 py-4">{{ $workout->exercise }}</td>
                                         <td class="px-6 py-4">{{ $workout->difficulty }}</td>
-                                        <td class="px-6 py-4">{{ \Carbon\Carbon::parse($workout->date_performed)->format('Y-m-d') }}</td>
+                                        <td class="px-6 py-4">{{ \Carbon\Carbon::parse($workout->created_at)->format('F d, Y - h:i A') }}</td>
                                         <td class="px-6 py-4">{{ $workout->score }}%</td>
                                     </tr>
                                 @empty
@@ -124,9 +124,23 @@
                     ? order[a.cells[2].textContent] - order[b.cells[2].textContent]
                     : order[b.cells[2].textContent] - order[a.cells[2].textContent];
             } else if (column === 'date') {
-                comparator = (a, b) => sortDirection.date
-                    ? new Date(a.cells[3].textContent) - new Date(b.cells[3].textContent)
-                    : new Date(b.cells[3].textContent) - new Date(a.cells[3].textContent);
+                comparator = (a, b) => {
+                    // Parse date strings like "February 10, 2025 - 02:30 PM"
+                    const parseDate = (dateStr) => {
+                        const parts = dateStr.split(' - ');
+                        const datePart = parts[0]; // "February 10, 2025"
+                        const timePart = parts[1]; // "02:30 PM"
+                        
+                        return new Date(`${datePart} ${timePart}`);
+                    };
+                    
+                    const dateA = parseDate(a.cells[3].textContent);
+                    const dateB = parseDate(b.cells[3].textContent);
+                    
+                    return sortDirection.date
+                        ? dateA - dateB
+                        : dateB - dateA;
+                };
             } else if (column === 'score') {
                 comparator = (a, b) => sortDirection.score
                     ? parseInt(b.cells[4].textContent) - parseInt(a.cells[4].textContent)
