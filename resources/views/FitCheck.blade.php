@@ -462,6 +462,8 @@
         let countdownInterval;
         let isFetching = true;
         timer.style.color = 'green';
+        let isCooldownActive = false;
+        let previousSets = 0;
 
         const errorSound = new Audio('{{ asset('sounds/error_sound.mp3') }}');
         const correctSound = new Audio('{{ asset('sounds/correct_sound.mp3') }}');
@@ -648,6 +650,60 @@
             }, 1000);
         });
 
+        function handleSetIncrease() {
+            if (isCooldownActive) return; // Prevent duplicate cooldowns
+            isCooldownActive = true;
+
+            console.log("Cooldown started: Switching to delay_feed");
+
+            // Switch to delay feed
+            video.src = "http://127.0.0.1:5000/delay_feed";
+
+            // Create overlay for cooldown
+            const overlay = document.createElement("div");
+            overlay.style.position = "absolute";
+            overlay.style.top = "0";
+            overlay.style.left = "0";
+            overlay.style.width = "100%";
+            overlay.style.height = "100%";
+            overlay.style.backgroundColor = "black";
+            overlay.style.opacity = "0.5";
+            overlay.style.zIndex = "10";
+            video.parentElement.appendChild(overlay);
+
+            // Create countdown display
+            const countdownDisplay = document.createElement("div");
+            countdownDisplay.style.position = "absolute";
+            countdownDisplay.style.top = "50%";
+            countdownDisplay.style.left = "50%";
+            countdownDisplay.style.transform = "translate(-50%, -50%)";
+            countdownDisplay.style.fontSize = "2rem";
+            countdownDisplay.style.color = "red";
+            countdownDisplay.style.textAlign = "center";
+            countdownDisplay.style.zIndex = "20";
+            video.parentElement.appendChild(countdownDisplay);
+
+            let countdown = 15; // 90-second cooldown
+            const countdownInterval = setInterval(() => {
+                countdownDisplay.textContent = `Rest for ${countdown} seconds...`;
+                countdown--;
+
+                if (countdown < 0) {
+                    clearInterval(countdownInterval);
+                    isCooldownActive = false;
+
+                    // Remove overlay and countdown display
+                    video.parentElement.removeChild(overlay);
+                    video.parentElement.removeChild(countdownDisplay);
+
+                    console.log("Cooldown ended: Switching back to video_feed");
+
+                    // Resume normal video feed
+                    video.src = "http://127.0.0.1:5000/video_feed";
+                }
+            }, 1000);
+        }
+
         function fetchPrediction() {
             if (!isFetching || !isCameraActive) { // Stop if not fetching prediction or if camera is active
                 scriptOutput.textContent = "Waiting for Camera"; // Keep showing "No data" if camera is not active
@@ -671,6 +727,11 @@
                 .then(data => {
                     scriptOutput.textContent = `Prediction: ${data.latest_prediction.prediction.charAt(0).toUpperCase() + data.latest_prediction.prediction.slice(1)} Posture`;
 
+                    if (data.sets > previousSets) {
+                        handleSetIncrease();
+                    }
+                    previousSets = data.sets;
+                    
                     // Update the background color based on the prediction
                     if (data.latest_prediction.prediction === "correct") {
                         scriptOutput5.textContent = "Correct Posture";

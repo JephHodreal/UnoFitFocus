@@ -248,10 +248,10 @@ def workout_tracker(workout, difficulty, workout_angles, model):
             if (0 < workout_angles["right_elbow_angle"] < 55) and (0 < workout_angles["left_elbow_angle"] < 55):
                 if prediction == 0:
                     stage = "down"
-                    #signal = "down_sound"
+                    signal = "no_signal"
                 elif prediction == 1:
                     stage = "You are too low"
-                    #signal = "error_sound"
+                    signal = "no_signal"
 
             elif (workout_angles["right_elbow_angle"] > 55) and (workout_angles["left_elbow_angle"] > 55):
                 if stage == "down":
@@ -298,10 +298,10 @@ def workout_tracker(workout, difficulty, workout_angles, model):
             if (0 < workout_angles["right_knee_angle"] < 100) and (0 < workout_angles["left_knee_angle"] < 100):
                 if prediction == 0:
                     stage = "down"
-                    #signal = "down_sound"
+                    signal = "no_signal"
                 elif prediction == 1:
                     stage = "You are too low"
-                    #signal = "error_sound"
+                    signal = "no_signal"
                     
             elif (workout_angles["right_knee_angle"] > 100) and (workout_angles["left_knee_angle"] > 100):
                 if stage == "down":
