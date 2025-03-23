@@ -28,7 +28,7 @@
         <!-- Middle Name -->
         <div>
             <x-input-label for="middle_name" :value="__('Middle Name')" />
-            <x-text-input id="middle_name" name="middle_name" type="text" class="mt-1 block w-full" :value="old('middle_name', $userInfo->middle_name)" required autocomplete="middle_name" />
+            <x-text-input id="middle_name" name="middle_name" type="text" class="mt-1 block w-full" :value="old('middle_name', $userInfo->middle_name)" autocomplete="middle_name" />
             <x-input-error class="mt-2" :messages="$errors->get('middle_name')" />
         </div>
 
