@@ -683,7 +683,11 @@
             countdownDisplay.style.zIndex = "20";
             video.parentElement.appendChild(countdownDisplay);
 
-            let countdown = 15; // 90-second cooldown
+            let countdown = 90;
+            if (workout === "Squat") {
+                countdown = 30;
+            }
+
             const countdownInterval = setInterval(() => {
                 countdownDisplay.textContent = `Rest for ${countdown} seconds...`;
                 countdown--;
