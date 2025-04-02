@@ -159,13 +159,6 @@
                 </div>
             </div>
 
-            <!-- New button to open results modal -->
-            <div class="text-center mt-6">
-                <button id="show-results-button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    {{ __('Show Workout Results') }}
-                </button>
-            </div>
-
             <!-- New button to stop workout -->
             <div class="text-center mt-6">
                 <button id="end-workout-button" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
@@ -907,7 +900,6 @@
         // Results Modal JS
         const resultsModal = document.getElementById('results-modal');
         const retryButton = document.getElementById('retry-button');
-        const showResultsButton = document.getElementById('show-results-button');
         const closeResultsModalButton = document.getElementById('close-results-modal');
         const endWorkoutButton = document.getElementById('end-workout-button');
         const confirmationModal = document.getElementById('confirmation-modal');
@@ -931,10 +923,6 @@
         // Handle "No, Continue" button click
         cancelEndWorkout.addEventListener('click', () => {
             confirmationModal.classList.add('hidden'); // Hide the modal
-        });
-
-        showResultsButton.addEventListener('click', () => {
-            resultsModal.classList.remove('hidden');
         });
 
         closeResultsModalButton.addEventListener('click', () => {
