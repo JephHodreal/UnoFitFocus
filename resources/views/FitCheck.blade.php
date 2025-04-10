@@ -296,21 +296,57 @@
                 </ul>
             </div>
             <div class="modal-slide hidden">
-                <h2 class="text-xl font-bold mb-4">{{ __('Scoring') }}</h2>
+                <h2 class="text-xl font-bold mb-4">{{ __('Results') }}</h2>
+                <img src="../assets/images/help-score1.PNG" alt="FitCheck Guide: Scoring for Push-Ups and Squats" class="w-full rounded transform scale-90"/>
+                <ul class="list-disc pl-5 text-sm">
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Workout and Difficulty:') }}</span>
+                      {{ __('Your selected exercise and difficulty level.') }}
+                    </li>
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Objective:') }}</span>
+                      {{ __("The goal that you must achieve in your workout.") }}
+                    </li>
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Score:')}}</span>
+                      {{ __('The first half signifies the raw score, showing how many reps were completed in the proper form over the total number of reps needed to be accomplished. The second half demonstrates the score percentage out of 100, displaying your rate of completion for the objective.') }}
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-slide hidden">
+                <h2 class="text-xl font-bold mb-4">{{ __('How Scoring Works in FitFocus') }}</h2>
                 <p class="mb-4 text-pretty md:text-balance text-justify">
-                    {{ __('Your score is based on your rate of accomplishment of the displayed objective in the proper posture.')}}
+                    {{ __('Your FitFocus score tells you how well you completed your workout in proper form—not just whether you finished, but how correctly you did it.')}}
                 </p>
                 <p class="mb-4 text-pretty md:text-balance text-justify">
-                    {{ __('For push-ups and planks, your score is calculated by taking the number of repetitions you were able to perform 
-                    in the correct posture and dividing it by the total number of repetitions (which are the repetitions multiplied 
-                    by the number of sets) you need to do as stated in the objective.') }}
+                    {{ __('Push-ups and squats are scored based on your accuracy and consistency. We count how many reps you did with good posture then we divide that by the total reps you were supposed to do.') }}
                 </p>
                 <p class="mb-4 text-pretty md:text-balance text-justify">
-                    {{ __('For planks, your score is calculated by taking the number of seconds you were able to hold the correct posture 
-                    and dividing it by the total number of seconds you need to do as stated in the objective.') }}
+                    {{ __('Each workout has a target number of repetitions and sets—for example, 2 sets of 6 squats means your goal is 12 perfect squats in total. If you did 1 reps in the proper form, your score will be:') }}
+                </p>
+                <p class="mb-4 text-pretty md:text-balance text-center">
+                    {{ __('Score = (11 ÷ 12) × 100 = 92%') }}
                 </p>
                 <p class="mb-4 text-pretty md:text-balance text-justify">
-                    {{ __('The highest score that you can receive is 100. ') }}
+                    {{ __('That means you hit 92% of your goal with proper form. Good job!') }}
+                </p>
+            </div>
+            <div class="modal-slide hidden">
+                <h2 class="text-xl font-bold mb-4">{{ __('How Scoring Works in FitFocus') }}</h2>
+                <p class="mb-4 text-pretty md:text-balance text-justify">
+                    {{ __('For planks, it\'s all about holding steady in the right position for the right amount of time.') }}
+                </p>
+                <p class="mb-4 text-pretty md:text-balance text-justify">
+                    {{ __('Your score is calculated by measure the number of seconds you held the correct posture then dividing that by the total time goal.') }}
+                </p>
+                <p class="mb-4 text-pretty md:text-balance text-justify">
+                    {{ __('For example, if the objective is to hold the plank for 60 seconds and you manage to hold the correct posture for 45 seconds, then your score will be:') }}
+                </p>
+                <p class="mb-4 text-pretty md:text-balance text-center">
+                    {{ __('Score = (45 ÷ 60) × 100 = 75%') }}
+                </p>
+                <p class="mb-4 text-pretty md:text-balance text-justify">
+                    {{ __('That means you maintained good posture for 75% of the time. Great work!') }}
                 </p>
             </div>
             <div class="modal-slide hidden">
@@ -370,6 +406,26 @@
                 </script>
             </div>
             <div class="modal-slide hidden">
+                <h2 class="text-xl font-bold mb-4">{{ __('How to Correct Your Posture?') }}</h2>
+                <p class="mb-4 text-pretty text-justify">
+                    {{ __('Here are a few things you can do to correct your posture:') }}
+                </p>
+                <ul class="list-disc pl-5 text-sm">
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Push-Ups: ') }}</span>
+                      {{ __('Keep your body in a straight line from head to heels. Engage your core and don\'t let your hips sag or stick up. Lower yourself until your elbows are at a 90° angle, then push back up. Keep your elbows close to your body, not flared out wide.') }}
+                    </li>
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Squats: ') }}</span>
+                      {{ __("Keep your feet shoulder-width apart. Push your hips back and down as if sitting in a chair. Keep your knees behind your toes and don’t let them go too far forward. Keep your back straight and chest lifted throughout.") }}
+                    </li>
+                    <li class="mb-1">
+                      <span class="font-semibold">{{ __('Planks: ')}}</span>
+                      {{ __('Your body should form a straight line. Engage your abs, glutes, and legs to stay stable. Elbows should be directly under your shoulders.') }}
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-slide hidden">
                 <h2 class="text-xl font-bold">{{ __('Reminder:') }}</h2>
                 <p>{{ __("Don't forget to do warm-up and cooldown exercises before and after your workout! You can 
                 see some sample warm-ups and cooldowns you can do at the Workout Library.") }}</p>
@@ -387,6 +443,9 @@
             <!-- Slide indicator dots -->
             <div class="flex justify-center mt-4">
                 <span class="dot w-3 h-3 rounded-full bg-blue-500 mx-1"></span>
+                <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
+                <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
+                <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
                 <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
                 <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
                 <span class="dot w-3 h-3 rounded-full bg-gray-300 mx-1"></span>
