@@ -1,5 +1,6 @@
 import cv2
 import mediapipe as mp
+import pandas as pd
 import numpy as np
 import time
 from model import label_encoder
@@ -94,8 +95,9 @@ def generate_frames():
                 workout_landmarks = get_workout_landmarks(landmarks)
                 workout_angles = calculate_workout_angles(workout_landmarks, workout_visibility)
                 draw_workout_angles(frame, workout, workout_landmarks, workout_angles)
+                joint_position = get_joint_position(workout, workout_angles)
 
-                output = workout_tracker(workout, difficulty, workout_angles, model)
+                output = workout_tracker(workout, difficulty, workout_angles, model, joint_position)
 
                 reps = output[0]
                 sets = output[1]
@@ -123,7 +125,65 @@ def calculate_angle(a, b, c):
 
     return angle
 
-def workout_tracker(workout, difficulty, workout_angles, model):
+def get_joint_position(workout, workout_angles):
+
+    joint_positions = {
+        "elbow_position": None,
+        "hip_position": None,
+        "knee_position": None
+    }
+
+    if workout in ["Plank"]:
+        if 75 < workout_angles["left_elbow_angle"] < 180 and 75 < workout_angles["right_elbow_angle"] < 180:
+            joint_positions["elbow_position"] = "up"
+        else:
+            joint_positions["elbow_position"] = "down"
+
+        if workout_angles["left_hip_angle"] > 125 and workout_angles["right_hip_angle"] > 125:
+            joint_positions["hip_position"] = "straight"
+        else:
+            joint_positions["hip_position"] = "bent"
+
+        if workout_angles["left_knee_angle"] > 125 and workout_angles["right_knee_angle"] > 125:
+            joint_positions["knee_position"] = "straight"
+        else:
+            joint_positions["knee_position"] = "bent"
+
+    if workout in ["Push-Up"]:
+        if workout_angles["left_elbow_angle"] > 50 and workout_angles["right_elbow_angle"] > 50:
+            joint_positions["elbow_position"] = "up"
+        else:
+            joint_positions["elbow_position"] = "down"
+
+        if workout_angles["left_hip_angle"] > 130 and workout_angles["right_hip_angle"] > 130:
+            joint_positions["hip_position"] = "straight"
+        else:
+            joint_positions["hip_position"] = "bent"
+
+        if workout_angles["left_knee_angle"] > 135 and workout_angles["right_knee_angle"] > 135:
+            joint_positions["knee_position"] = "straight"
+        else:
+            joint_positions["knee_position"] = "bent"
+
+    if workout in ["Squat"]:
+        if 130 < workout_angles["left_elbow_angle"] < 180 and 130 < workout_angles["right_elbow_angle"] < 180:
+            joint_positions["elbow_position"] = "forward"
+        else:
+            joint_positions["elbow_position"] = "bent"
+        
+        if workout_angles["left_hip_angle"] > 45 and workout_angles["right_hip_angle"] > 45:
+            joint_positions["hip_position"] = "up"
+        else:
+            joint_positions["hip_position"] = "down"
+
+        if workout_angles["left_knee_angle"] > 100 and workout_angles["right_knee_angle"] > 100:
+            joint_positions["knee_position"] = "up"
+        else:
+            joint_positions["knee_position"] = "down"
+
+    return joint_positions
+
+def workout_tracker(workout, difficulty, workout_angles, model, joint_position):
 
     # Variables to track workout
     global reps, sets, stage, total_time, raw_score, score, start_time, elapsed_time, set_counter, latest_prediction, modalScore1, modalScore2, overall_start_time, signal, target_reps, target_sets, target_duration
@@ -149,9 +209,16 @@ def workout_tracker(workout, difficulty, workout_angles, model):
     #     target_reps = 30
     #     target_sets = 3
     #     target_time = 60
-    difficulty = "Standard" 
-    input_data = [workout.lower().replace("-", ""), difficulty.lower()] + list(workout_angles.values())
-    input_data = np.array(input_data).reshape(1, -1)
+    
+    difficulty = "Standard"
+    
+    column_names = ['exercise', 'difficulty', 'LElbow_angle', 'RElbow_angle', 'LHip_angle', 'RHip_angle',
+    'LKnee_angle', 'RKnee_angle', 'elbow_position', 'hip_position', 'knee_position']
+
+    input_data = [workout.lower().replace("-", ""), difficulty.lower()] + list(workout_angles.values()) + list(joint_position.values())
+    #   input_data = np.array(input_data).reshape(1, -1)
+
+    input_df = pd.DataFrame([input_data], columns=column_names)  
 
     # Debugging: Print input data with angle names
     print("Input data for prediction:")
@@ -161,6 +228,9 @@ def workout_tracker(workout, difficulty, workout_angles, model):
     for angle_name, angle_value in workout_angles.items():
         print(f"{angle_name}: {angle_value}")
 
+    for angle_name, angle_position in joint_position.items():
+        print(f"{angle_name}: {angle_position}")
+
     # Check if at least one angle is 0
     if any(angle == 0 for angle in workout_angles.values()):
         print("At least one angle is not found.")
@@ -169,7 +239,7 @@ def workout_tracker(workout, difficulty, workout_angles, model):
     
     if model:
         # Make prediction if model is loaded
-        prediction = model.predict(input_data)
+        prediction = model.predict(input_df)
         # Convert numerical prediction back to original string label
         decoded_prediction = label_encoder.inverse_transform(prediction)
         # Update latest prediction for access by the JSON endpoint

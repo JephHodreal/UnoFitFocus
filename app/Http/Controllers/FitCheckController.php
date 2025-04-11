@@ -126,7 +126,7 @@ class FitCheckController extends Controller
             'exercise' => $request->exercise,
             'difficulty' => $request->difficulty,
             'score' => $request->score,
-            'date_performed' => Carbon::now()->toDateString(), // Current date
+            'date_performed' => Carbon::now('Asia/Manila')->toDateString(), // Current date
         ]);
 
         return response()->json(['message' => 'Workout session saved successfully!'], 200);

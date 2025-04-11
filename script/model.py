@@ -10,7 +10,7 @@ import pickle
 df = pd.read_csv('script/landmarks.csv')
 
 # Seperate dependent and independent variables
-X = df.iloc[:, 2:10]
+X = df.iloc[:, 2:16].drop(columns=['elbow_correctness', 'hip_correctness', 'knee_correctness'])
 y = df.iloc[:, 1]
 
 # Encode target labels as integers
@@ -21,7 +21,7 @@ y = label_encoder.fit_transform(y)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
 
 # Define which columns are categorical (first 8 columns: 'exercise', 'difficulty')
-categorical_columns = list(range(2))
+categorical_columns = list(range(2)) + list(range(8, 11))
 
 # Create ColumnTransformer: OneHotEncode the categorical columns and leave numerical columns as is
 preprocessor = ColumnTransformer(
